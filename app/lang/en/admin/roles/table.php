@@ -1,0 +1,12 @@
+<?php
+
+return array(
+
+	'name'       => 'Name',
+	'users'      => '# of Users',
+	'created_at' => 'Created at',
+	'choose_role' => 'Choose roles',
+	'adminrole' => 'Admin roles',
+	'userrole' => 'User roles',
+
+);
