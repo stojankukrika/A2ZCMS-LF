@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, Page, View;
-
+use App, User, Page,Input, UserLoginHistory, Redirect, View, Confide,Auth, Session;
 
 class UserController extends \BaseController {
 
@@ -25,6 +24,61 @@ class UserController extends \BaseController {
 		
 		$this->page = array();
 		$this->pagecontent = array();
+	}
+	
+	/**
+	 * Displays the login form
+	 *
+	 */
+	public function getLogin() {
+		$user = Auth::user();
+		if (!empty($user -> id)) {
+			return Redirect::to('/admin/users/profile');
+		}
+		$data['sidebar_right'] = array();
+		$data['sidebar_left'] = array();
+		$data['page'] = array();
+		return View::make('users::login', $data);
+	}
+
+	/**
+	 * Attempt to do login
+	 *
+	 */
+	public function postLogin() {
+		$input = array('email' => Input::get('email'), // May be the username too
+		'username' => Input::get('email'), // May be the username too
+		'password' => Input::get('password'), 'remember' => Input::get('remember'), );
+
+		// If you wish to only allow login from confirmed users, call logAttempt
+		// with the second parameter as true.
+		// logAttempt will check if the 'email' perhaps is the username.
+		// Check that the user is confirmed.
+		if (Confide::logAttempt($input, true)) {
+			$login_user = Auth::user();
+			
+			/*$userloginlog = new UserLoginHistory;
+			$userloginlog -> user_id = $login_user->id;
+			$userloginlog -> save();
+			*/
+			$r = Session::get('loginRedirect');
+			if (!empty($r)) {
+				Session::forget('loginRedirect');
+				return Redirect::to($r);
+			}
+			return Redirect::to('/');
+		} else {
+			// Check if there was too many login attempts
+			if (Confide::isThrottled($input)) {
+				$err_msg = Lang::get('confide::confide.alerts.too_many_attempts');
+			} elseif ($this -> user -> checkUserExists($input) && !$this -> user -> isConfirmed($input)) {
+				$err_msg = Lang::get('confide::confide.alerts.not_confirmed');
+			} else {
+				$err_msg = Lang::get('confide::confide.alerts.wrong_credentials');
+			}
+
+			return Redirect::to('users/login') -> withInput(Input::except('password')) -> with('error', $err_msg);
+		}
 	}
 
 	/**
@@ -162,61 +216,7 @@ class UserController extends \BaseController {
 		return View::make('site/user/create', $data);
 	}
 
-	/**
-	 * Displays the login form
-	 *
-	 */
-	public function getLogin() {
-		$user = Auth::user();
-		if (!empty($user -> id)) {
-			return Redirect::to('/');
-		}
-		
-		$data['sidebar_right'] = $this->pagecontent['sidebar_right'];
-		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
-		$data['page'] = $this->page;
-		return View::make('site/user/login', $data);
-	}
-
-	/**
-	 * Attempt to do login
-	 *
-	 */
-	public function postLogin() {
-		$input = array('email' => Input::get('email'), // May be the username too
-		'username' => Input::get('email'), // May be the username too
-		'password' => Input::get('password'), 'remember' => Input::get('remember'), );
-
-		// If you wish to only allow login from confirmed users, call logAttempt
-		// with the second parameter as true.
-		// logAttempt will check if the 'email' perhaps is the username.
-		// Check that the user is confirmed.
-		if (Confide::logAttempt($input, true)) {
-			$login_user = Auth::user();
-			
-			$userloginlog = new UserLoginHistory;
-			$userloginlog -> user_id = $login_user->id;
-			$userloginlog -> save();
-			
-			$r = Session::get('loginRedirect');
-			if (!empty($r)) {
-				Session::forget('loginRedirect');
-				return Redirect::to($r);
-			}
-			return Redirect::to('/');
-		} else {
-			// Check if there was too many login attempts
-			if (Confide::isThrottled($input)) {
-				$err_msg = Lang::get('confide::confide.alerts.too_many_attempts');
-			} elseif ($this -> user -> checkUserExists($input) && !$this -> user -> isConfirmed($input)) {
-				$err_msg = Lang::get('confide::confide.alerts.not_confirmed');
-			} else {
-				$err_msg = Lang::get('confide::confide.alerts.wrong_credentials');
-			}
-
-			return Redirect::to('user/login') -> withInput(Input::except('password')) -> with('error', $err_msg);
-		}
-	}
+	
 
 	/**
 	 * Attempt to confirm account with code

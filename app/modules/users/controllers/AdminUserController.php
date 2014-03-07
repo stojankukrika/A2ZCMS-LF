@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, View;
+use App, User, View, Session,Auth;
 
 class AdminUserController extends \AdminController {
 
@@ -9,47 +9,10 @@ class AdminUserController extends \AdminController {
 	 * @var User
 	 */
 	protected $user;
-
-	/**
-	 * Role Model
-	 * @var Role
-	 */
-	protected $role;
-
-	/**
-	 * Permission Model
-	 * @var Permission
-	 */
-	protected $permission;
-
-	/**
-	 * Inject the models.
-	 * @param User $user
-	 * @param Role $role
-	 * @param Permission $permission
-	 */
-	private $useravatwidth;
-	private $useravatheight;
 	
-	public function __construct(User $user, Role $role, Permission $permission) {
+	public function __construct(User $user) {
 		parent::__construct();
 		$this -> user = $user;
-		$this -> role = $role;
-		$this -> permission = $permission;
-		
-		$settings = Settings::whereIn('varname',
-						array('useravatwidth', 'useravatheight'))->get();
-		
-		foreach ($settings as $v) {
-				if ($v -> varname == 'useravatwidth') {
-					$useravatwidth = $v -> value;
-				}
-				if ($v -> varname == 'useravatheight') {
-					$useravatheight = $v -> value;
-				}				
-			}
-		$this->useravatwidth = $useravatwidth;
-		$this->useravatheight = $useravatheight;
 	}
 
 	/**
@@ -58,14 +21,12 @@ class AdminUserController extends \AdminController {
 	 * @return Response
 	 */
 	public function getIndex() {
-		// Title
-		$title = Lang::get('admin/users/title.user_management');
-
+		
 		// Grab all the users
 		$users = $this -> user;
 
 		// Show the page
-		return View::make('admin/users/index', compact('users', 'title'));
+		return View::make('users::admin/index', compact('users', 'title'));
 	}
 
 	/**
