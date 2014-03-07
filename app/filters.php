@@ -35,7 +35,10 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) {
+        Session::put('loginRedirect', Request::url());
+        return Redirect::to('/');
+    }
 });
 
 
@@ -57,8 +60,27 @@ Route::filter('auth.basic', function()
 
 Route::filter('guest', function()
 {
-	if (Auth::check()) return Redirect::to('/');
+	if (Auth::check()) return Redirect::to('users/login/');
 });
+/*
+|--------------------------------------------------------------------------
+| Role Permissions
+|--------------------------------------------------------------------------
+|
+| Access filters based on roles.
+|
+*/
+Route::filter('check_admin', function()
+{
+	//if the user who do not have admin role has access to the admin page returned to home page
+	$user = Auth::user()->currentRoleIds();
+	if($user['allow_admin']!='1'){
+		return Redirect::to('/');
+	}
+
+});
+// Check for role on all admin routes
+Route::filter('pattern: admin/*', 'check_admin');
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +95,7 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Session::token() != Input::get('_token'))
+	if (Session::getToken() != Input::get('csrf_token') &&  Session::getToken() != Input::get('_token'))
 	{
 		throw new Illuminate\Session\TokenMismatchException;
 	}
