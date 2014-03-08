@@ -94,81 +94,10 @@
 		<!-- end: Header -->
 		<div class="container">
 			<div class="row">
-				<!-- start: Main Menu -->
-				<div id="sidebar-left" class="col-lg-2 col-sm-1 ">
-					<div class="sidebar-nav nav-collapse collapse navbar-collapse">
-						<ul class="nav main-menu">
-							<li>
-								<a href="{{{ URL::to('admin') }}}"><i class="icon-dashboard"></i><span class="hidden-sm text">{{{ Lang::get('admin/general.dashboard') }}}</span></a>
-							</li>
-							<li>
-								<a href="{{{ URL::to('admin/todolists') }}}"><i class="icon-bell"></i><span class="hidden-sm text">{{{ Lang::get('admin/general.to_do_list') }}}</span></a>
-							</li>
-							<li>
-								<a href="{{{ URL::to('admin/customform') }}}"><i class="icon-list-alt"></i><span class="hidden-sm text">{{{ Lang::get('admin/general.custom_form') }}} </span></a>
-							</li>
-							<li>
-								<a class="dropmenu" href="{{{ URL::to('admin/pages') }}}"><i class="icon-globe"></i><span class="hidden-sm text"> {{{ Lang::get('admin/general.pages') }}}</span><span class="chevron closed"></span></a>
-								<ul>
-									<li>
-										<a href="{{{ URL::to('admin/navigationgroups') }}}"><i class="icon-th-list"></i> {{{ Lang::get('admin/general.navigation_group') }}}</a>
-									</li>
-									<li>
-										<a href="{{{ URL::to('admin/pages') }}}"><i class="icon-th-large"></i> {{{ Lang::get('admin/general.pages') }}}</a>
-									</li>
-									<li>
-										<a href="{{{ URL::to('admin/navigation') }}}"><i class="icon-th"></i> {{{ Lang::get('admin/general.navigation') }}}</a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a class="dropmenu" href="{{{ URL::to('admin/blogs') }}}"><i class="icon-external-link"></i><span class="hidden-sm text">{{{ Lang::get('admin/general.blog') }}}</span><span class="chevron closed"></span></a>
-								<ul>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/blogcategorys') }}}"><i class="icon-rss"></i><span class="hidden-sm text"> {{{ Lang::get('admin/general.blog_categorys') }}}</span></a>
-									</li>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/blogs') }}}"><i class="icon-book"></i><span class="hidden-sm text"> {{{ Lang::get('admin/general.blog') }}}</span></a>
-									</li>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/blogcomments') }}}"><i class="icon-comment-alt"></i> <span class="hidden-sm text">{{{ Lang::get('admin/general.blog_comments') }}}</span></a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a class="dropmenu" href="{{{ URL::to('admin/galleries') }}}"><i class="icon-camera"></i><span class="hidden-sm text">{{{ Lang::get('admin/general.gallery') }}}</span><span class="chevron closed"></span></a>
-								<ul>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/galleryimages') }}}"><i class="icon-rss"></i><span class="hidden-sm text"> {{{ Lang::get('admin/general.gallery_images') }}}</span></a>
-									</li>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/galleries') }}}"><i class="icon-camera-retro"></i><span class="hidden-sm text"> {{{ Lang::get('admin/general.gallery') }}}</span></a>
-									</li>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/galleryimagecomments') }}}"><i class="icon-comments-alt"></i> <span class="hidden-sm text">{{{ Lang::get('admin/general.gallery_comments') }}}</span></a>
-									</li>
-								</ul>
-							</li>
-							
-							<li>
-								<a class="dropmenu" href="{{{ URL::to('admin/users') }}}"><i class="icon-group"></i><span class="hidden-sm text">{{{ Lang::get('admin/general.users') }}} </span><span class="chevron closed"></span></a>
-								<ul>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/users') }}}"><i class="icon-user"></i><span class="hidden-sm text"> {{{ Lang::get('admin/general.users') }}}</span></a>
-									</li>
-									<li>
-										<a class="submenu" href="{{{ URL::to('admin/roles') }}}"><i class="icon-user-md"></i><span class="hidden-sm text"> {{{ Lang::get('admin/general.roles') }}}</span></a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="{{{ URL::to('admin/settings') }}}"><i class=" icon-cogs"></i><span class="hidden-sm text"> {{ Lang::get('admin/general.settings') }}</span></a>
-							</li>
-						</ul>
-					</div>
-					<a href="{{{ URL::to('admin') }}}#" id="main-menu-min" class="full visible-md visible-lg"><i class="icon-double-angle-left"></i></a>
-				</div>
-				<!-- end: Main Menu -->
+				<?php
+					$adminmenu = new App\Modules\Adminmenu\Controllers\AdminmenuController;
+					echo $adminmenu->left_navigation();
+					?>
 				<!-- start: Content -->
 				<div id="content" class="col-lg-10 col-sm-11 ">
 					<div class="row">
