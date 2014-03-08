@@ -23,10 +23,14 @@ class AdminSettingsController extends \AdminController {
 	 */
 	public function getIndex() {
 		//load settings from database
-		$settings = Setting::all();
+		$settingsgroup = Setting::where('groupname','!=' ,'version')
+								->groupBy('groupname')->get();
+		foreach ($settingsgroup as $group) {
+			$group->items = Setting::where('groupname', $group->groupname)->get();
+		}
 		$title = "Settings";
 		// Show the page
-		return View::make('settings::index', compact('title','settings'));
+		return View::make('settings::index', compact('title','settingsgroup'));
 	}
 
 	/**
@@ -36,16 +40,11 @@ class AdminSettingsController extends \AdminController {
 	 */
 	public function postIndex() {
 		// Declare the rules for the form validation
-		$rules = array('email' => 'required|email', 
-						'title' => 'required', 
-						'copyright' => 'required', 
-						'dateformat' => 'required', 
-						'timeformat' => 'required', 
-						'useravatwidth' => 'required|integer', 
-						'useravatheight' => 'required|integer', 
-						'shortmsg' => 'required|integer', 
-						'pageitem' => 'required|integer');
-
+		$rules = array();
+		$settings_role = Setting::where('groupname','!=','version')->where('rule', '!=', '')->get();
+		foreach ($settings_role as $item) {
+			$rules[$item->varname] = $item->rule;
+      	}
 		// Validate the inputs
 		$validator = Validator::make(Input::all(), $rules);
 	
@@ -61,7 +60,7 @@ class AdminSettingsController extends \AdminController {
 	        }
 
 			// Redirect to the settings page
-			return Redirect::to('admin/settings/') -> with('success', Lang::get('admin/settings/messages.success'));
+			return Redirect::to('admin/settings/') -> with('success', 'Success');
 		}
 
 		// Form validation failed

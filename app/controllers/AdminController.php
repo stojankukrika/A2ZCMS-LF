@@ -14,6 +14,9 @@ class AdminController extends Controller {
 		$this -> beforeFilter('auth');
 		$this -> beforeFilter('before');
 		
+		if(!defined('ASSETS_PATH_FULL')){
+			  define('ASSETS_PATH_FULL', '\public\assets\site');
+    	} 
 	}
 
 }
