@@ -28,7 +28,7 @@ class AdminSettingsController extends \AdminController {
 		foreach ($settingsgroup as $group) {
 			$group->items = Setting::where('groupname', $group->groupname)->get();
 		}
-		$title = "Settings";
+		$title = "Settings Management";
 		// Show the page
 		return View::make('settings::index', compact('title','settingsgroup'));
 	}

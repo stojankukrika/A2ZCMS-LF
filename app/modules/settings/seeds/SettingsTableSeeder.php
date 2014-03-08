@@ -1,6 +1,8 @@
-<?php
+<?php namespace App\Modules\Settings\Seeds;
 
-class SettingsTableSeeder extends Seeder {
+use Eloquent, Str;
+
+class SettingsTableSeeder extends \Seeder {
 
 	public function run() {
 		// Uncomment the below to wipe the table clean before populating

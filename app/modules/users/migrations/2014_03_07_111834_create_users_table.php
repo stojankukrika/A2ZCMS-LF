@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration {
 			$table -> string('surname');
 			$table -> string('email') -> unique();
 			$table -> string('username') -> unique();
+			$table -> string('avatar');
 			$table -> string('password');
 			$table -> string('confirmation_code');
 			$table -> boolean('confirmed') -> default(false);
