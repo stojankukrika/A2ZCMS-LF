@@ -17,7 +17,7 @@ class AdminmenuController extends \AdminController{
 					->orderBy("order", "asc")
 					->orderBy("admin_navigation_id", "asc")
 					->get(array('id','admin_navigation_id', 'title', 'icon', 'url','order'));
-					if(!empty($mainadminsubmenu)){
+					if(!isset($mainadminsubmenu)){
 						$item->adminsubmenu = $mainadminsubmenu;
 					}			
 		}
@@ -25,7 +25,7 @@ class AdminmenuController extends \AdminController{
 					<div class="sidebar-nav nav-collapse collapse navbar-collapse">
 						<ul class="nav main-menu">							
 		<li>
-			<a href="'. URL::to('admin/plugins/dashboard').'"><i class="icon-dashboard"></i><span class="hidden-sm text">Dashboard</span></a>
+			<a href="'. URL::to('admin/').'"><i class="icon-dashboard"></i><span class="hidden-sm text">Dashboard</span></a>
 		</li>';
 		foreach ($mainadminmenu as $adminmainmenu) {
 			if(!empty($adminmainmenu->adminsubmenu))

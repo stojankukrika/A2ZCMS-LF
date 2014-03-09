@@ -1,0 +1,4 @@
+{
+	"enabled": true,
+	"seeder": "App\\Modules\\Roles\\Seeds\\DatabaseSeeder"
+}

@@ -1,4 +1,4 @@
-@extends('admin.layouts.modal')
+@extends('layouts.admin.modal')
 
 {{-- Content --}}
 @section('content')

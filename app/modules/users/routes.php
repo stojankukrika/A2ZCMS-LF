@@ -41,6 +41,6 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
 {
 	Route::get('users/profile', 'App\Modules\Users\Controllers\AdminUserController@getProfileEdit');
 	Route::post('users/profile', 'App\Modules\Users\Controllers\AdminUserController@postProfileEdit');
-	Route::get('users/index', 'App\Modules\Users\Controllers\AdminUserController@getIndex');
+	Route::controller('users', 'App\Modules\Users\Controllers\AdminUserController');
 	
 });

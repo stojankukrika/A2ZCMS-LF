@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, View, Session,Auth;
+use App, User, View, Session,Auth,Datatables,Input;
 
 class AdminUserController extends \AdminController {
 
@@ -36,7 +36,7 @@ class AdminUserController extends \AdminController {
 	 */
 	public function getUsersForRole($user_role) {
 		// Title
-		$title = Lang::get('admin/users/title.user_management_for_role');
+		$title = "User management for role";
 
 		// Show the page
 		return View::make('admin/users/usersforrole', compact('title', 'user_role'));
@@ -48,20 +48,16 @@ class AdminUserController extends \AdminController {
 	 * @return Response
 	 */
 	public function getCreate() {
-		// All roles
-		$roles = $this -> role -> all();
-		// Get all the available permissions
-		$permissions = $this -> permission -> all();
+		$roles = array();
+		$permissions = array();
 		// Selected groups
 		$selectedRoles = Input::old('roles', array());
 		// Selected permissions
 		$selectedPermissions = Input::old('permissions', array());
-		// Title
-		$title = Lang::get('admin/users/title.create_a_new_user');
-		// Mode
-		$mode = 'create';
-		// Show the page
-		return View::make('admin/users/create_edit', compact('roles', 'permissions', 'selectedRoles', 'selectedPermissions', 'title', 'mode'));
+		$mode = 'edit';
+		$user  = Auth::user();
+		$title  = "Add new user";
+		return View::make('users::admin/create_edit', compact('roles', 'user','permissions', 'selectedRoles', 'selectedPermissions', 'title', 'mode'));
 	}
 
 	/**

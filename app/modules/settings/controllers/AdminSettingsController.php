@@ -30,7 +30,7 @@ class AdminSettingsController extends \AdminController {
 		}
 		$title = "Settings Management";
 		// Show the page
-		return View::make('settings::index', compact('title','settingsgroup'));
+		return View::make('settings::admin/index', compact('title','settingsgroup'));
 	}
 
 	/**
