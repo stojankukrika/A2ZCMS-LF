@@ -9,7 +9,7 @@
 		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-		<title> Administration ::  </title>
+		<title> Administration :: A2Z CMS :: @yield('title')</title>
 
 		<meta name="keywords" content="" />
 		<meta name="author" content="" />

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "fc8f21b4c36424a39f3465f96360c52d",
+    "hash": "6e5be79e4abb2084fe588b57e3dfec06",
     "packages": [
         {
             "name": "bllim/datatables",
@@ -855,12 +855,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "cbb67cd64c0a18f466730ddbe606626005fab59c"
+                "reference": "85428c311b38cf91d6a80a22712a65643920fed4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/cbb67cd64c0a18f466730ddbe606626005fab59c",
-                "reference": "cbb67cd64c0a18f466730ddbe606626005fab59c",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/85428c311b38cf91d6a80a22712a65643920fed4",
+                "reference": "85428c311b38cf91d6a80a22712a65643920fed4",
                 "shasum": ""
             },
             "require": {
@@ -923,7 +923,7 @@
                 "iron-io/iron_mq": "1.5.*",
                 "mockery/mockery": "0.9.*",
                 "pda/pheanstalk": "2.1.*",
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.0.*"
             },
             "suggest": {
                 "doctrine/dbal": "Allow renaming columns and dropping SQLite columns."
@@ -964,7 +964,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-03-06 14:27:31"
+            "time": "2014-03-09 03:15:08"
         },
         {
             "name": "laravelbook/ardent",
@@ -1031,12 +1031,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "0ac27c8089d0ec41728d96b5aa0dcad18fb0d459"
+                "reference": "dc75a998d83ebb285b94b1a6fd96644b457ed33c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0ac27c8089d0ec41728d96b5aa0dcad18fb0d459",
-                "reference": "0ac27c8089d0ec41728d96b5aa0dcad18fb0d459",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc75a998d83ebb285b94b1a6fd96644b457ed33c",
+                "reference": "dc75a998d83ebb285b94b1a6fd96644b457ed33c",
                 "shasum": ""
             },
             "require": {
@@ -1058,6 +1058,7 @@
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
                 "raven/raven": "Allow sending log messages to a Sentry server",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
                 "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
             },
             "type": "library",
@@ -1090,7 +1091,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-02-26 12:30:17"
+            "time": "2014-03-09 20:51:48"
         },
         {
             "name": "nesbot/carbon",
@@ -1689,12 +1690,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/CssSelector.git",
-                "reference": "ed1d61b2e23a0fd5dba0b20651258c4633d3e3a7"
+                "reference": "76ce933792a3b4fcb8ea9b017081327c2dc3c65b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/CssSelector/zipball/ed1d61b2e23a0fd5dba0b20651258c4633d3e3a7",
-                "reference": "ed1d61b2e23a0fd5dba0b20651258c4633d3e3a7",
+                "url": "https://api.github.com/repos/symfony/CssSelector/zipball/76ce933792a3b4fcb8ea9b017081327c2dc3c65b",
+                "reference": "76ce933792a3b4fcb8ea9b017081327c2dc3c65b",
                 "shasum": ""
             },
             "require": {
@@ -1733,7 +1734,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "http://symfony.com",
-            "time": "2014-02-11 13:52:09"
+            "time": "2014-03-01 17:35:04"
         },
         {
             "name": "symfony/debug",
@@ -2308,16 +2309,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JeffreyWay/Laravel-4-Generators.git",
-                "reference": "f0149677968893333b416afa48b6d5f804a7bc35"
+                "reference": "e1d1a3235ba2c712127317bdf01132ea99095995"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JeffreyWay/Laravel-4-Generators/zipball/f0149677968893333b416afa48b6d5f804a7bc35",
-                "reference": "f0149677968893333b416afa48b6d5f804a7bc35",
+                "url": "https://api.github.com/repos/JeffreyWay/Laravel-4-Generators/zipball/e1d1a3235ba2c712127317bdf01132ea99095995",
+                "reference": "e1d1a3235ba2c712127317bdf01132ea99095995",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "4.1.*",
+                "illuminate/support": "~4.1",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -2347,7 +2348,7 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2014-03-06 14:37:24"
+            "time": "2014-03-08 01:59:28"
         },
         {
             "name": "zizaco/confide",
@@ -2415,12 +2416,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Zizaco/entrust.git",
-                "reference": "664750676f3ea9e80556d4b6e9dae11185162c39"
+                "reference": "48cbd45bd0a07997b1e883d44558ec9e809eacef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/664750676f3ea9e80556d4b6e9dae11185162c39",
-                "reference": "664750676f3ea9e80556d4b6e9dae11185162c39",
+                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/48cbd45bd0a07997b1e883d44558ec9e809eacef",
+                "reference": "48cbd45bd0a07997b1e883d44558ec9e809eacef",
                 "shasum": ""
             },
             "require": {
@@ -2467,7 +2468,7 @@
                 "laravel",
                 "roles"
             ],
-            "time": "2014-02-11 20:58:24"
+            "time": "2014-03-07 06:22:46"
         }
     ],
     "packages-dev": [

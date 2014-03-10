@@ -1,6 +1,11 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, View, Session,Auth,Datatables,Input;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+
+use App\Modules\Users\Models\User;
+use App\Modules\Users\Models\AssignedRoles;
+use App\Modules\Roles\Models\Role;
+use App\Modules\Roles\Models\Permission;
 
 class AdminUserController extends \AdminController {
 
@@ -8,8 +13,6 @@ class AdminUserController extends \AdminController {
 	 * User Model
 	 * @var User
 	 */
-	protected $user;
-	
 	public function __construct(User $user) {
 		parent::__construct();
 		$this -> user = $user;
@@ -24,7 +27,8 @@ class AdminUserController extends \AdminController {
 		
 		// Grab all the users
 		$users = $this -> user;
-
+		
+		$title = "Users menagement";
 		// Show the page
 		return View::make('users::admin/index', compact('users', 'title'));
 	}
@@ -48,16 +52,13 @@ class AdminUserController extends \AdminController {
 	 * @return Response
 	 */
 	public function getCreate() {
-		$roles = array();
-		$permissions = array();
+		$roles = Role::all();
 		// Selected groups
 		$selectedRoles = Input::old('roles', array());
 		// Selected permissions
-		$selectedPermissions = Input::old('permissions', array());
-		$mode = 'edit';
-		$user  = Auth::user();
+		$mode = 'create';
 		$title  = "Add new user";
-		return View::make('users::admin/create_edit', compact('roles', 'user','permissions', 'selectedRoles', 'selectedPermissions', 'title', 'mode'));
+		return View::make('users::admin/create_edit', compact('roles', 'mode','selectedRoles', 'title'));
 	}
 
 	/**
@@ -74,12 +75,9 @@ class AdminUserController extends \AdminController {
 		// The password confirmation will be removed from model
 		// before saving. This field will be used in Ardent's
 		// auto validation.
-		$this -> user -> password_confirmation = Input::get('password_confirmation');
+		$this -> user -> confirmation_code = Input::get('password');
 		$this -> user -> confirmed = Input::get('confirm');
 		
-		// Permissions are currently tied to roles. Can't do this yet.
-		//$user->permissions = $user->roles()->preparePermissionsForSave(Input::get( 'permissions' ));
-
 		// Save if valid. Password field will be hashed before save
 		$this -> user -> save();
 

@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>{{--$title--}}</title>
+		<title>@yield('title') :: A2Z CMS</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- @todo: fill with your company info or remove -->
 		-	<link rel="stylesheet" type="text/css"  href="{{asset('assets/site/a2zcms/css/bootstrap.css')}}">	
@@ -34,6 +34,7 @@
 	</nav>
 	<div class="container">
 	<div class="row">
+		@yield('title')  
         @yield('content')      
       </div>
 	</div>
@@ -49,7 +50,7 @@
 					&copy; 2013 <a class="a2zcms" href="#">A2Z CMS</a></span>
 				<span style="text-align: center;padding-left: 30%"></span>
 				<span style="text-align:right;float:right">
-					Powered by: <a class="a2zcms" href="http://laravel.com/" alt="Laravel 4">Laravel 4</a></span>
+					Powered by: <a class="a2zcms" href="http://laravel.com/" alt="Laravel 4.1">Laravel 4.1</a></span>
 			</div>
 		</div>
 	</footer>

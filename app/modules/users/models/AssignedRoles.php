@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Users\Models;
 
 class AssignedRoles extends \Eloquent {
+	
 	protected $table = "assigned_roles";
 	protected $softDelete = true;
 	

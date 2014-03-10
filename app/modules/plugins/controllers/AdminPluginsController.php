@@ -27,7 +27,7 @@ class AdminPluginsController extends \AdminController{
 					
 		foreach (glob( base_path().'/app/modules' . '/*', GLOB_ONLYDIR) as $dir) {
 			$dir = str_replace(base_path().'/app/modules/', '', $dir);
-			if(!in_array($dir,$temp) && $dir!='install' && $dir!='testmodule' && $dir!='offline')
+			if(!in_array($dir,$temp) && $dir!='install' && $dir!='testmodule' && $dir!='offline' && $dir!='menu' && $dir!='adminmenu')
 			$plugin[] =(object) array('name' => $dir, 'id'=>0,
 			'title' => ucfirst($dir), 'created_at' => '', 'can_uninstall' =>0, 'not_installed'=>TRUE);
 		}

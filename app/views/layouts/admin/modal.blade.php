@@ -9,7 +9,7 @@
 		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-		<title> {{{ $title }}} :: Administration </title>
+		<title> Administration </title>
 
 		<meta name="keywords" content="@yield('keywords')" />
 		<meta name="author" content="@yield('author')" />
@@ -56,16 +56,12 @@
 	<body>
 		<!-- Container -->
 		<div class="container">
-			<!-- Notifications -->
-			@include('notifications')
-			<!-- ./ notifications -->
 			<div class="page-header">
-				<h3> {{ $title }}
 				<div class="pull-right">
 					<button class="btn btn-link btn-small btn-inverse close_popup">
 						<span class="icon-remove-sign"></span> {{{ Lang::get('admin/general.back') }}}
 					</button>
-				</div></h3>
+				</div>
 			</div>
 			<!-- Content -->
 			@yield('content')
@@ -105,8 +101,8 @@
 						// Optionally alert the user of success here...
 						setTimeout(function() 
 					        {
-					            parent.$.colorbox.close();
-					            window.parent.location.reload();
+					            //parent.$.colorbox.close();
+					           // window.parent.location.reload();
 					        }, 10);
 						
 					}).fail(function() {

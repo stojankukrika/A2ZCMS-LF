@@ -39,8 +39,17 @@ Route::group(array('prefix' => 'users'), function()
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
 {
-	Route::get('users/profile', 'App\Modules\Users\Controllers\AdminUserController@getProfileEdit');
-	Route::post('users/profile', 'App\Modules\Users\Controllers\AdminUserController@postProfileEdit');
+	Route::get('/users/profile', 'App\Modules\Users\Controllers\AdminUserController@getProfileEdit');
+	Route::post('/users/profile', 'App\Modules\Users\Controllers\AdminUserController@postProfileEdit');
+	
+	Route::get('/users/create', 'App\Modules\Users\Controllers\AdminUserController@getCreate');
+	Route::post('/users/create', 'App\Modules\Users\Controllers\AdminUserController@postCreate');
+	
+	Route::get('/users/{id}/edit', 'App\Modules\Users\Controllers\AdminUserController@getEdit');
+	Route::post('/users/{id}/edit', 'App\Modules\Users\Controllers\AdminUserController@postEdit');
+	
+	Route::get('/users/{id}/delete', 'App\Modules\Users\Controllers\AdminUserController@getDelete');
+	
 	Route::controller('users', 'App\Modules\Users\Controllers\AdminUserController');
 	
 });

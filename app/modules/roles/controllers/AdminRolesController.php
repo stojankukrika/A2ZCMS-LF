@@ -1,12 +1,12 @@
 <?php namespace App\Modules\Roles\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 
 use App\Modules\Roles\Models\Role;
 use App\Modules\Roles\Models\PermissionRole;
 use App\Modules\Roles\Models\Permission;
 use App\Modules\Users\Models\User;
-use App\Modules\Users\Moduls\AssignedRoles;
+use App\Modules\Users\Models\AssignedRoles;
 
 class AdminRolesController extends \AdminController{
 	
@@ -48,8 +48,7 @@ class AdminRolesController extends \AdminController{
 	 */
 	public function getIndex() {
 		// Title
-		$title = "Role_management";
-
+		$title = "Role management";
 		// Grab all the groups
 		$roles = $this -> role;
 
@@ -69,11 +68,9 @@ class AdminRolesController extends \AdminController{
 
 		// Selected permissions
 		$permisionsadd =Input::old('permissions', array());
-		// Title
-		$title = Lang::get('admin/roles/title.create_a_new_role');
-
+		
 		// Show the page
-		return View::make('admin/roles/create_edit', compact('permissionsAdmin', 'permissionsUser','permisionsadd', 'title'));
+		return View::make('roles::admin/create_edit', compact('permissionsAdmin', 'permissionsUser','permisionsadd'));
 	}
 	/**
 	 * Store a newly created resource in storage.
@@ -101,9 +98,11 @@ class AdminRolesController extends \AdminController{
 						}
 		            }
 				}
+						
 			$this -> role -> is_admin = $is_admin;
 			$this -> role -> name = Input::get('name');
 			$this -> role -> save();
+			
 			foreach (Input::get('permission') as $item) {
 				$permission = new PermissionRole;
 				$permission->permission_id = $item;
@@ -123,20 +122,19 @@ class AdminRolesController extends \AdminController{
 	 * @return Response
 	 */
 	public function getEdit($id) {
+		$role = Role::find($id);
 		if (!empty($role)) {
 			$permissionsAdmin = $this -> permission -> where('is_admin','=',1)->get();
 			$permissionsUser = $this -> permission -> where('is_admin','=',0)->get();
 
 		} else {
 			// Redirect to the roles management page
-			return Redirect::to('admin/roles') -> with('error', Lang::get('admin/roles/messages.does_not_exist'));
+			return Redirect::to('admin/roles');
 		}
 		$permisionsadd = PermissionRole::where('role_id','=',$id)->select('permission_id')->get();
-		// Title
-		$title = Lang::get('admin/roles/title.role_update');
-
+		
 		// Show the page
-		return View::make('admin/roles/create_edit', compact('role', 'permissionsAdmin', 'permissionsUser','title','permisionsadd'));
+		return View::make('roles::admin/create_edit', compact('role', 'permissionsAdmin', 'permissionsUser','permisionsadd'));
 	}
 
 	/**
@@ -151,7 +149,7 @@ class AdminRolesController extends \AdminController{
 		$is_admin = 0;
 		// Validate the inputs
 		$validator = Validator::make(Input::all(), $rules);
-
+		
 		// Check if the form validates with success
 		if ($validator -> passes()) {
 			// Update the role data
@@ -164,6 +162,7 @@ class AdminRolesController extends \AdminController{
 						}
 		            }
 				}
+			$role = Role::find($id);
 			$role -> is_admin = $is_admin;
 			$role -> name = Input::get('name');
 			$role -> save();
@@ -207,7 +206,7 @@ class AdminRolesController extends \AdminController{
 	public function getData() {
 		$roles = Role::select(array('roles.id', 'roles.name', 'roles.id as users', 'roles.created_at'));
 
-		return Datatables::of($roles) -> edit_column('users', '<a href="{{{ URL::to(\'admin/users/\' . $id . \'/usersforrole\' ) }}}" class="btn btn-link btn-sm" >{{{ AssignedRoles::where(\'role_id\', \'=\', $id)->count()  }}}</a>') 
+		return Datatables::of($roles) -> edit_column('users', '<a href="{{{ URL::to(\'admin/users/\' . $id . \'/usersforrole\' ) }}}" class="btn btn-link btn-sm" >{{{ App\Modules\Users\Models\AssignedRoles::where("role_id", "=", $id)->count() }}}</a>') 
 					-> add_column('actions', '<a href="{{{ URL::to(\'admin/roles/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-sm btn-default"><i class="icon-edit "></i></a>
                                 <a href="{{{ URL::to(\'admin/roles/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
                     ') -> remove_column('id') -> make();
