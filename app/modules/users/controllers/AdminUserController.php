@@ -82,11 +82,14 @@ class AdminUserController extends \AdminController {
 		$this -> user -> save();
 
 		if ($this -> user -> id) {
-			// Save roles. Handles updating.
-			$this -> user -> saveRoles(Input::get('roles'));
-
-			// Redirect to the new user page
-			return Redirect::to('admin/users/' . $this -> user -> id . '/edit') -> with('success', Lang::get('admin/users/messages.create.success'));
+			// Save roles. Handles updating.			
+			foreach(Input::get('roles') as $item)
+			{
+				$role = new AssignedRoles;
+				$role -> role_id = $item;
+				$role -> user_id = $this -> user -> id;
+				$role -> save();
+			}
 		} else {
 			// Get validation errors (see Ardent package)
 			$error = $this -> user -> errors() -> all();
@@ -101,21 +104,19 @@ class AdminUserController extends \AdminController {
 	 * @param $user
 	 * @return Response
 	 */
-	public function getEdit($user) {
-		if ($user -> id) {
-			$roles = $this -> role -> all();
-			$permissions = $this -> permission -> all();
+	public function getEdit($id) {
+		
+			$user = User::find($id);
+			$roles = Role::all();
+			$selectedRoles = AssignedRoles::where('user_id','=',$user->id);
 
 			// Title
-			$title = Lang::get('admin/users/title.user_update');
+			$title = 'Update user';
 			// mode
 			$mode = 'edit';
 
-			return View::make('admin/users/create_edit', compact('user', 'roles', 'permissions', 'title', 'mode'));
-		} else {
-			return Redirect::to('admin/users') -> with('error', Lang::get('admin/users/messages.does_not_exist'));
+			return View::make('users::admin/create_edit', compact('user', 'roles', 'selectedRoles', 'title', 'mode'));
 		}
-	}
 
 	/**
 	 * Update the specified resource in storage.
@@ -123,8 +124,10 @@ class AdminUserController extends \AdminController {
 	 * @param $user
 	 * @return Response
 	 */
-	public function postEdit($user) {
+	public function postEdit($id) {
 		// Validate the inputs
+		$user = User::find($id);
+		
 		$validator = Validator::make(Input::all(), $user -> getUpdateRules());
 
 		if ($validator -> passes()) {
@@ -158,22 +161,25 @@ class AdminUserController extends \AdminController {
 				$user -> confirmed = $oldUser -> confirmed;
 			}
 
-			$user -> prepareRules($oldUser, $user);
-
 			// Save if valid. Password field will be hashed before save
 			$user -> amend();
-
+			
+			AssignedRoles::where('user_id','=',$user->id)->delete();
+			
 			// Save roles. Handles updating.
-			$user -> saveRoles(Input::get('roles'));
+			foreach(Input::get('roles') as $item)
+			{
+				$role = new AssignedRoles;
+				$role -> role_id = $item;
+				$role -> user_id = $this -> user -> id;
+				$role -> save();
+			}
 		}
 
 		// Get validation errors (see Ardent package)
 		$error = $user -> errors() -> all();
 
-		if (empty($error)) {
-			// Redirect to the new user page
-			return Redirect::to('admin/users/' . $user -> id . '/edit') -> with('success', Lang::get('admin/users/messages.edit.success'));
-		} else {
+		if (!empty($error)) {
 			return Redirect::to('admin/users/' . $user -> id . '/edit') -> with('error', Lang::get('admin/users/messages.edit.failure'));
 		}
 	}

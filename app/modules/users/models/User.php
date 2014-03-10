@@ -8,16 +8,8 @@ use Robbo\Presenter\PresentableInterface;
 use Carbon\Carbon;
 
 class User extends \Eloquent {
-
-	use HasRole;
 	
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
 	protected $table = 'users';
-	
 	/**
 	* Ardent validation rules
 	*
@@ -67,19 +59,6 @@ class User extends \Eloquent {
     public function joined()
     {
         return String::date(Carbon::createFromFormat('Y-n-j G:i:s', $this->created_at));
-    }
-
-    /**
-     * Save roles inputted from multiselect
-     * @param $inputRoles
-     */
-    public function saveRoles($inputRoles)
-    {
-        if(! empty($inputRoles)) {
-            $this->roles()->sync($inputRoles);
-        } else {
-            $this->roles()->detach();
-        }
     }
 
     /**
