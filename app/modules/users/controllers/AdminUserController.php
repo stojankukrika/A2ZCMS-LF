@@ -4,6 +4,7 @@ use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Confide;
 
 use App\Modules\Users\Models\User;
 use App\Modules\Users\Models\AssignedRoles;
+use App\Modules\Users\Models\UserLoginHistory;
 use App\Modules\Roles\Models\Role;
 use App\Modules\Roles\Models\Permission;
 
@@ -273,10 +274,10 @@ class AdminUserController extends \AdminController {
 			$user_auth = Auth::user();
 			$user = User::where('id', '=', $user_auth->id) -> first();
 			// Title
-			$title = Lang::get('admin/users/title.user_update');			
+			$title = 'User update';			
 			// mode
 			$mode = 'edit';
-			return View::make('admin/users/profile', compact('user', 'title', 'mode'));
+			return View::make('users::admin/profile', compact('user', 'title', 'mode'));
 	}
 	
 	 
@@ -320,22 +321,15 @@ class AdminUserController extends \AdminController {
 					$user -> password_confirmation = $passwordConfirmation;
 				} else {
 					// Redirect to the new user page
-					return Redirect::to('users') -> with('error', Lang::get('admin/users/messages.password_does_not_match'));
+					return Redirect::to('');
 				}
 			} else {
 				unset($user -> password);
 				unset($user -> password_confirmation);
 			}
-			$user -> amend();
+			$user -> save();
 		}
-		// Get validation errors (see Ardent package)
-		$error = $user -> errors() -> all();
-		
-		if (empty($error)) {
-			return Redirect::to('admin/users/profile') -> with('success', Lang::get('user/user.user_account_updated'));
-		} else {
-			return Redirect::to('admin/users/profile') -> withInput(Input::except('password', 'password_confirmation')) -> with('error', $error);
-		}
+		return Redirect::to('admin/users/profile') -> withInput(Input::except('password', 'password_confirmation'));
 	}
 
 	/**
@@ -345,21 +339,17 @@ class AdminUserController extends \AdminController {
 	 */
 	public function getHistory($user_id) {
 
-		$pageitem = 2;
-		$settings = Settings::all();
-        foreach ($settings as $v) {
-                if ($v -> varname == 'pageitem') {
-                        $pageitem = $v -> value;
-                }
-        }
-
-		$title = Lang::get('admin/users/title.history_login');
+		$title = 'History login';
 
 		$user = User::find($user_id);
-		$historylogin = UserLoginHistory::where('user_id','=',$user_id)-> paginate($pageitem);
 		
 		// Show the page
-		return View::make('admin/users/history_login', compact('title', 'user','historylogin'));
+		return View::make('users::admin/history_login', compact('title', 'user'));
+	}
+	
+	public function getDatahistory($user_id) {
+		$users = UserLoginHistory::where('user_id','=',$user_id)->select(array('id','created_at'));
+		return Datatables::of($users) -> remove_column('id') -> make();
 	}
 	
 

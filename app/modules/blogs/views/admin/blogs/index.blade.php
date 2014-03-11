@@ -4,27 +4,26 @@
 @section('title')
 {{{ $title }}} ::
 @stop
-
 {{-- Content --}}
 @section('content')
 <div class="page-header">
 	<h1> {{{ $title }}}
 	<div class="pull-right">
-		<a href="{{{ URL::to('admin/todolist/create') }}}" class="btn btn-small btn-info iframe">
+		<a href="{{{ URL::to('admin/blogs/create') }}}" class="btn btn-small btn-info iframe">
 			<span class="icon-plus-sign icon-white"></span> {{{ Lang::get('admin/general.create') }}}</a>
 	</div></h1>
 </div>
 
-<table id="todos" class="table table-striped table-hover">
+<table id="blogs" class="table table-striped table-hover">
 	<thead>
 		<tr>
-			<th class="col-md-4">{{{ Lang::get('admin/todolists/table.title') }}}</th>
-			<th class="col-md-2">{{{ Lang::get('admin/todolists/table.active') }}}</th>
-			<th class="col-md-2">{{{ Lang::get('admin/todolists/table.finished') }}}</th>			
-			<th class="col-md-2">{{{ Lang::get('admin/todolists/table.created_at') }}}</th>
-			<th class="col-md-3">{{{ Lang::get('table.actions') }}}</th>
+			<th class="col-md-4">{{{ Lang::get('admin/blogs/table.title') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('admin/blogs/table.comments') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('admin/blogs/table.created_at') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('table.actions') }}}</th>
 		</tr>
 	</thead>
+	<tbody></tbody>
 </table>
 @stop
 
@@ -33,7 +32,7 @@
 <script type="text/javascript">
 	var oTable;
 	$(document).ready(function() {
-		oTable = $('#todos').dataTable({
+		oTable = $('#blogs').dataTable({
 			"sDom" : "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
 			"sPaginationType" : "bootstrap",
 			"oLanguage" : {
@@ -41,12 +40,15 @@
 			},
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "{{ URL::to('admin/todolist/data') }}",
+			"sAjaxSource" : "{{ URL::to('admin/blogs/data') }}",
 			"fnDrawCallback" : function(oSettings) {
 				$(".iframe").colorbox({
 					iframe : true,
 					width : "80%",
-					height : "80%"
+					height : "80%",
+					onClosed : function() {
+						window.location.reload();
+					}
 				});
 			}
 		});

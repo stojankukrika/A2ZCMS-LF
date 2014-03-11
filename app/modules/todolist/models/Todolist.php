@@ -1,7 +1,6 @@
-<?php namespace App\Modules\Todolists\Models;
+<?php namespace App\Modules\Todolist\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class Todolist  extends \Eloquent implements PresentableInterface {
+class Todolist  extends \Eloquent {
 
 	protected $table = "todolists";
 	protected $softDelete = true;
@@ -56,10 +55,6 @@ class Todolist  extends \Eloquent implements PresentableInterface {
 	 */
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
-	}
-
-	public function getPresenter() {
-		return new CommentPresenter($this);
 	}
 
 }

@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Customforms\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class CustomFormField extends \Eloquent implements PresentableInterface {
+class Customformfield extends \Eloquent {
 
 	protected $table = "custom_form_fields";
 	protected $softDelete = true;
@@ -70,9 +69,4 @@ class CustomFormField extends \Eloquent implements PresentableInterface {
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
 	}
-
-	public function getPresenter() {
-		return new CommentPresenter($this);
-	}
-
 }

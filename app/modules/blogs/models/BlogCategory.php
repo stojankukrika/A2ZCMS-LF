@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Blogs\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class BlogCategory extends \Eloquent implements PresentableInterface {
+class BlogCategory extends \Eloquent {
 
 	protected $table = "blog_categories";
 	protected $softDelete = true;
@@ -48,10 +47,6 @@ class BlogCategory extends \Eloquent implements PresentableInterface {
 	 */
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
-	}
-
-	public function getPresenter() {
-		return new CommentPresenter($this);
 	}
 
 }

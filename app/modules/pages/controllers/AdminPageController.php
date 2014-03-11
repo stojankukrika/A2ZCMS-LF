@@ -1,7 +1,11 @@
 <?php namespace App\Modules\Pages\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Pages\Models\Page;
+use App\Modules\Pages\Models\Navigation;
+use App\Modules\Pages\Models\NavigationGroup;
+use App\Modules\Pages\Models\PagePluginFunction;
+use App\Modules\Pages\Models\PluginFunction;
 
 class AdminPageController extends \AdminController {
 
@@ -26,11 +30,11 @@ class AdminPageController extends \AdminController {
 	 */
 	public function getIndex() {
 
-		$title = Lang::get('admin/pages/title.page_management');
+		$title = 'Page management';
 
 		$pages = Page::orderBy('id','ASC')->get();
 
-		return View::make('admin/pages/index', compact('title', 'pages'));
+		return View::make('pages::admin/pages/index', compact('title', 'pages'));
 	}
 
 	/**
@@ -40,25 +44,25 @@ class AdminPageController extends \AdminController {
 	 */
 	public function getCreate() {
 		// Title
-		$title = Lang::get('admin/pages/title.create_a_new_page');
+		$title = 'Create a new page';
 		
 		$pluginfunction_content = PluginFunction::leftJoin('plugins', 'plugins.id', '=', 'plugin_functions.plugin_id') 
 		->where('type','=','content')
-		->get(array('plugin_functions.id','plugin_functions.title','plugin_functions.params','plugins.function_id','plugins.function_grid'));
+		->get(array('plugin_functions.id','plugins.name','plugin_functions.title','plugin_functions.params','plugins.function_id','plugins.function_grid'));
 		$pluginfunction_slider = PluginFunction::where('type','=','sidebar')->get();
 		
 		foreach ($pluginfunction_content as $key => $value) {
 			$function_id = $value['function_id'];
 			$function_grid = $value['function_grid'];
 			if($function_id!=NULL){
-				$value['function_id'] = $this->$function_id();
+				$value['function_id'] = modules::run($value['name'].'/'.$function_id);
 			}
 			if($function_grid!=NULL){
-				$value['function_grid'] = $this->$function_grid();
+				$value['function_grid'] = modules::run($value['name'].'/'.$function_grid);
 			}
 		}		
 		// Show the page
-		return View::make('admin/pages/create_edit', compact('title','pluginfunction_content','pluginfunction_slider'));
+		return View::make('pages::admin/pages/create_edit', compact('title','pluginfunction_content','pluginfunction_slider'));
 	}
 
 	/**
@@ -126,7 +130,7 @@ class AdminPageController extends \AdminController {
 	public function getEdit($id) {
 		if ($id) {
 			// Title
-			$title = Lang::get('admin/pages/title.page_update');
+			$title = 'Page update';
 			
 			$page = Page::find($id);
 				/*select content plugins that added to page*/
@@ -189,7 +193,7 @@ class AdminPageController extends \AdminController {
 			$pluginfunction_slider[]=$item;
 		}		
 		
-			return View::make('admin/pages/create_edit', compact('page', 'title', 'pluginfunction_content','pluginfunction_slider'));
+			return View::make('pages::admin/pages/create_edit', compact('page', 'title', 'pluginfunction_content','pluginfunction_slider'));
 		} else {
 			return Redirect::to('admin/pages') -> with('error', Lang::get('admin/users/messages.does_not_exist'));
 		}
@@ -393,11 +397,11 @@ class AdminPageController extends \AdminController {
 		// Was the role deleted?
 		if ($page -> delete()) {
 			// Redirect to the role management page
-			return Redirect::to('admin/pages') -> with('success', Lang::get('admin/pages/messages.delete.success'));
+			return Redirect::to('admin/pages') -> with('success', 'Success');
 		}
 
 		// There was a problem deleting the role
-		return Redirect::to('admin/pages') -> with('error', Lang::get('admin/pages/messages.delete.error'));
+		return Redirect::to('admin/pages') -> with('error', 'Error');
 	}
 
 	public function getVisible($id)
@@ -423,7 +427,7 @@ class AdminPageController extends \AdminController {
 		return Datatables::of($pages) 
 			-> edit_column('voteup', '{{ $voteup-$votedown }}') 
 			-> edit_column('status', '{{($status)? "<i class=\"icon-eye-open\"></i>":"<i class=\"icon-eye-close\"></i>";}}') 
-			-> edit_column('sidebar', '{{($sidebar==0)? "'.Lang::get('admin/pages/table.left').'":"'.Lang::get('admin/pages/table.right').'";}}') 
+			-> edit_column('sidebar', '{{($sidebar==0)? "Left":"Right";}}') 
 			-> add_column('actions', '<a href="{{{ URL::to(\'admin/pages/\' . $id . \'/visible\' ) }}}" class="btn btn-link btn-sm"><i class="icon-exchange "></i></a>
 							<a href="{{{ URL::to(\'admin/pages/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-default btn-sm"><i class="icon-edit "></i></a>
                             <a href="{{{ URL::to(\'admin/pages/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>') 
@@ -431,21 +435,4 @@ class AdminPageController extends \AdminController {
 			-> remove_column('votedown') 
             -> make();
 	}
-	
-	/*function for plugins*/
-	public function getBlogId(){
-		return Blog::get(array('id','title'));
-	}
-	
-	public function getBlogGroupId(){
-		return BlogCategory::get(array('id','title'));
-	}
-	
-	public function getGalleryId(){
-		return Gallery::get(array('id','title'));
-	}
-	public function getCustomFormId(){
-		return CustomForm::get(array('id','title'));
-	}
-
 }

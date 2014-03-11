@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Blogs\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class Blog extends \Eloquent implements PresentableInterface {
+class Blog extends \Eloquent {
 
 	protected $softDelete = true;
 
@@ -76,10 +75,6 @@ class Blog extends \Eloquent implements PresentableInterface {
 	 */
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
-	}
-
-	public function getPresenter() {
-		return new PostPresenter($this);
 	}
 
 }

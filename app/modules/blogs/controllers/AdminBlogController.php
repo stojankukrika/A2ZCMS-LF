@@ -1,7 +1,10 @@
 <?php namespace App\Modules\Blogs\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Str;
 use App\Modules\Blogs\Models\Blog;
+use App\Modules\Blogs\Models\BlogBlogCategory;
+use App\Modules\Blogs\Models\BlogCategory;
+use App\Modules\Blogs\Models\BlogComment;
 
 class AdminBlogController extends \AdminController {
 
@@ -27,13 +30,13 @@ class AdminBlogController extends \AdminController {
 	 */
 	public function getIndex() {
 		// Title
-		$title = Lang::get('admin/blogs/title.blog_management');
+		$title = 'Blog management';
 
 		// Grab all the blog posts
 		$blogs = $this -> blog;
 
 		// Show the page
-		return View::make('admin/blogs/index', compact('blogs', 'title'));
+		return View::make('blogs::admin/blogs/index', compact('blogs', 'title'));
 	}
 
 	/**
@@ -44,10 +47,10 @@ class AdminBlogController extends \AdminController {
 	public function getBlogsForCategory($id) {
 		$blog_category = BlogCategory::find($id);
 		// Title
-		$title = Lang::get('admin/blogs/title.blog_management_for_category');
+		$title = 'Blog management for category';
 
 		// Show the page
-		return View::make('admin/blogs/blogsforcategory', compact('title', 'blog_category'));
+		return View::make('blogs::admin/blogs/blogsforcategory', compact('title', 'blog_category'));
 	}
 
 	/**
@@ -57,14 +60,14 @@ class AdminBlogController extends \AdminController {
 	 */
 	public function getCreate() {
 		// Title
-		$title = Lang::get('admin/blogs/title.create_a_new_blog');
+		$title = 'Create a new blog';
 
 		// Blog category
 		$blog_category = BlogCategory::all();
 		
 		$catselect = '';
 		// Show the page
-		return View::make('admin/blogs/create_edit', compact('title', 'blog_category','catselect'));
+		return View::make('blogs::admin/blogs/create_edit', compact('title', 'blog_category','catselect'));
 	}
 
 	/**
@@ -127,7 +130,7 @@ class AdminBlogController extends \AdminController {
 	 */
 	public function getEdit($id) {
 		// Title
-		$title = Lang::get('admin/blogs/title.blog_update');
+		$title = 'Blog update';
 
 		$blog = Blog::find($id);		
 		$blog_category = BlogCategory::all();
@@ -135,7 +138,7 @@ class AdminBlogController extends \AdminController {
 		$catselect = BlogBlogCategory::where('blog_id','=',$id)->select(array('blog_category_id'))->get();
 
 		// Show the page
-		return View::make('admin/blogs/create_edit', compact('blog', 'title', 'blog_category','catselect'));
+		return View::make('blogs::admin/blogs/create_edit', compact('blog', 'title', 'blog_category','catselect'));
 	}
 
 	/**
@@ -221,7 +224,7 @@ class AdminBlogController extends \AdminController {
 		$blogs = Blog::select(array('blogs.id', 'blogs.title', 'blogs.id as blog_comments', 'blogs.created_at'));
 
 		return Datatables::of($blogs) 
-			-> edit_column('blog_comments', '<a href="{{{ URL::to(\'admin/blogcomments/\' . $id . \'/commentsforblog\' ) }}}" class="btn btn-link  btn-sm" >{{ BlogComment::where(\'blog_id\', \'=\', $id)->count() }}</a>') 
+			-> edit_column('blog_comments', '<a href="{{{ URL::to(\'admin/blogs/blogcomments/\' . $id . \'/commentsforblog\' ) }}}" class="btn btn-link  btn-sm" >{{ App\Modules\Blogs\Models\BlogComment::where(\'blog_id\', \'=\', $id)->count() }}</a>') 
 			-> add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
                 <a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
             ') 

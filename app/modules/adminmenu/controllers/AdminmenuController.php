@@ -15,11 +15,10 @@ class AdminmenuController extends \AdminController{
 		foreach ($mainadminmenu as $item) {
 			$mainadminsubmenu = Adminsubmenu::where('admin_navigation_id',$item->id)
 					->orderBy("order", "asc")
-					->orderBy("admin_navigation_id", "asc")
 					->get(array('id','admin_navigation_id', 'title', 'icon', 'url','order'));
-					if(!isset($mainadminsubmenu)){
+					if(!empty($mainadminsubmenu[0])){
 						$item->adminsubmenu = $mainadminsubmenu;
-					}			
+					}		
 		}
 		$adminmenuleft = '<div id="sidebar-left" class="col-lg-2 col-sm-1 ">
 					<div class="sidebar-nav nav-collapse collapse navbar-collapse">
@@ -27,8 +26,8 @@ class AdminmenuController extends \AdminController{
 		<li>
 			<a href="'. URL::to('admin/').'"><i class="icon-dashboard"></i><span class="hidden-sm text">Dashboard</span></a>
 		</li>';
-		foreach ($mainadminmenu as $adminmainmenu) {
-			if(!empty($adminmainmenu->adminsubmenu))
+		foreach ($mainadminmenu as $adminmainmenu) {			
+			if(isset($adminmainmenu->adminsubmenu))
 			{
 				$adminmenuleft .='<li>
 						<a class="dropmenu" href="'. URL::to('admin/'.$adminmainmenu->url).'"><i class="'.$adminmainmenu->icon.'"></i>
@@ -43,7 +42,7 @@ class AdminmenuController extends \AdminController{
 				$adminmenuleft .='</ul></li>';			
 			}
 			else {
-				$adminmenuleft .='<li>
+				$adminmenuleft .=$adminmainmenu->haveadminsubmenu.'<li>
 						<a href="'. URL::to('admin/'.$adminmainmenu->url).'"><i class="'.$adminmainmenu->icon.'"></i>
 							<span class="hidden-sm text">'.$adminmainmenu->title.'</span></a>
 					</li>';

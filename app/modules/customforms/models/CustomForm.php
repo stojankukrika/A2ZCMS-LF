@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Customforms\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class CustomForm extends \Eloquent implements PresentableInterface {
+class Customform extends \Eloquent {
 
 	protected $table = "custom_forms";
 	protected $softDelete = true;
@@ -24,7 +23,7 @@ class CustomForm extends \Eloquent implements PresentableInterface {
 	}
 	
 	public function customformfields() {
-		return $this -> hasMany('CustomFormField')->orderBy('custom_form_fields.order', 'ASC');
+		return $this -> hasMany('Customformfield')->orderBy('custom_form_fields.order', 'ASC');
 	}	
 	/**
 	 * Get the date the post was created.
@@ -58,10 +57,6 @@ class CustomForm extends \Eloquent implements PresentableInterface {
 	 */
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
-	}
-
-	public function getPresenter() {
-		return new CommentPresenter($this);
 	}
 
 }

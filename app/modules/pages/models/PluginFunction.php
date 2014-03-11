@@ -1,45 +1,34 @@
-<?php namespace App\Modules\Blogs\Models;
+<?php namespace App\Modules\Pages\Models;
 
-class BlogComment extends \Eloquent {
+class PluginFunction extends \Eloquent {
 
+	protected $table = "plugin_functions";
 	protected $softDelete = true;
-	protected $table = "blog_comments";
-
-	/*
-	 *//**
-	 * Get the comment's content.
+	/**
+	 * Returns a web function who is called
 	 *
 	 * @return string
 	 */
-	public function content() {
-		return nl2br($this -> content);
+	public function webfunction() {
+		return nl2br($this -> function);
 	}
-
 	/**
-	 * Get the comment's author.
+	 * Returns a params for functions
 	 *
-	 * @return User
+	 * @return string
 	 */
-	public function author() {
-		return $this -> belongsTo('User', 'user_id');
+	public function params() {
+		return nl2br($this -> param);
 	}
-
+	
+	
 	/**
-	 * Get the comment's post's.
+	 * Get the pugin.
 	 *
-	 * @return Blog\Comment
+	 * @return Plugin
 	 */
-	public function comment() {
-		return $this -> belongsTo('Blog');
-	}
-
-	/**
-	 * Get the post's author.
-	 *
-	 * @return User
-	 */
-	public function user() {
-		return $this -> belongsTo('User', 'user_id');
+	public function plugin() {
+		return $this -> belongsTo('Plugin', 'plugin_id');
 	}
 
 	/**
@@ -74,6 +63,10 @@ class BlogComment extends \Eloquent {
 	 */
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
+	}
+
+	public function getPresenter() {
+		return new CommentPresenter($this);
 	}
 
 }

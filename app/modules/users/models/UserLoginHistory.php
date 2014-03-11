@@ -39,8 +39,4 @@ class UserLoginHistory extends \Eloquent {
 		return $this -> date($this -> updated_at);
 	}
 
-	public function getPresenter() {
-		return new CommentPresenter($this);
-	}
-
 }

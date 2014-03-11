@@ -1,7 +1,11 @@
 <?php namespace App\Modules\Pages\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Pages\Models\Page;
+use App\Modules\Pages\Models\Navigation;
+use App\Modules\Pages\Models\NavigationGroup;
+use App\Modules\Pages\Models\PagePluginFunction;
+use App\Modules\Pages\Models\PluginFunction;
 
 class AdminNavigationGroupController extends \AdminController {
 

@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Pages\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class NavigationGroup extends \Eloquent implements PresentableInterface {
+class NavigationGroup extends \Eloquent {
 
 	public $table = "navigation_groups";
 	protected $softDelete = true;

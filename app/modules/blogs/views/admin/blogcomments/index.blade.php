@@ -8,23 +8,28 @@
 {{-- Content --}}
 @section('content')
 <div class="page-header">
-	<h1>{{{ $title }}}: {{ $user->name }} {{ $user->surname }}</h1>
-	<table id="users" class="table table-striped table-hover">
-		<thead>
-			<tr>
-				<th class="col-md-2">{{{ Lang::get('admin/users/table.created_at') }}}</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
-</div>	
+	<h1> {{{ $title }}} </h1>
+</div>
+
+<table id="comments" class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th class="col-md-3">{{{ Lang::get('admin/blogcomments/table.title') }}}</th>
+			<th class="col-md-3">{{{ Lang::get('admin/blogs/table.post_id') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('admin/users/table.username') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('admin/blogcomments/table.created_at') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('table.actions') }}}</th>
+		</tr>
+	</thead>
+</table>
 @stop
+
 {{-- Scripts --}}
 @section('scripts')
 <script type="text/javascript">
 	var oTable;
 	$(document).ready(function() {
-		oTable = $('#users').dataTable({
+		oTable = $('#comments').dataTable({
 			"sDom" : "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
 			"sPaginationType" : "bootstrap",
 			"oLanguage" : {
@@ -32,7 +37,7 @@
 			},
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "{{ URL::to('admin/users/datahistory/'. $user->id) }}",
+			"sAjaxSource" : "{{ URL::to('admin/blogs/blogcomments/data') }}",
 			"fnDrawCallback" : function(oSettings) {
 				$(".iframe").colorbox({
 					iframe : true,

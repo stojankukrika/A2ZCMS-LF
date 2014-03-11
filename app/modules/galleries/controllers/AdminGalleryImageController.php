@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Galleries\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Galleries\Models\Gallery;
 
 class AdminGalleryImageController extends \AdminController {

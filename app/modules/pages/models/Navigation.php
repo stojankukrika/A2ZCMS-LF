@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Pages\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class Navigation extends \Eloquent implements PresentableInterface {
+class Navigation extends \Eloquent {
 
 	public $table = "navigation_links";
 	protected $softDelete = true;

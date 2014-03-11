@@ -1,7 +1,11 @@
 <?php namespace App\Modules\Pages\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Pages\Models\Page;
+use App\Modules\Pages\Models\Navigation;
+use App\Modules\Pages\Models\NavigationGroup;
+use App\Modules\Pages\Models\PagePluginFunction;
+use App\Modules\Pages\Models\PluginFunction;
 
 class AdminNavigationController extends \AdminController {
 
@@ -29,7 +33,7 @@ class AdminNavigationController extends \AdminController {
 		$title = Lang::get('admin/navigation/title.navigation_management');
 		$navigations = $this -> navigation -> all();
 
-		return View::make('admin/navigation/index', compact('title', 'navigations'));
+		return View::make('pages::admin/navigation/index', compact('title', 'navigations'));
 	}
 
 	/**
@@ -38,7 +42,7 @@ class AdminNavigationController extends \AdminController {
 	 * @return Response
 	 */
 	public function getCreate() {
-		$title = Lang::get('admin/navigation/title.create_a_new_navigation');
+		$title = 'Create a new navigation';
 
 		$navigations = Navigation::all();
 		$pageList = Page::lists('name', 'id');
@@ -46,7 +50,7 @@ class AdminNavigationController extends \AdminController {
 		$navigationGroupList = NavigationGroup::lists('title', 'id');
 
 		// Show the navigation group
-		return View::make('admin/navigation/create_edit', compact('title', 'navigations', 'pageList', 'navigationGroupList', 'navigationList'));
+		return View::make('pages::admin/navigation/create_edit', compact('title', 'navigations', 'pageList', 'navigationGroupList', 'navigationList'));
 	}
 
 	/**
@@ -117,7 +121,7 @@ class AdminNavigationController extends \AdminController {
 			// mode
 			$mode = 'edit';
 
-			return View::make('admin/navigation/create_edit', compact('navigation', 'title', 'mode', 'pageList', 'navigationGroupList', 'navigationList'));
+			return View::make('pages::admin/navigation/create_edit', compact('navigation', 'title', 'mode', 'pageList', 'navigationGroupList', 'navigationList'));
 		} else {
 			return Redirect::to('admin/navigation') -> with('error', Lang::get('admin/navigation/messages.does_not_exist'));
 		}

@@ -1,7 +1,10 @@
 <?php namespace App\Modules\Blogs\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Blogs\Models\Blog;
+use App\Modules\Blogs\Models\BlogBlogCategory;
+use App\Modules\Blogs\Models\BlogCategory;
+use App\Modules\Blogs\Models\BlogComment;
 
 class AdminBlogCommentController extends \AdminController {
 
@@ -27,13 +30,13 @@ class AdminBlogCommentController extends \AdminController {
 	 */
 	public function getIndex() {
 		// Title
-		$title = Lang::get('admin/blogcomments/title.comment_management');
+		$title = 'Comment management';
 
 		// Grab all the comment posts
 		$blog_comment = $this -> blog_comment;
 
 		// Show the page
-		return View::make('admin/blogcomments/index', compact('blog_comment', 'title'));
+		return View::make('blogs::admin/blogcomments/index', compact('blog_comment', 'title'));
 	}
 
 	/**
@@ -44,58 +47,13 @@ class AdminBlogCommentController extends \AdminController {
 	public function getCommentsForBlog($id) {
 		$blog = Blog::find($id);
 		// Title
-		$title = Lang::get('admin/blogcomments/title.comment_management_for_blog');
+		$title = 'Comment management for blog';
 
 		// Show the page
-		return View::make('admin/blogcomments/commentsforblog', compact('title', 'blog'));
+		return View::make('blogs::admin/blogcomments/commentsforblog', compact('title', 'blog'));
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param $comment
-	 * @return Response
-	 */
-	public function getEdit($id) {
-		$blog_comment = BlogComment::find($id);
-		// Title
-		$title = Lang::get('admin/blogcomments/title.comment_update');
-
-		// Show the page
-		return View::make('admin/blogcomments/edit', compact('blog_comment', 'title'));
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param $comment
-	 * @return Response
-	 */
-	public function postEdit($id) {
-		// Declare the rules for the form validation
-		$rules = array('content' => 'required|min:3');
-
-		$validator = Validator::make(Input::all(), $rules);
-
-		$blog_comment = BlogComment::find($id);
-
-		$inputs = Input::all();
-
-		// Check if the form validates with success
-		if ($validator -> passes()) {
-			// Was the page updated?
-			if ($blog_comment -> update($inputs)) {
-				// Redirect to the new comment post page
-				return Redirect::to('admin/blogcomments/' . $blog_comment -> id . '/edit') -> with('success', Lang::get('admin/blogcomments/messages.update.success'));
-			}
-
-			// Redirect to the comments post management page
-			return Redirect::to('admin/blogcomments/' . $blog_comment -> id . '/edit') -> with('error', Lang::get('admin/blogcomments/messages.update.error'));
-		}
-
-		// Form validation failed
-		return Redirect::to('admin/blogcomments/' . $blog_comment -> id . '/edit') -> withInput() -> withErrors($validator);
-	}
+	
 
 	/**
 	 * Remove the specified resource from storage.
@@ -109,10 +67,10 @@ class AdminBlogCommentController extends \AdminController {
 		// Was the role deleted?
 		if ($blogcomment -> delete()) {
 			// Redirect to the comment posts management page
-			return Redirect::to('admin/blogcomments') -> with('success', Lang::get('admin/blogcomments/messages.delete.success'));
+			return Redirect::to('admin/blogs/blogcomments') -> with('success', 'Success');
 		}
 		// There was a problem deleting the comment post
-		return Redirect::to('admin/blogcomments') -> with('error', Lang::get('admin/blogcomments/messages.delete.error'));
+		return Redirect::to('admin/blogs/blogcomments') -> with('error', 'Error');
 	}
 
 	/**
@@ -123,10 +81,8 @@ class AdminBlogCommentController extends \AdminController {
 	public function getData() {
 		$comments = BlogComment::join('blogs', 'blogs.id', '=', 'blog_comments.blog_id') -> join('users', 'users.id', '=', 'blog_comments.user_id') -> select(array('blog_comments.id as id', 'blogs.id as blogid', 'users.id as userid', 'blog_comments.content', 'blogs.title as post_name', 'users.username as poster_name', 'blog_comments.created_at'));
 
-		return Datatables::of($comments) -> edit_column('content', '<a href="{{{ URL::to(\'admin/blogcomments/\'. $id .\'/edit\') }}}" class="iframe cboxElement">{{{ Str::limit($content, 40, \'...\') }}}</a>') 
-			-> edit_column('post_name', '<a href="{{{ URL::to(\'admin/blogs/\'. $blogid .\'/edit\') }}}" class="iframe cboxElement">{{{ Str::limit($post_name, 40, \'...\') }}}</a>') 
-			-> edit_column('poster_name', '<a href="{{{ URL::to(\'admin/users/\'. $userid .\'/edit\') }}}" class="cboxElement">{{{ $poster_name }}}</a>') -> add_column('actions', '<a href="{{{ URL::to(\'admin/blogcomments/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-default btn-sm"><i class="icon-edit "></i></a>
-                <a href="{{{ URL::to(\'admin/blogcomments/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
+		return Datatables::of($comments) -> edit_column('content', '<a href="{{{ URL::to(\'admin/blogs/blogcomments/\'. $id .\'/edit\') }}}" class="iframe cboxElement">{{{ Str::limit($content, 40, \'...\') }}}</a>') 
+			-> edit_column('poster_name', '<a href="{{{ URL::to(\'admin/users/\'. $userid .\'/edit\') }}}" class="cboxElement">{{{ $poster_name }}}</a>') -> add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/blogcomments/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
             ') -> remove_column('id') -> remove_column('blogid') -> remove_column('userid') -> make();
 	}
 
@@ -138,10 +94,9 @@ class AdminBlogCommentController extends \AdminController {
 	public function getDataforblog($blog_id) {
 		$comments = BlogComment::join('blogs', 'blogs.id', '=', 'blog_comments.blog_id') -> join('users', 'users.id', '=', 'blog_comments.user_id') -> where('blogs.id', '=', $blog_id) -> select(array('blog_comments.id as id', 'blogs.id as postid', 'users.id as userid', 'blog_comments.content', 'users.username as poster_name', 'blog_comments.created_at'));
 
-		return Datatables::of($comments) -> edit_column('content', '<a href="{{{ URL::to(\'admin/blogcomments/\'. $id .\'/edit\') }}}" class="iframe cboxElement">{{{ Str::limit($content, 40, \'...\') }}}</a>') 
+		return Datatables::of($comments) -> edit_column('content', '<a href="{{{ URL::to(\'admin/blogs/blogcomments/\'. $id .\'/edit\') }}}" class="iframe cboxElement">{{{ Str::limit($content, 40, \'...\') }}}</a>') 
 			-> edit_column('poster_name', '<a href="{{{ URL::to(\'admin/users/\'. $userid .\'/edit\') }}}" class="iframe cboxElement">{{{ $poster_name }}}</a>') 
-			-> add_column('actions', '<a href="{{{ URL::to(\'admin/blogcomments/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm"><i class="icon-edit "></i></a>
-                <a href="{{{ URL::to(\'admin/blogcomments/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
+			-> add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/blogcomments/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
             ') -> remove_column('id') -> remove_column('postid') -> remove_column('userid') -> make();
 	}
 

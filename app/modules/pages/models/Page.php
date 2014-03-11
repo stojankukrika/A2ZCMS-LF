@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Pages\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class Page extends \Eloquent implements PresentableInterface {
+class Page extends \Eloquent {
 
 	public $table = 'pages';
 	protected $softDelete = true;

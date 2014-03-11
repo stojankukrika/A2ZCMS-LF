@@ -1,6 +1,9 @@
-<?php
+<?php namespace App\Modules\Todolist\Controllers;
 
-class AdminTodolistController extends AdminController {
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+use App\Modules\Todolist\Models\Todolist;
+
+class AdminTodolistController extends \AdminController{
 
 	/**
 	 * Post Model
@@ -23,9 +26,9 @@ class AdminTodolistController extends AdminController {
 	 */
 	public function getIndex() {
 		// Title
-		$title = Lang::get('admin/todolists/title.to_do_management');
+		$title = 'To do management';
 		// Show the page
-		return View::make('admin/todolists/index', compact('title'));
+		return View::make('todolist::admin/index', compact('title'));
 	}
 
 	/**
@@ -35,10 +38,10 @@ class AdminTodolistController extends AdminController {
 	 */
 	public function getCreate() {
 		// Title
-		$title = Lang::get('admin/todolists/title.create_a_new_to_do');
+		$title = 'Create a new to do';
 
 		// Show the page
-		return View::make('admin/todolists/create_edit', compact('title'));
+		return View::make('todolist::admin/create_edit', compact('title'));
 	}
 
 	/**
@@ -66,9 +69,8 @@ class AdminTodolistController extends AdminController {
 			$this -> todolist -> save();
 			
 		}
-
 		// Form validation failed
-		return Redirect::to('admin/todolists/create') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/todolist') -> withInput() -> withErrors($validator);
 	}
 
 	/**
@@ -79,10 +81,10 @@ class AdminTodolistController extends AdminController {
 	 */
 	public function getEdit($id) {
 		// Title
-		$title = Lang::get('admin/todolists/title.to_do_update');
+		$title = 'To do update';
 		$todolist = Todolist::find($id);
 		// Show the page
-		return View::make('admin/todolists/create_edit', compact('todolist', 'title'));
+		return View::make('todolist::admin/create_edit', compact('todolist', 'title'));
 	}
 
 	/**
@@ -113,10 +115,10 @@ class AdminTodolistController extends AdminController {
 				$todolist -> work_done = (Input::get('finished')==100.00)?'1':'0';
 				
 			if (!$todolist -> save()) {
-				return Redirect::to('admin/todolists/' . $todolist -> id . '/edit') -> with('error', Lang::get('admin/todolists/messages.update.error'));
+				return Redirect::to('admin/todolist/' . $todolist -> id . '/edit') -> with('error', Lang::get('admin/todolists/messages.update.error'));
 			}
 		// Form validation failed
-		return Redirect::to('admin/todolists/' . $todolist -> id . '/edit') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/todolist/' . $todolist -> id . '/edit') -> withInput() -> withErrors($validator);
 		}
 	}
 
@@ -132,11 +134,11 @@ class AdminTodolistController extends AdminController {
 		// Was the role deleted?
 		if ($todo_list -> delete()) {
 			// Redirect to the role management page
-			return Redirect::to('admin/todolists') -> with('success', Lang::get('admin/todolists/messages.delete.success'));
+			return Redirect::to('admin/todolist') -> with('success', Lang::get('admin/todolists/messages.delete.success'));
 		}
 
 		// There was a problem deleting the role
-		return Redirect::to('admin/todolists') -> with('error', Lang::get('admin/todolists/messages.delete.error'));
+		return Redirect::to('admin/todolist') -> with('error', Lang::get('admin/todolists/messages.delete.error'));
 	}
 
 	/** Change to-do to work ore done
@@ -151,7 +153,7 @@ class AdminTodolistController extends AdminController {
 		$this -> todolist -> save();
 
 		// Form validation failed
-		return Redirect::to('admin/todolists');
+		return Redirect::to('admin/todolist');
 
 	}
 
@@ -161,12 +163,12 @@ class AdminTodolistController extends AdminController {
 	 * @return Datatables JSON
 	 */
 	public function getData() {
-		$todolists = Todolist::select(array('todolist.id', 'todolist.content', 'todolist.work_done','todolist.finished', 'todolist.created_at'))->where('user_id','=',Auth::user()->id);
+		$todolists = Todolist::select(array('todolists.id', 'todolists.title', 'todolists.work_done','todolists.finished', 'todolists.created_at'))->where('user_id','=',Auth::user()->id);
 
 		return Datatables::of($todolists) -> edit_column('work_done', '@if ($work_done==0){{ "Work" }} @else {{ "Done" }} @endif') 
-		-> add_column('actions', '<a href="{{{ URL::to(\'admin/todolists/\' . $id . \'/change\' ) }}}" class="btn btn-link btn-sm" ><i class="icon-retweet "></i></a>
-        <a href="{{{ URL::to(\'admin/todolists/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
-                <a href="{{{ URL::to(\'admin/todolists/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
+		-> add_column('actions', '<a href="{{{ URL::to(\'admin/todolist/\' . $id . \'/change\' ) }}}" class="btn btn-link btn-sm" ><i class="icon-retweet "></i></a>
+        <a href="{{{ URL::to(\'admin/todolist/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
+                <a href="{{{ URL::to(\'admin/todolist/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
             ') -> remove_column('id') -> make();
 	}
 
