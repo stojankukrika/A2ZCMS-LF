@@ -10,33 +10,9 @@ use Carbon\Carbon;
 class User extends \Eloquent {
 	
 	protected $table = 'users';
-	/**
-	* Ardent validation rules
-	*
-	* @var array
-	*/
-    public static $rules = array(
-		'name' => 'required|min:4',
-		'surname' => 'required|min:4',
-        'username' => 'required|alpha_dash|unique:users',
-        'email' => 'required|email|unique:users',
-        'password' => 'required|between:4,11|confirmed',
-        'password_confirmation' => 'between:4,11',
-    );
-
-    /**
-	* Rules for when updating a user.
-	*
-	* @var array
-	*/
-    protected $updateRules = array(
-		'name' => 'required|min:4',
-		'surname' => 'required|min:4',
-        'password' => 'between:4,11|confirmed',
-        'password_confirmation' => 'between:4,11',
-    );
-
-	  public function getPresenter()
+	
+	
+	public function getPresenter()
     {
         return new UserPresenter($this);
     }

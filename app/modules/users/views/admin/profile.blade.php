@@ -1,4 +1,4 @@
-@extends('admin.layouts.default')
+@extends('layouts.admin.default')
 
 @section('content')
 <div class="page-header">

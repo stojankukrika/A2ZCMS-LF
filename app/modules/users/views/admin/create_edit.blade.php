@@ -96,7 +96,7 @@
 			</div>
 			<!-- ./ activation status -->
 
-			<!-- Groups -->
+			<!-- Roles -->
 			<div class="form-group {{{ $errors->has('roles') ? 'error' : '' }}}">
 				<label class="col-md-2 control-label" for="roles">{{ Lang::get('confide.roles') }}</label>
 				<div class="col-md-6">
@@ -105,7 +105,7 @@
 						@if ($mode == 'create')
 						<option value="{{{ $role->id }}}"{{{ ( in_array($role->id, $selectedRoles) ? ' selected="selected"' : '') }}}>{{{ $role->name }}}</option>
 						@else
-						<option value="{{{ $role->id }}}"{{{ ( array_search($role->id, $user->currentRoleIds()) !== false && array_search($role->id, $user->currentRoleIds()) >= 0 ? ' selected="selected"' : '') }}}>{{{ $role->name }}}</option>
+						<option value="{{{ $role->id }}}"{{{ ( array_search($role->id, $selectedRoles) !== false && array_search($role->id, $selectedRoles) >= 0 ? ' selected="selected"' : '') }}}>{{{ $role->name }}}</option>
 						@endif
 						@endforeach
 					</select>
@@ -113,7 +113,7 @@
 					<span class="help-block"> {{ Lang::get('confide.roles_info') }} </span>
 				</div>
 			</div>
-			<!-- ./ groups -->
+			<!-- ./ roles -->
 		</div>
 		<!-- ./ general tab -->
 

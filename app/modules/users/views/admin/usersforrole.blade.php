@@ -1,4 +1,4 @@
-@extends('admin.layouts.default')
+@extends('layouts.admin.default')
 
 {{-- Web site Title --}}
 @section('title')
@@ -8,11 +8,11 @@
 {{-- Content --}}
 @section('content')
 <div class="page-header">
-	<h3> {{{ $title }}}
+	<h1> {{{ $title }}}
 	<div class="pull-right">
 		<a href="{{{ URL::to('admin/users/create') }}}" class="btn btn-small btn-info iframe">
 			<span class="icon-plus-sign icon-white"></span> {{{ Lang::get('admin/general.create') }}}</a>
-	</div></h3>
+	</div></h1>
 </div>
 
 <table id="users" class="table table-striped table-hover">
@@ -45,7 +45,7 @@
 			},
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "{{ URL::to('admin/users/dataforrole/'. $user_role->id) }}",
+			"sAjaxSource" : "{{ URL::to('admin/users/dataforrole/'. $user_role) }}",
 			"fnDrawCallback" : function(oSettings) {
 				$(".iframe").colorbox({
 					iframe : true,

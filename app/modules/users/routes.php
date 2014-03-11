@@ -50,6 +50,8 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
 	
 	Route::get('/users/{id}/delete', 'App\Modules\Users\Controllers\AdminUserController@getDelete');
 	
+	Route::get('/users/{id}/usersforrole', 'App\Modules\Users\Controllers\AdminUserController@getUsersForRole');
+	
 	Route::controller('users', 'App\Modules\Users\Controllers\AdminUserController');
 	
 });

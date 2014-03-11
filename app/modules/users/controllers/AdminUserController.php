@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Confide;
 
 use App\Modules\Users\Models\User;
 use App\Modules\Users\Models\AssignedRoles;
@@ -43,7 +43,7 @@ class AdminUserController extends \AdminController {
 		$title = "User management for role";
 
 		// Show the page
-		return View::make('admin/users/usersforrole', compact('title', 'user_role'));
+		return View::make('users::admin/usersforrole', compact('title', 'user_role'));
 	}
 
 	/**
@@ -67,28 +67,42 @@ class AdminUserController extends \AdminController {
 	 * @return Response
 	 */
 	public function postCreate() {
-		$this -> user -> name = Input::get('name');
-		$this -> user -> surname = Input::get('surname');
-		$this -> user -> username = Input::get('username');
-		$this -> user -> email = Input::get('email');
-		$this -> user -> password = Input::get('password');
-		// The password confirmation will be removed from model
-		// before saving. This field will be used in Ardent's
-		// auto validation.
-		$this -> user -> confirmation_code = Input::get('password');
-		$this -> user -> confirmed = Input::get('confirm');
 		
-		// Save if valid. Password field will be hashed before save
-		$this -> user -> save();
+		$rules = array(
+		'name' => 'required|min:4',
+		'surname' => 'required|min:4',
+        'username' => 'required|alpha_dash|unique:users',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|between:4,11|confirmed',
+        'password_confirmation' => 'between:4,11',
+    );
+	$validator = Validator::make(Input::all(), $rules);
 
-		if ($this -> user -> id) {
-			// Save roles. Handles updating.			
-			foreach(Input::get('roles') as $item)
-			{
-				$role = new AssignedRoles;
-				$role -> role_id = $item;
-				$role -> user_id = $this -> user -> id;
-				$role -> save();
+		if ($validator -> passes()) {
+	
+			$this -> user -> name = Input::get('name');
+			$this -> user -> surname = Input::get('surname');
+			$this -> user -> username = Input::get('username');
+			$this -> user -> email = Input::get('email');
+			$this -> user -> password = Input::get('password');
+			// The password confirmation will be removed from model
+			// before saving. This field will be used in Ardent's
+			// auto validation.
+			$this -> user -> confirmation_code = Input::get('password');
+			$this -> user -> confirmed = Input::get('confirm');
+			
+			// Save if valid. Password field will be hashed before save
+			$this -> user -> save();
+	
+			if ($this -> user -> id) {
+				// Save roles. Handles updating.			
+				foreach(Input::get('roles') as $item)
+				{
+					$role = new AssignedRoles;
+					$role -> role_id = $item;
+					$role -> user_id = $this -> user -> id;
+					$role -> save();
+				}
 			}
 		} else {
 			// Get validation errors (see Ardent package)
@@ -108,8 +122,7 @@ class AdminUserController extends \AdminController {
 		
 			$user = User::find($id);
 			$roles = Role::all();
-			$selectedRoles = AssignedRoles::where('user_id','=',$user->id);
-
+			$selectedRoles = AssignedRoles::where('user_id','=',$user->id)->lists('role_id');
 			// Title
 			$title = 'Update user';
 			// mode
@@ -128,7 +141,13 @@ class AdminUserController extends \AdminController {
 		// Validate the inputs
 		$user = User::find($id);
 		
-		$validator = Validator::make(Input::all(), $user -> getUpdateRules());
+		$rules = array(
+		'name' => 'required|min:4',
+		'surname' => 'required|min:4',
+        'password' => 'between:4,11|confirmed',
+        'password_confirmation' => 'between:4,11',
+    	);
+		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator -> passes()) {
 			$oldUser = clone $user;
@@ -162,7 +181,7 @@ class AdminUserController extends \AdminController {
 			}
 
 			// Save if valid. Password field will be hashed before save
-			$user -> amend();
+			$user -> update();
 			
 			AssignedRoles::where('user_id','=',$user->id)->delete();
 			
@@ -171,16 +190,9 @@ class AdminUserController extends \AdminController {
 			{
 				$role = new AssignedRoles;
 				$role -> role_id = $item;
-				$role -> user_id = $this -> user -> id;
+				$role -> user_id = $user -> id;
 				$role -> save();
 			}
-		}
-
-		// Get validation errors (see Ardent package)
-		$error = $user -> errors() -> all();
-
-		if (!empty($error)) {
-			return Redirect::to('admin/users/' . $user -> id . '/edit') -> with('error', Lang::get('admin/users/messages.edit.failure'));
 		}
 	}
 
@@ -190,7 +202,8 @@ class AdminUserController extends \AdminController {
 	 * @param $user
 	 * @return Response
 	 */
-	public function getDelete($user) {
+	public function getDelete($id) {
+		$user = User::find($id);
 		// Check if we are not trying to delete ourselves
 		if ($user -> id === Confide::user() -> id) {
 			// Redirect to the user management page
@@ -199,16 +212,13 @@ class AdminUserController extends \AdminController {
 
 		AssignedRoles::where('user_id', $user -> id) -> delete();
 
-		$id = $user -> id;
 		$user -> delete();
-
-		// Was the comment post deleted?
-		$user = User::find($id);
+		
 		if (empty($user)) {
-			return Redirect::to('admin/users') -> with('success', Lang::get('admin/users/messages.delete.success'));
+			return Redirect::to('admin/users') -> with('success', 'Success');
 		} else {
 			// There was a problem deleting the user
-			return Redirect::to('admin/users') -> with('error', Lang::get('admin/users/messages.delete.error'));
+			return Redirect::to('admin/users') -> with('error', 'Error');
 		}
 	}
 
