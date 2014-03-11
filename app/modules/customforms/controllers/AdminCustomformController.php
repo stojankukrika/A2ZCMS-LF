@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Customforms\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Lang;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Customforms\Models\Customform;
 use App\Modules\Customforms\Models\Customformfield;
 
@@ -27,19 +27,18 @@ class AdminCustomformController extends \AdminController {
 	 */
 	public function getIndex() {
 
-		$title = Lang::get('admin/customform/title.contact_form_management');
+		$title = 'Contact form management';
 		
 		// Grab all the custom form
 		$customform = $this -> customform;
 
-		return View::make('admin/customform/index', compact('title', 'customform'));
+		return View::make('customforms::admin/index', compact('title', 'customform'));
 	}
 	
 	public function getCreate() {
 
-		$title = Lang::get('admin/customform/title.contact_form_management');
-
-		return View::make('admin/customform/create_edit', compact('title'));
+		$title = 'Contact form management';
+		return View::make('customforms::admin/create_edit', compact('title','customform'));
 	}
 	
 
@@ -75,25 +74,25 @@ class AdminCustomformController extends \AdminController {
 				}				
 				
 				// Redirect to the new custom form
-				return Redirect::to('admin/customform/' . $this -> customform -> id . '/edit') -> with('success', Lang::get('admin/customform/messages.create.success'));
+				return Redirect::to('admin/customforms/' . $this -> customform -> id . '/edit') -> with('success', 'Success');
 			}
 
 			// Redirect to the custom form
-			return Redirect::to('admin/customform') -> with('error', Lang::get('admin/customform/messages.create.error'));
+			return Redirect::to('admin/customforms') -> with('error', 'Error');
 		}
 
 		// Form validation failed
-		return Redirect::to('admin/customform') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/customforms') -> withInput() -> withErrors($validator);
 	}	
 
 	public function getEdit($id) {
 
-		$title = Lang::get('admin/customform/title.contact_form_management');
-
-		$customform = CustomForm::find($id);
-		$customformfields = CustomFormField::where('custom_form_id','=',$id)->get();
+		$title = 'Contact form management';
 		
-		return View::make('admin/customform/create_edit', compact('title', 'customform','customformfields'));
+		$customform = Customform::find($id);
+		$customformfields = Customformfield::where('customform_id','=',$id)->get();
+		
+		return View::make('customforms::admin/create_edit', compact('title', 'customform','customformfields'));
 	}
 		
 	/**
@@ -111,7 +110,7 @@ class AdminCustomformController extends \AdminController {
 		// Check if the form validates with success
 		if ($validator -> passes()) {
 	
-			$customform = CustomForm::find($id);
+			$customform = Customform::find($id);
 			$user = Auth::user();
 			$customform -> title = Input::get('title');
 			$customform -> message = Input::get('message');
@@ -120,18 +119,18 @@ class AdminCustomformController extends \AdminController {
 			
 			if ($customform -> save()) {
 				
-				CustomFormField::where('custom_form_id','=',$id)->delete();
+				CustomFormField::where('customform_id','=',$id)->delete();
 				//add fileds to form
 				if(Input::get('pagecontentorder')!=""){
 					$this->saveFilds(Input::get('pagecontentorder'),Input::get('count'),$id,$user -> id);
 				}	
 				
-				return Redirect::to('admin/customform/' . $customform -> id . '/edit') -> with('success', Lang::get('admin/customform/messages.update.success'));
+				return Redirect::to('admin/customforms/' . $customform -> id . '/edit') -> with('success', 'Success');
 			}
 		}
 
 		// Form validation failed
-		return Redirect::to('admin/customform/' . $id . '/edit') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/customforms/' . $id . '/edit') -> withInput() -> withErrors($validator);
 	}
 
 	/**
@@ -142,15 +141,15 @@ class AdminCustomformController extends \AdminController {
 	 */
 	public function getDelete($id) {
 			
-		$customform = CustomForm::find($id);
+		$customform = Customform::find($id);
 		// Was the role deleted?
 		if ($customform -> delete()) {
 
 			// Redirect to the custom form
-			return Redirect::to('admin/customform') -> with('success', Lang::get('admin/customform/messages.delete.success'));
+			return Redirect::to('admin/customforms') -> with('success', 'Success');
 		}
 		// There was a problem deleting the custom form
-		return Redirect::to('admin/customform') -> with('error', Lang::get('admin/customform/messages.delete.error'));
+		return Redirect::to('admin/customforms') -> with('error', 'Error');
 	}
 	
 	
@@ -163,9 +162,9 @@ class AdminCustomformController extends \AdminController {
 		$blogs = CustomForm::select(array('title', 'id as fields', 'id as id', 'created_at'));
 
 		return Datatables::of($blogs) 
-			-> edit_column('fields', '{{ CustomFormField::where(\'custom_form_id\', \'=\', $id)->count() }}') 
-			-> add_column('actions', '<a href="{{{ URL::to(\'admin/customform/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
-                <a href="{{{ URL::to(\'admin/customform/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
+			-> edit_column('fields', '{{ App\Modules\Customforms\Models\Customformfield::where(\'customform_id\', \'=\', $id)->count() }}') 
+			-> add_column('actions', '<a href="{{{ URL::to(\'admin/customforms/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
+                <a href="{{{ URL::to(\'admin/customforms/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
             ') 
             -> remove_column('id') -> make();
 	}
@@ -182,7 +181,7 @@ class AdminCustomformController extends \AdminController {
 			$customformfield -> type = $params[$i+2];
 			$customformfield -> options = $params[$i+3];
 			$customformfield -> order = $order;
-			$customformfield -> custom_form_id = $customform_id;
+			$customformfield -> customform_id = $customform_id;
 			$customformfield -> user_id = $user_id;						
 			$customformfield -> save();	
 			$order++;
@@ -196,7 +195,7 @@ class AdminCustomformController extends \AdminController {
 	 */
 	public function postDeleteItem($formId) {
 		
-		$customformfield = CustomFormField::find(Input::get('id'));
+		$customformfield = Customformfield::find(Input::get('id'));
 		if ($customformfield -> delete()) {
 			return 0;
 		}

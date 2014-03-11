@@ -1,10 +1,9 @@
 <?php namespace App\Modules\Galleries\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class Gallery extends \Eloquent implements PresentableInterface {
+class Gallery extends \Eloquent {
 
 	protected $softDelete = true;
-	protected $table = "gallerys";
+	protected $table = "galleries";
 
 	/**
 	 * Returns a formatted post content entry,
@@ -66,10 +65,6 @@ class Gallery extends \Eloquent implements PresentableInterface {
 	 */
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
-	}
-
-	public function getPresenter() {
-		return new PostPresenter($this);
 	}
 
 }

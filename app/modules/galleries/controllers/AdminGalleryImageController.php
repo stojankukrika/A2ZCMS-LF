@@ -2,6 +2,8 @@
 
 use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Galleries\Models\Gallery;
+use App\Modules\Galleries\Models\GalleryImage;
+use App\Modules\Galleries\Models\GalleryImageComment;
 
 class AdminGalleryImageController extends \AdminController {
 
@@ -27,21 +29,21 @@ class AdminGalleryImageController extends \AdminController {
 	 */
 	public function getIndex() {
 		// Title
-		$title = Lang::get('admin/galleryimages/title.gallery_management');
+		$title = 'Gallery management';
 
 		// Gallery category
 		$galleries = Gallery::all();
 
 		$options = array();
 
-		$options[0] = Lang::get('admin/galleryimages/title.gallery_choose');
+		$options[0] = 'Choose';
 
 		foreach ($galleries as $gallery) {
 			$options[$gallery -> id] = $gallery -> title;
 		}
 
 		// Show the page
-		return View::make('admin/galleryimages/index', compact('options', 'galleries', 'title'));
+		return View::make('galleries::admin/galleryimages/index', compact('options', 'galleries', 'title'));
 	}
 
 	/**
@@ -56,10 +58,10 @@ class AdminGalleryImageController extends \AdminController {
 		// Was the role deleted?
 		if ($gallery_image -> delete()) {
 			// Redirect to last page
-			return Redirect::to('admin/galleryimages') -> with('success', Lang::get('admin/galleries/messages.delete.success'));
+			return Redirect::to('admin/galleryimages') -> with('success', 'Success');
 		}
 		// There was a problem deleting the comment post
-		return Redirect::to('admin/galleryimagecomments') -> with('error', Lang::get('admin/galleryimagecomments/messages.delete.error'));
+		return Redirect::to('admin/galleryimagecomments') -> with('error', 'Error');
 	}
 
 	/**
@@ -68,7 +70,8 @@ class AdminGalleryImageController extends \AdminController {
 	 * @return Response
 	 */
 	public function getImageforgallery($galleryid) {
-		$images = GalleryImage::join('gallery', 'gallery.id', '=', 'gallery_images.gallery_id') -> select(array('gallery_images.id', 'gallery_images.content', 'gallery.folderid', 'gallery_images.voteup', 'gallery_images.votedown', 'gallery_images.hits as hits', 'gallery_images.created_at')) -> where('gallery_id', '=', $galleryid);
+		$images = GalleryImage::join('galleries', 'galleries.id', '=', 'gallery_images.gallery_id') 
+		-> select(array('gallery_images.id', 'gallery_images.content', 'galleries.folderid', 'gallery_images.voteup', 'gallery_images.votedown', 'gallery_images.hits as hits', 'gallery_images.created_at')) -> where('gallery_id', '=', $galleryid);
 
 		return Datatables::of($images) -> make();
 	}

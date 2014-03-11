@@ -1,7 +1,9 @@
 <?php namespace App\Modules\Galleries\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,File,Fineuploader,Thumbnail,SplFileInfo,Response;
 use App\Modules\Galleries\Models\Gallery;
+use App\Modules\Galleries\Models\GalleryImage;
+use App\Modules\Galleries\Models\GalleryImageComment;
 
 class AdminGalleryController extends \AdminController {
 
@@ -29,13 +31,13 @@ class AdminGalleryController extends \AdminController {
 	 */
 	public function getIndex() {
 		// Title
-		$title = Lang::get('admin/galleries/title.gallery_management');
+		$title = 'Gallery management';
 
 		// Grab all the gallery posts
 		$galleries = $this -> gallery;
 
 		// Show the page
-		return View::make('admin/galleries/index', compact('galleries', 'title'));
+		return View::make('galleries::admin/galleries/index', compact('galleries', 'title'));
 	}
 
 	/**
@@ -45,10 +47,10 @@ class AdminGalleryController extends \AdminController {
 	 */
 	public function getCreate() {
 		// Title
-		$title = Lang::get('admin/galleries/title.create_a_new_gallery');
+		$title = 'Create a new gallery';
 
 		// Show the page
-		return View::make('admin/galleries/create_edit', compact('title'));
+		return View::make('galleries::admin/galleries/create_edit', compact('title'));
 	}
 
 	public function postCreate() {
@@ -74,11 +76,11 @@ class AdminGalleryController extends \AdminController {
 				File::makeDirectory(base_path() . '\public\gallery\/' . $this -> gallery -> folderid . '\/thumbs');
 
 				// Redirect to the new gallery post page
-				return Redirect::to('admin/galleries/' . $this -> gallery -> id . '/edit') -> with('success', Lang::get('admin/blogs/messages.create.success'));
+				return Redirect::to('admin/galleries/' . $this -> gallery -> id . '/edit') -> with('success', 'Success');
 			}
 
 			// Redirect to the gallery create page
-			return Redirect::to('admin/galleries/create') -> with('error', Lang::get('admin/blogs/messages.create.error'));
+			return Redirect::to('admin/galleries/create') -> with('error', 'Error');
 		}
 
 		// Form validation failed
@@ -95,10 +97,10 @@ class AdminGalleryController extends \AdminController {
 		
 		$galleries = Gallery::find($id);
 		// Title
-		$title = Lang::get('admin/galleries/title.gallery_update');
+		$title = 'Gallery update';
 
 		// Show the page
-		return View::make('admin/galleries/create_edit', compact('galleries', 'title'));
+		return View::make('galleries::admin/galleries/create_edit', compact('galleries', 'title'));
 	}
 
 	/**
@@ -123,11 +125,11 @@ class AdminGalleryController extends \AdminController {
 			// Was the page updated?
 			if ($gallery -> update($inputs)) {
 				// Redirect to the new gallery
-				return Redirect::to('admin/galleries/' . $galleries -> id . '/edit') -> with('success', Lang::get('admin/galleries/messages.update.success'));
+				return Redirect::to('admin/galleries/' . $galleries -> id . '/edit') -> with('success', 'Success');
 			}
 
 			// Redirect to the gallery
-			return Redirect::to('admin/galleries/' . $galleries -> id . '/edit') -> with('error', Lang::get('admin/galleries/messages.update.error'));
+			return Redirect::to('admin/galleries/' . $galleries -> id . '/edit') -> with('error', 'Error');
 		}
 
 		// Form validation failed
@@ -146,10 +148,10 @@ class AdminGalleryController extends \AdminController {
 		// Was the role deleted?
 		if ($gallery -> delete()) {
 			// Redirect to the gallery
-			return Redirect::to('admin/galleries') -> with('success', Lang::get('admin/galleries/messages.delete.success'));
+			return Redirect::to('admin/galleries') -> with('success', 'Success');
 		}
 		// There was a problem deleting the gallery
-		return Redirect::to('admin/galleries') -> with('error', Lang::get('admin/galleries/messages.delete.error'));
+		return Redirect::to('admin/galleries') -> with('error', 'Error');
 	}
 
 	/**
@@ -158,10 +160,10 @@ class AdminGalleryController extends \AdminController {
 	 * @return Datatables JSON
 	 */
 	public function getData() {
-		$galleries = Gallery::select(array('gallerys.id', 'gallerys.title', 'gallerys.id as images_count', 'gallerys.id as comments_count', 'gallerys.created_at'));
+		$galleries = Gallery::select(array('galleries.id', 'galleries.title', 'galleries.id as images_count', 'galleries.id as comments_count', 'galleries.created_at'));
 
 		return Datatables::of($galleries) -> edit_column('images_count', '<a href="{{{ URL::to(\'admin/galleries/\' . $id . \'/imagesforgallery\' ) }}}" class="btn btn-link btn-sm" >{{ DB::table(\'gallery_images\')->where(\'gallery_id\', \'=\', $id)->where(\'deleted_at\', \'=\', NULL)->count() }}</a>') 
-			-> edit_column('comments_count', '<a href="{{{ URL::to(\'admin/galleryimagecomments/\' . $id . \'/commentsforgallery\' ) }}}" class="btn btn-link btn-sm" >{{ GalleryImageComment::where(\'gallery_id\', \'=\', $id)->where(\'deleted_at\', \'=\', NULL)->count() }}</a>') 
+			-> edit_column('comments_count', '<a href="{{{ URL::to(\'admin/galleries/galleryimagecomments/\' . $id . \'/commentsforgallery\' ) }}}" class="btn btn-link btn-sm" >{{ App\Modules\Galleries\Models\GalleryImageComment::where(\'gallery_id\', \'=\', $id)->where(\'deleted_at\', \'=\', NULL)->count() }}</a>') 
 			-> add_column('actions', '<a href="{{{ URL::to(\'admin/galleries/\' . $id . \'/upload\' ) }}}" class="btn btn-info btn-sm iframe" ><i class="icon-picture "></i></a>
         		<a href="{{{ URL::to(\'admin/galleries/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
                 <a href="{{{ URL::to(\'admin/galleries/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
@@ -175,9 +177,9 @@ class AdminGalleryController extends \AdminController {
 		
 		$galleries = Gallery::find($id);
 		// Title
-		$title = Lang::get('admin/galleries/title.gallery_add_picture');
+		$title = 'Add picture';
 		// Show the page
-		return View::make('admin/galleries/upload', compact('galleries', 'title'));
+		return View::make('galleries::admin/galleries/upload', compact('galleries', 'title'));
 	}
 
 	/*
@@ -227,10 +229,10 @@ class AdminGalleryController extends \AdminController {
 
 	public function getImagesForGallery($id) {
 		// Title
-		$title = Lang::get('admin/galleries/title.gallery_management_for_category');
+		$title = 'Gallery management for category';
 		$galleries = Gallery::find($id);
 		// Show the page
-		return View::make('admin/galleries/imagesforgallery', compact('galleries', 'title'));
+		return View::make('galleries::admin/galleries/imagesforgallery', compact('galleries', 'title'));
 	}
 
 }

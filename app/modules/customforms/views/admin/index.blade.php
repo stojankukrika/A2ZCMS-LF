@@ -10,7 +10,7 @@
 <div class="page-header">
 	<h3> {{{ $title }}}
 	<div class="pull-right">
-		<a href="{{{ URL::to('admin/customform/create') }}}" class="btn btn-small btn-info iframe">
+		<a href="{{{ URL::to('admin/customforms/create') }}}" class="btn btn-small btn-info iframe">
 			<span class="icon-plus-sign icon-white"></span> {{{ Lang::get('admin/general.create') }}}</a>
 	</div></h3>
 </div>
@@ -41,7 +41,7 @@
 			},
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "{{ URL::to('admin/customform/data') }}",
+			"sAjaxSource" : "{{ URL::to('admin/customforms/data') }}",
 			"fnDrawCallback" : function(oSettings) {
 				$(".iframe").colorbox({
 					iframe : true,

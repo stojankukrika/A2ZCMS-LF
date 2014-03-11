@@ -1,4 +1,5 @@
 @extends('layouts.admin.modal')
+
 {{-- Content --}}
 @section('content')
 <!-- Tabs -->

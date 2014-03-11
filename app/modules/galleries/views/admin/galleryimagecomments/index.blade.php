@@ -36,7 +36,7 @@
 			},
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "{{ URL::to('admin/galleryimagecomments/data') }}",
+			"sAjaxSource" : "{{ URL::to('admin/galleries/galleryimagecomments/data') }}",
 			"fnDrawCallback" : function(oSettings) {
 				$(".iframe").colorbox({
 					iframe : true,

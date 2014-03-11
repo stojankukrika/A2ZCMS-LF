@@ -23,7 +23,7 @@ class Customform extends \Eloquent {
 	}
 	
 	public function customformfields() {
-		return $this -> hasMany('Customformfield')->orderBy('custom_form_fields.order', 'ASC');
+		return $this -> hasMany('App\Modules\Customforms\Models\Customformfield')->orderBy('custom_form_fields.order', 'ASC');
 	}	
 	/**
 	 * Get the date the post was created.

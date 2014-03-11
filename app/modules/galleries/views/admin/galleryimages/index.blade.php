@@ -26,7 +26,7 @@ $(function(){
 		$( "#pictures" ).empty();
 		if(galleryid>0){
 			$.ajax({
-				url: 'galleryimages/imageforgallery/'+galleryid,
+				url: '{{ URL::to("admin/galleries/galleryimages/'+galleryid+'/imageforgallery")}}',
 					type: "GET",
 					success: function(data){
 					$.each(data.aaData, function( i, val ) {

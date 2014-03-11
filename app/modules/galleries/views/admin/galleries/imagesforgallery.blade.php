@@ -1,4 +1,4 @@
-@extends('layouts.admin.modal')
+@extends('layouts.admin.default')
 
 {{-- Web site Title --}}
 @section('title')
@@ -21,7 +21,7 @@ $(function(){
 	var galleryid = {{$galleries->id}};
 	if(galleryid>0){
 		$.ajax({
-				url: '{{ Config::get('app.url')}}admin/galleryimages/imageforgallery/'+galleryid,
+				url: '{{ URL::to("admin/galleries/galleryimages/$galleries->id/imageforgallery")}}',
 				type: "GET",
 				success: function(data){
 					$.each(data.aaData, function( i, val ) {

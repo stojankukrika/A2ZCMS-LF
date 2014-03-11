@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Galleries\Models;
 
-use Robbo\Presenter\PresentableInterface;
-class GalleryImageComment extends \Eloquent implements PresentableInterface {
+class GalleryImageComment extends \Eloquent {
 
 	protected $softDelete = true;
 	protected $table = "gallery_images_comments";
@@ -65,10 +64,6 @@ class GalleryImageComment extends \Eloquent implements PresentableInterface {
 	 */
 	public function updated_at() {
 		return $this -> date($this -> updated_at);
-	}
-
-	public function getPresenter() {
-		return new CommentPresenter($this);
 	}
 
 }

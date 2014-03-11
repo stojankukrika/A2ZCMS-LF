@@ -11,7 +11,7 @@ class CustomFormFieldsTableSeeder extends Seeder {
 		
 		$custom_form_fields = array( 
 					array(
-						'custom_form_id'=>$custom_forms,
+						'customform_id'=>$custom_forms,
 						'user_id' => $user_id,
 						'name' => 'Name', 
 						'options' => '',
@@ -21,7 +21,7 @@ class CustomFormFieldsTableSeeder extends Seeder {
 						'created_at' => new DateTime, 
 						'updated_at' => new DateTime, ),
 					array(
-						'custom_form_id'=>$custom_forms,
+						'customform_id'=>$custom_forms,
 						'user_id' => $user_id,
 						'name' => 'Email', 
 						'options' => '',
@@ -31,7 +31,7 @@ class CustomFormFieldsTableSeeder extends Seeder {
 						'created_at' => new DateTime, 
 						'updated_at' => new DateTime, )	,
 					array(
-						'custom_form_id'=>$custom_forms,
+						'customform_id'=>$custom_forms,
 						'user_id' => $user_id,
 						'name' => 'Phone', 
 						'options' => '',
@@ -41,7 +41,7 @@ class CustomFormFieldsTableSeeder extends Seeder {
 						'created_at' => new DateTime, 
 						'updated_at' => new DateTime, )	,
 					array(
-						'custom_form_id'=>$custom_forms,
+						'customform_id'=>$custom_forms,
 						'user_id' => $user_id,
 						'name' => 'Message', 
 						'options' => '',

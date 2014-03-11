@@ -13,7 +13,7 @@
 <!-- ./ tabs -->
 
 {{-- Edit Custom Form --}}
-<form class="form-horizontal" enctype="multipart/form-data"  method="post" action="@if (isset($customform)){{ URL::to('admin/customform/' . $customform->id . '/edit') }}@endif" autocomplete="off">
+<form class="form-horizontal" enctype="multipart/form-data"  method="post" action="@if (isset($customform)){{ URL::to('admin/customforms/' . $customform->id . '/edit') }}@endif" autocomplete="off">
 	<!-- CSRF Token -->
 	<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 	<!-- ./ csrf token -->
@@ -52,7 +52,7 @@
 		</div>
 		<!-- ./ general tab -->
 		
-		<!-- Dates tab -->
+		<!-- Custom form filds tab -->
 		<div class="tab-pane" id="tab-dates">
 			<a class="btn btn-link" id="add" href="#"><i class="icon-plus-sign"></i> {{Lang::get('admin/customform/table.add_filed')}}</a>
 			<div id="fields">
@@ -99,7 +99,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- ./ dates tab -->
+		<!-- ./ custom form filds tab -->
 	</div>
 	<!-- ./ tabs content -->
 	<!-- Form Actions -->	
@@ -147,57 +147,58 @@
 </div>
 	
 @stop
-@section('scripts')
-<script type="text/javascript">
-var clicked = 0;
-$('.remove').click(function(){
-	clicked = $(this).children().children().val();
-	$.ajax({
-            url : "{{ URL::to('admin/customform/' . $customform->id . '/deleteitem') }}"
-            , type : "post"
-            , data : { id : clicked, _token: "{{{ csrf_token() }}}" }
-            , success : function(resp){
-            	 if( resp == 0){
-            	 	$("#formf"+clicked).remove();
-            	 	//window.location.replace("");
-                }
-            }
-        	});
-});
- 	 
-	$(function() {
-		var count = {{isset($customform)?$customform->customformfields->count():'0'}};
-		var formfild =$('#addfield').html();
-		$("#add").click(function(){
-			count++;
-			
-			formfild = formfild.replace('<li class="ui-state-default" name="formf" value="formf" id="formf">', '<li class="ui-state-default" name="formf'+count+'" value="'+count+'" id="formf'+count+'">');
-			formfild = formfild.replace('<input id="name" value="" name="name" type="text">', '<input id="name'+count+'" value="" name="name'+count+'" type="text">');
-			formfild = formfild.replace('<select name="mandatory" id="mandatory">', '<select name="mandatory'+count+'" id="mandatory'+count+'">');
-			formfild = formfild.replace('<select name="type" id="type">', '<select name="type'+count+'" id="type'+count+'">');
-			formfild = formfild.replace('<input name="options" value="" id="options" type="text">', '<input name="options'+count+'" value="" id="options'+count+'" type="text">');
-			formfild = formfild.replace('<input type="hidden" value="" class="remove" name="remove">', '<input type="hidden" value="' + count + '" class="remove" name="remove">');
-	
-			$("#sortable1").append(formfild);
-			$('#count').val(count);
-			
-		})
-		$( "#sortable1" ).sortable();
+	@section('scripts')
+	<script type="text/javascript">
+	var clicked = 0;
+	@if(isset($customform))
+		$('.remove').click(function(){
+			clicked = $(this).children().children().val();
+			$.ajax({
+		            url : "{{ URL::to('admin/customforms/' . $customform->id . '/deleteitem') }}"
+		            , type : "post"
+		            , data : { id : clicked, _token: "{{{ csrf_token() }}}" }
+		            , success : function(resp){
+		            	 if( resp == 0){
+		            	 	$("#formf"+clicked).remove();
+		            	 	//window.location.replace("");
+		                }
+		            }
+		        	});
+			});	 
+	@endif	 
+		$(function() {
+			var count = {{isset($customform)?$customform->customformfields->count():'0'}};
+			var formfild =$('#addfield').html();
+			$("#add").click(function(){
+				count++;
+				
+				formfild = formfild.replace('<li class="ui-state-default" name="formf" value="formf" id="formf">', '<li class="ui-state-default" name="formf'+count+'" value="'+count+'" id="formf'+count+'">');
+				formfild = formfild.replace('<input id="name" value="" name="name" type="text">', '<input id="name'+count+'" value="" name="name'+count+'" type="text">');
+				formfild = formfild.replace('<select name="mandatory" id="mandatory">', '<select name="mandatory'+count+'" id="mandatory'+count+'">');
+				formfild = formfild.replace('<select name="type" id="type">', '<select name="type'+count+'" id="type'+count+'">');
+				formfild = formfild.replace('<input name="options" value="" id="options" type="text">', '<input name="options'+count+'" value="" id="options'+count+'" type="text">');
+				formfild = formfild.replace('<input type="hidden" value="" class="remove" name="remove">', '<input type="hidden" value="' + count + '" class="remove" name="remove">');
 		
-		$('.btn-success').click(function(){
-		 	var neworder = new Array();
-	        $('#sortable1 li').each(function() { 
-	            var name  = $(this).children('[name^="name"]').attr("value");
-	            var mandatory  = $(this).children().children('[name^="mandatory"]').attr("value");
-	            var type  = $(this).children().children('[name^="type"]').attr("value");
-	            var options  = $(this).children().children('[name^="options"]').attr("value");
-	            neworder.push(name);
-	            neworder.push(mandatory);
-	            neworder.push(type);
-	            neworder.push(options);
+				$("#sortable1").append(formfild);
+				$('#count').val(count);
+				
+			})
+			$( "#sortable1" ).sortable();
+			
+			$('.btn-success').click(function(){
+			 	var neworder = new Array();
+		        $('#sortable1 li').each(function() { 
+		            var name  = $(this).children('[name^="name"]').attr("value");
+		            var mandatory  = $(this).children().children('[name^="mandatory"]').attr("value");
+		            var type  = $(this).children().children('[name^="type"]').attr("value");
+		            var options  = $(this).children().children('[name^="options"]').attr("value");
+		            neworder.push(name);
+		            neworder.push(mandatory);
+		            neworder.push(type);
+		            neworder.push(options);
+		        });
+		        $('#pagecontentorder').val(neworder);
 	        });
-	        $('#pagecontentorder').val(neworder);
-        });
-	});
-</script>
-@stop
+		});
+	</script>
+	@stop
