@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Customforms\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Lang;
 use App\Modules\Customforms\Models\Customform;
+use App\Modules\Customforms\Models\Customformfield;
 
-class AdminCustomFormController extends \AdminController {
+class AdminCustomformController extends \AdminController {
 
 	/**
 	 * Custom form
