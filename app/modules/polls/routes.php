@@ -1,5 +1,7 @@
 <?php
 /*Admin routes*/
+Route::pattern('id', '[0-9]+');
+
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
 {
 	Route::get('polls', 'App\Modules\Polls\Controllers\AdminPollController@getIndex');

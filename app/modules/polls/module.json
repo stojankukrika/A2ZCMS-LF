@@ -1,4 +1,3 @@
 {
 	"enabled": true,
-	"seeder": "App\\Modules\\Polls\\Seeds\\DatabaseSeeder"
 }

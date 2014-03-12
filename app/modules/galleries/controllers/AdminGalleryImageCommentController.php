@@ -65,10 +65,10 @@ class AdminGalleryImageCommentController extends \AdminController {
 			// Was the role deleted?
 			if ($gallerycomment -> delete()) {
 				// Redirect to the comment posts management page
-				return Redirect::to('admin/galleryimagecomments') -> with('success', Lang::get('admin/galleryimagecomments/messages.delete.success'));
+				return Redirect::to('admin/galleries/galleryimagecomments') -> with('success', Lang::get('admin/galleryimagecomments/messages.delete.success'));
 			}
 		// There was a problem deleting the comment post
-		return Redirect::to('admin/galleryimagecomments') -> with('error', Lang::get('admin/galleryimagecomments/messages.delete.error'));
+		return Redirect::to('admin/galleries/galleryimagecomments') -> with('error', Lang::get('admin/galleryimagecomments/messages.delete.error'));
 	}
 
 

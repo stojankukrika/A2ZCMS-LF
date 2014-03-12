@@ -58,10 +58,10 @@ class AdminGalleryImageController extends \AdminController {
 		// Was the role deleted?
 		if ($gallery_image -> delete()) {
 			// Redirect to last page
-			return Redirect::to('admin/galleryimages') -> with('success', 'Success');
+			return Redirect::to('admin/galleries/galleryimages') -> with('success', 'Success');
 		}
 		// There was a problem deleting the comment post
-		return Redirect::to('admin/galleryimagecomments') -> with('error', 'Error');
+		return Redirect::to('admin/galleries/galleryimages') -> with('error', 'Error');
 	}
 
 	/**
