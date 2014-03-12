@@ -1,6 +1,8 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, Page,Input, UserLoginHistory, Redirect, View, Confide,Auth, Session;
+use App, User, Page,Input, Redirect, View, Confide,Auth, Session;
+
+use App\Modules\Users\Models\User;
 
 class UserController extends \BaseController {
 

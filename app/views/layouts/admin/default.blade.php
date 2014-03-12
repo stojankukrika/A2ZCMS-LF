@@ -78,10 +78,10 @@
 									<a href="{{{ URL::to('/admin/users/profile') }}}"><i class="icon-cog"></i> {{ Lang::get('admin/general.profile') }}</a>
 								</li>
 								<li>
-									<a href="{{{ URL::to('user/messages') }}}"><i class="icon-envelope"></i> {{ Lang::get('admin/general.messages') }}</a>
+									<a href="{{{ URL::to('users/messages') }}}"><i class="icon-envelope"></i> {{ Lang::get('admin/general.messages') }}</a>
 								</li>
 								<li>
-									<a href="{{{ URL::to('user/logout') }}}"><i class="icon-road icon-white"></i> {{ Lang::get('admin/general.logout') }}</a>
+									<a href="{{{ URL::to('users/logout') }}}"><i class="icon-road icon-white"></i> {{ Lang::get('admin/general.logout') }}</a>
 								</li>
 							</ul>
 						</li>

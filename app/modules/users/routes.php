@@ -2,7 +2,7 @@
 Route::pattern('id', '[0-9]+');
 Route::pattern('token', '[0-9a-z-]+');
 
-
+Route::get('', 'App\Modules\Users\Controllers\UserController@getLogin');
 /*Site routes*/
 Route::group(array('prefix' => 'users'), function()
 {
@@ -11,9 +11,9 @@ Route::group(array('prefix' => 'users'), function()
 	    //:: User Account Routes ::
 		Route::post('{id}/edit', 'App\Modules\Users\Controllers\UserController@postEdit');
 		//User messages
-		Route::get('messages', 'App\Modules\Users\Controllers\UserMessagesController@getIndex');
-		Route::get('messages/{id}/read', 'App\Modules\Users\Controllers\UserMessagesController@getRead');
-		Route::post('messages/sendmessage', 'App\Modules\Users\Controllers\UserMessagesController@postSendmessage');
+		Route::get('messages', 'App\Modules\Users\Controllers\MessagesController@getIndex');
+		Route::get('messages/{id}/read', 'App\Modules\Users\Controllers\MessagesController@getRead');
+		Route::post('messages/sendmessage', 'App\Modules\Users\Controllers\MessagesController@postSendmessage');
 		
 	});
 	// User reset routes
@@ -33,6 +33,8 @@ Route::group(array('prefix' => 'users'), function()
 	
 	Route::get('create', 'App\Modules\Users\Controllers\UserController@getCreate');
 	Route::post('create', 'App\Modules\Users\Controllers\UserController@postCreate');
+	
+	Route::get('logout', 'App\Modules\Users\Controllers\UserController@getLogout');
 	
 });
 

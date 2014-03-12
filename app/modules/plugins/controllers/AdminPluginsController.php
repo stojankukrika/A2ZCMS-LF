@@ -16,6 +16,7 @@ class AdminPluginsController extends \AdminController{
 	
 	function getIndex(){
 		
+		$title = "Plugins menage";
         $plugin = Plugin::Join('admin_navigations','plugins.id','=','admin_navigations.plugin_id')
 						->orderBy('admin_navigations.order')
 						->get(array('plugins.id','plugins.name','plugins.title','plugins.can_uninstall','plugins.created_at'));
@@ -31,7 +32,7 @@ class AdminPluginsController extends \AdminController{
 			$plugin[] =(object) array('name' => $dir, 'id'=>0,
 			'title' => ucfirst($dir), 'created_at' => '', 'can_uninstall' =>0, 'not_installed'=>TRUE);
 		}
-		return View::make('plugins::admin/index', compact('plugin'));
+		return View::make('plugins::admin/index', compact('plugin','title'));
 	}
 	
 	function getReorder()

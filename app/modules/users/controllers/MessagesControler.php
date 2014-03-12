@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, View;
+use App, User, Page,Input, Redirect, View, Confide,Auth, Session;
 
+use App\Modules\Users\Models\User;
 
-class UserMessagesController extends \BaseController {
+class MessagesController extends \BaseController {
 	
 	 /*
 	 * User Model
