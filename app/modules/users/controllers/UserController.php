@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, Page,Input, Redirect, View, Confide,Auth, Session;
+use App, Page,Input, Redirect, View, Confide,Auth, Session;
 
 use App\Modules\Users\Models\User;
 
