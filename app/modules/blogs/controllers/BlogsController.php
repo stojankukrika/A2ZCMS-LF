@@ -3,7 +3,7 @@
 use App, View, Session,Auth,Validator,Input,Redirect;
 use App\Modules\Blogs\Models\Blog;
 
-class BlogController extends \BaseController {
+class BlogsController extends \BaseController {
 
  /*function for plugins*/
 	public function getBlogId(){

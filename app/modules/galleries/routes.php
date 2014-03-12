@@ -1,5 +1,6 @@
 <?php
 Route::pattern('id', '[0-9]+');
+
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
 {

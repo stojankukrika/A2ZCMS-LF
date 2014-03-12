@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Pages\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Str;
 use App\Modules\Pages\Models\Page;
 use App\Modules\Pages\Models\Navigation;
 use App\Modules\Pages\Models\NavigationGroup;
@@ -54,11 +54,14 @@ class AdminPageController extends \AdminController {
 		foreach ($pluginfunction_content as $key => $value) {
 			$function_id = $value['function_id'];
 			$function_grid = $value['function_grid'];
+			$address = 'App\Modules\\'.ucfirst($value['name']).'\Controllers\\';
 			if($function_id!=NULL){
-				$value['function_id'] = modules::run($value['name'].'/'.$function_id);
+				$controller = ucfirst($value['name']).'Controller';	
+				$value['function_id'] = App::make($address.$controller)->$function_id();
 			}
 			if($function_grid!=NULL){
-				$value['function_grid'] = modules::run($value['name'].'/'.$function_grid);
+				$controller = ucfirst($value['name']).'Controller';
+				$value['function_grid'] = App::make($address.$controller)->$function_grid();
 			}
 		}		
 		// Show the page
@@ -72,7 +75,7 @@ class AdminPageController extends \AdminController {
 	 */
 	public function postCreate() {
 		// Declare the rules for the form validation
-		$rules = array('name' => 'required|min:3', 'content' => 'required');
+		$rules = array('title' => 'required|min:3', 'content' => 'required');
 
 		// Validate the inputs
 		$validator = Validator::make(Input::all(), $rules);
@@ -81,7 +84,7 @@ class AdminPageController extends \AdminController {
 		if ($validator -> passes()) {
 			// Create a new blog post
 			$this -> page -> title = Input::get('title');
-			$this -> page -> slug = Str::slug(Input::get('name'));
+			$this -> page -> slug = Str::slug(Input::get('title'));
 			$this -> page -> content = Input::get('content');
 			$this -> page -> status = Input::get('status');
 			$this -> page -> meta_title = Input::get('meta_title');
@@ -141,7 +144,7 @@ class AdminPageController extends \AdminController {
 									->orderBy('page_plugin_functions.order','ASC')
 									->groupBy('plugin_functions.id')
 									->get(array('plugin_functions.id','page_plugin_functions.plugin_function_id',
-									'plugin_functions.title','page_plugin_functions.order','plugins.function_id','plugin_functions.function','plugin_functions.params','plugins.function_grid'));
+									'plugin_functions.title','plugins.name','page_plugin_functions.order','plugins.function_id','plugin_functions.function','plugin_functions.params','plugins.function_grid'));
 		
 			$pluginfunction_content_all = PluginFunction::leftJoin('plugins', 'plugins.id', '=', 'plugin_functions.plugin_id')
 									->where('type','=','content')->get(array('plugin_functions.title','plugins.function_id','plugin_functions.id as id','plugin_functions.function','plugin_functions.params','plugins.function_grid'));
@@ -166,11 +169,14 @@ class AdminPageController extends \AdminController {
 					$value['limits'] = PagePluginFunction::where('param','=','limit')->where('page_id','=',$page->id)->where('plugin_function_id','=',$value['plugin_function_id'])->pluck('value');
 					$value['orders'] = PagePluginFunction::where('param','=','order')->where('page_id','=',$page->id)->where('plugin_function_id','=',$value['plugin_function_id'])->pluck('value');
 					}
+				$address = 'App\Modules\\'.ucfirst($value['name']).'\Controllers\\';
 				if($function_id!=NULL){
-					$value['function_id'] = $this->$function_id();
+					$controller = ucfirst($value['name']).'Controller';	
+					$value['function_id'] = App::make($address.$controller)->$function_id();
 				}
 				if($function_grid!=NULL){
-					$value['function_grid'] = $this->$function_grid();
+					$controller = ucfirst($value['name']).'Controller';
+					$value['function_grid'] = App::make($address.$controller)->$function_grid();
 				}
 			}
 		/*select sidebar plugins*/
@@ -207,7 +213,7 @@ class AdminPageController extends \AdminController {
 	 */
 	public function postEdit($id) {
 		// Declare the rules for the form validation
-		$rules = array('name' => 'required|min:3', 'content' => 'required');
+		$rules = array('title' => 'required|min:3', 'content' => 'required');
 
 		// Validate the inputs
 		$validator = Validator::make(Input::all(), $rules);
@@ -221,7 +227,7 @@ class AdminPageController extends \AdminController {
 			// Was the page updated?
 			
 			$page -> title = Input::get('title');
-			$page -> slug = Str::slug(Input::get('name'));
+			$page -> slug = Str::slug(Input::get('title'));
 			$page -> content = Input::get('content');
 			$page -> status = Input::get('status');
 			$page -> meta_title = Input::get('meta_title');

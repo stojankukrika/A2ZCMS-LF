@@ -9,7 +9,7 @@
 </ul>
 {{-- Edit Page Form --}}
 <!-- <form class="form-horizontal" method="post" action="{{ URL::to('admin/navigation/create') }}" > -->
-<form class="form-horizontal" method="post" action="@if (isset($navigationGroup)){{ URL::to('admin/navigationgroups/' . $navigationGroup->id . '/edit') }}@endif" >
+<form class="form-horizontal" method="post" action="@if (isset($navigationGroup)){{ URL::to('admin/pages/navigationgroups/' . $navigationGroup->id . '/edit') }}@endif" >
 	<!-- CSRF Token -->
 	<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 	<!-- ./ csrf token -->

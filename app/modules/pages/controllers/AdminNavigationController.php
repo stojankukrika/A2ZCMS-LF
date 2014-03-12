@@ -30,7 +30,7 @@ class AdminNavigationController extends \AdminController {
 	 * @return Response
 	 */
 	public function getIndex() {
-		$title = Lang::get('admin/navigation/title.navigation_management');
+		$title = 'Navigation management';
 		$navigations = $this -> navigation -> all();
 
 		return View::make('pages::admin/navigation/index', compact('title', 'navigations'));
@@ -45,7 +45,7 @@ class AdminNavigationController extends \AdminController {
 		$title = 'Create a new navigation';
 
 		$navigations = Navigation::all();
-		$pageList = Page::lists('name', 'id');
+		$pageList = Page::lists('title', 'id');
 		$navigationList = Navigation::lists('title', 'id');
 		$navigationGroupList = NavigationGroup::lists('title', 'id');
 
@@ -87,17 +87,17 @@ class AdminNavigationController extends \AdminController {
 
 			if ($this -> navigation -> id) {
 				// Redirect to the new navigation
-				return Redirect::to('admin/navigation/' . $this -> navigation -> id . '/edit') -> with('success', Lang::get('admin/navigation/messages.create.success'));
+				return Redirect::to('admin/pages/navigation/' . $this -> navigation -> id . '/edit') -> with('success', 'Success');
 			} else {
 				// Get validation errors (see Ardent package)
 				$error = $this -> navigation -> errors() -> all();
 
-				return Redirect::to('admin/navigation/create') -> with('error', $error);
+				return Redirect::to('admin/pages/navigation/create') -> with('error', $error);
 			}
 		}
 
 		// Form validation failed
-		return Redirect::to('admin/navigation/create') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/pages/navigation/create') -> withInput() -> withErrors($validator);
 	}
 
 	/**
@@ -117,13 +117,13 @@ class AdminNavigationController extends \AdminController {
 			$navigationList = Navigation::where('id', '<>', $id) -> lists('title', 'id');
 
 			// Title
-			$title = Lang::get('admin/navigation/title.navigation_group_update');
+			$title = 'Navigation group update';
 			// mode
 			$mode = 'edit';
 
 			return View::make('pages::admin/navigation/create_edit', compact('navigation', 'title', 'mode', 'pageList', 'navigationGroupList', 'navigationList'));
 		} else {
-			return Redirect::to('admin/navigation') -> with('error', Lang::get('admin/navigation/messages.does_not_exist'));
+			return Redirect::to('admin/pages/navigation') -> with('error', 'Does not exist');
 		}
 	}
 
@@ -157,15 +157,15 @@ class AdminNavigationController extends \AdminController {
 			// Was the page updated?
 			if ($navigation -> update($inputs)) {
 				// Redirect to the navigation navigation
-				return Redirect::to('admin/navigation/' . $navigation -> id . '/edit') -> with('success', Lang::get('admin/navigation/messages.update.success'));
+				return Redirect::to('admin/pages/navigation/' . $navigation -> id . '/edit') -> with('success', 'Success');
 			} else {
 				// Redirect to the navigation navigation
-				return Redirect::to('admin/navigation/' . $navigation -> id . '/edit') -> with('error', Lang::get('admin/navigation/messages.update.error'));
+				return Redirect::to('admin/pages/navigation/' . $navigation -> id . '/edit') -> with('error', 'Error');
 			}
 		}
 
 		// Form validation failed
-		return Redirect::to('admin/navigation/' . $navigation -> id . '/edit') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/pages/navigation/' . $navigation -> id . '/edit') -> withInput() -> withErrors($validator);
 	}
 
 	/**
@@ -180,11 +180,11 @@ class AdminNavigationController extends \AdminController {
 		// Was the role deleted?
 		if ($navigation -> delete()) {
 			// Redirect to the role management page
-			return Redirect::to('admin/navigation') -> with('success', Lang::get('admin/navigation/messages.delete.success'));
+			return Redirect::to('admin/pages/navigation') -> with('success', 'Success');
 		}
 
 		// There was a problem deleting the role
-		return Redirect::to('admin/navigation') -> with('error', Lang::get('admin/navigation/messages.delete.error'));
+		return Redirect::to('admin/pages/navigation') -> with('error', 'Error');
 	}
 
 	/**
@@ -196,10 +196,10 @@ class AdminNavigationController extends \AdminController {
 		$navs = Navigation::leftjoin('navigation_groups', 'navigation_groups.id', '=', 'navigation_links.navigation_group_id') 
 						-> leftjoin('pages', 'navigation_links.page_id', '=', 'pages.id') 
 						-> orderBy('navigation_links.position') 
-						-> select(array('navigation_links.id', 'navigation_links.title', 'pages.name as page', 'navigation_links.link_type', 'navigation_groups.title as navigtion_group'));
+						-> select(array('navigation_links.id', 'navigation_links.title', 'pages.title as page', 'navigation_links.link_type', 'navigation_groups.title as navigtion_group'));
 
-		return Datatables::of($navs) -> add_column('actions', '<a href="{{{ URL::to(\'admin/navigation/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-default btn-sm"><i class="icon-edit "></i></a>
-                               <a href="{{{ URL::to(\'admin/navigation/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
+		return Datatables::of($navs) -> add_column('actions', '<a href="{{{ URL::to(\'admin/pages/navigation/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-default btn-sm"><i class="icon-edit "></i></a>
+                               <a href="{{{ URL::to(\'admin/pages/navigation/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
                                <input type="hidden" name="row" value="{{$id}}" id="row">                               
             		') -> remove_column('id') -> make();
 	}

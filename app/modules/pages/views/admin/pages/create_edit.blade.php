@@ -33,11 +33,11 @@
 		<!-- General tab -->
 		<div class="tab-pane active" id="tab-general">
 			<!-- Post Title -->
-			<div class="form-group {{{ $errors->has('name') ? 'error' : '' }}}">
+			<div class="form-group {{{ $errors->has('title') ? 'error' : '' }}}">
 				<div class="col-lg-12">
-					<label class="control-label" for="name">{{{ Lang::get('admin/pages/table.name') }}}</label>
-					<input type="text" name="name" id="name" value="{{{ Input::old('name', isset($page) ? $page->name : null) }}}" class="form-control input-sm" />
-					{{{ $errors->first('name', '<span class="help-inline">:message</span>') }}}
+					<label class="control-label" for="title">{{{ Lang::get('admin/pages/table.name') }}}</label>
+					<input type="text" name="title" id="title" value="{{{ Input::old('title', isset($page) ? $page->title : null) }}}" class="form-control input-sm" />
+					{{{ $errors->first('title', '<span class="help-inline">:message</span>') }}}
 				</div>
 			</div>
 			<!-- ./ page name -->			
@@ -287,7 +287,7 @@
 												@endforeach
 											  </select>
 											</div>
-										@endif										
+										@endif											
 									</div>
 								</li>
 							@endforeach

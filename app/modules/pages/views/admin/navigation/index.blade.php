@@ -8,11 +8,11 @@
 {{-- Content --}}
 @section('content')
 <div class="page-header">
-	<h3> {{{ $title }}}
+	<h1> {{{ $title }}}
 	<div class="pull-right">
-		<a href="{{{ URL::to('admin/navigation/create') }}}" class="btn btn-small btn-info iframe">
+		<a href="{{{ URL::to('admin/pages/navigation/create') }}}" class="btn btn-small btn-info iframe">
 			<i class="icon-plus-sign icon-white"></i> {{{ Lang::get('admin/general.create') }}}</a>
-	</div></h3>
+	</div></h1>
 </div>
 
 <table id="pages" class="table table-bordered table-hover">
@@ -42,7 +42,7 @@
 			},
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "{{ URL::to('admin/navigation/data') }}",
+			"sAjaxSource" : "{{ URL::to('admin/pages/navigation/data') }}",
 			"fnDrawCallback" : function(oSettings) {
 				$(".iframe").colorbox({
 					iframe : true,

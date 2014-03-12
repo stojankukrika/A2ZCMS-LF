@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Pages\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Str;
 use App\Modules\Pages\Models\Page;
 use App\Modules\Pages\Models\Navigation;
 use App\Modules\Pages\Models\NavigationGroup;
@@ -27,10 +27,10 @@ class AdminNavigationGroupController extends \AdminController {
 	 * @return Response
 	 */
 	public function getIndex() {
-		$title = Lang::get('admin/navigation/title.navigation_group_management');
+		$title = 'Navigation group management';
 		$navigationGroups = $this -> navigationGroup -> all();
 
-		return View::make('admin/navigationgroups/index', compact('title', 'navigationGroups'));
+		return View::make('pages::admin/navigationgroups/index', compact('title', 'navigationGroups'));
 	}
 
 	/**
@@ -39,10 +39,10 @@ class AdminNavigationGroupController extends \AdminController {
 	 * @return Response
 	 */
 	public function getCreate() {
-		$title = Lang::get('admin/navigation/title.create_a_new_navigation_group');
+		$title = 'Create a new navigation group';
 
 		// Show the navigation group
-		return View::make('admin/navigationgroups/create_edit', compact('title'));
+		return View::make('pages::admin/navigationgroups/create_edit', compact('title'));
 	}
 
 	/**
@@ -70,17 +70,17 @@ class AdminNavigationGroupController extends \AdminController {
 
 			if ($this -> navigationGroup -> id) {
 				// Redirect to the new navigationGroup
-				return Redirect::to('admin/navigationgroups/' . $this -> navigationGroup -> id . '/edit') -> with('success', Lang::get('admin/navigation/messages.create.success'));
+				return Redirect::to('admin/pages/navigationgroups/' . $this -> navigationGroup -> id . '/edit') -> with('success', 'Success');
 			} 
 			else {
 				// Get validation errors (see Ardent package)
 				$error = $this -> navigationGroup -> errors() -> all();
 
-				return Redirect::to('admin/navigationgroups/create') -> with('error', $error);
+				return Redirect::to('admin/pages/navigationgroups/create') -> with('error', $error);
 			}
 		}
 		// Form validation failed
-		return Redirect::to('admin/navigationgroups/create') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/pages/navigationgroups/create') -> withInput() -> withErrors($validator);
 	}
 
 	/**
@@ -93,13 +93,13 @@ class AdminNavigationGroupController extends \AdminController {
 		if ($id) {
 			$navigationGroup = NavigationGroup::find($id);
 			// Title
-			$title = Lang::get('admin/navigation/title.navigation_group_update');
+			$title = 'Navigation group update';
 			// mode
 			$mode = 'edit';
 
-			return View::make('admin/navigationgroups/create_edit', compact('navigationGroup', 'title', 'mode'));
+			return View::make('pages::admin/navigationgroups/create_edit', compact('navigationGroup', 'title', 'mode'));
 		} else {
-			return Redirect::to('admin/navigationgroups') -> with('error', Lang::get('admin/navigation/messages.does_not_exist'));
+			return Redirect::to('admin/pages/navigationgroups') -> with('error', 'Does not exist');
 		}
 	}
 
@@ -122,19 +122,19 @@ class AdminNavigationGroupController extends \AdminController {
 
 		// Check if the form validates with success
 		if ($validator -> passes()) {
-			$navigationGroup -> abbrev = Str::slug(Input::get('title'));
+			$navigationGroup -> slug = Str::slug(Input::get('title'));
 			// Was the page updated?
 			if ($navigationGroup -> update($inputs)) {
 				// Redirect to the navigationGroup navigationGroup
-				return Redirect::to('admin/navigationgroups/' . $navigationGroup -> id . '/edit') -> with('success', Lang::get('admin/navigation/messages.update.success'));
+				return Redirect::to('admin/pages/navigationgroups/' . $navigationGroup -> id . '/edit') -> with('success', 'Success');
 			} else {
 				// Redirect to the navigationGroup navigationGroup
-				return Redirect::to('admin/navigationgroups/' . $navigationGroup -> id . '/edit') -> with('error', Lang::get('admin/navigation/messages.update.error'));
+				return Redirect::to('admin/pages/navigationgroups/' . $navigationGroup -> id . '/edit') -> with('error', 'Error');
 			}
 		}
 
 		// Form validation failed
-		return Redirect::to('admin/navigationgroups/' . $navigationGroup -> id . '/edit') -> withInput() -> withErrors($validator);
+		return Redirect::to('admin/pages/navigationgroups/' . $navigationGroup -> id . '/edit') -> withInput() -> withErrors($validator);
 	}
 
 	/**
@@ -149,11 +149,11 @@ class AdminNavigationGroupController extends \AdminController {
 		// Was the role deleted?
 		if ($navigationGroup -> delete()) {
 			// Redirect to the role management page
-			return Redirect::to('admin/navigationgroups') -> with('success', Lang::get('admin/navigation/messages.delete.success'));
+			return Redirect::to('admin/pages/navigationgroups') -> with('success', 'Success');
 		}
 
 		// There was a problem deleting the role
-		return Redirect::to('admin/navigationgroups') -> with('error', Lang::get('admin/navigation/messages.delete.error'));
+		return Redirect::to('admin/pages/navigationgroups') -> with('error', 'Error');
 	}
 
 	/**
@@ -164,8 +164,8 @@ class AdminNavigationGroupController extends \AdminController {
 	public function getData() {
 		$navs = NavigationGroup::select(array('navigation_groups.id', 'navigation_groups.title', 'navigation_groups.slug'));
 
-		return Datatables::of($navs) -> add_column('actions', '<a href="{{{ URL::to(\'admin/navigationgroups/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-default btn-sm"><i class="icon-edit "></i></a>
-                               <a href="{{{ URL::to(\'admin/navigationgroups/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
+		return Datatables::of($navs) -> add_column('actions', '<a href="{{{ URL::to(\'admin/pages/navigationgroups/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-default btn-sm"><i class="icon-edit "></i></a>
+                               <a href="{{{ URL::to(\'admin/pages/navigationgroups/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
                                
             ') -> remove_column('id') -> make();
 	}
