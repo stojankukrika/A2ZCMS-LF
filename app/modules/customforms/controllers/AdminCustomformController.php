@@ -159,9 +159,9 @@ class AdminCustomformController extends \AdminController {
 	 * @return Datatables JSON
 	 */
 	public function getData() {
-		$blogs = CustomForm::select(array('title', 'id as fields', 'id as id', 'created_at'));
+		$customforms = CustomForm::select(array('title', 'id as fields', 'id as id', 'created_at'));
 
-		return Datatables::of($blogs) 
+		return Datatables::of($customforms) 
 			-> edit_column('fields', '{{ App\Modules\Customforms\Models\Customformfield::where(\'customform_id\', \'=\', $id)->count() }}') 
 			-> add_column('actions', '<a href="{{{ URL::to(\'admin/customforms/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
                 <a href="{{{ URL::to(\'admin/customforms/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>

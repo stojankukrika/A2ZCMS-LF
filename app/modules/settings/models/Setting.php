@@ -45,8 +45,4 @@ class Setting extends \Eloquent {
 		return nl2br($this -> defaultvalue);
 	}
 
-	public function getPresenter() {
-		return new CommentPresenter($this);
-	}
-
 }

@@ -10,7 +10,7 @@
 <div class="page-header">
 	<h1> {{{ $title }}}
 	<div class="pull-right">
-		<a href="{{{ URL::to('admin/customforms/create') }}}" class="btn btn-small btn-info iframe">
+		<a href="{{{ URL::to('admin/polls/create') }}}" class="btn btn-small btn-info iframe">
 			<span class="icon-plus-sign icon-white"></span> {{{ Lang::get('admin/general.create') }}}</a>
 	</div></h1>
 </div>
@@ -18,9 +18,9 @@
 <table id="contactforms" class="table table-striped table-hover">
 	<thead>
 		<tr>
-			<th class="col-md-6">{{{ Lang::get('admin/customform/table.title') }}}</th>
-			<th class="col-md-2">{{{ Lang::get('admin/customform/table.items') }}}</th>
-			<th class="col-md-2">{{{ Lang::get('admin/customform/table.created_at') }}}</th>
+			<th class="col-md-6">{{{ Lang::get('admin/polls/table.title') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('admin/polls/table.items') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('admin/polls/table.created_at') }}}</th>
 			<th class="col-md-2">{{{ Lang::get('table.actions') }}}</th>
 		</tr>
 	</thead>
@@ -41,7 +41,7 @@
 			},
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "{{ URL::to('admin/customforms/data') }}",
+			"sAjaxSource" : "{{ URL::to('admin/polls/data') }}",
 			"fnDrawCallback" : function(oSettings) {
 				$(".iframe").colorbox({
 					iframe : true,

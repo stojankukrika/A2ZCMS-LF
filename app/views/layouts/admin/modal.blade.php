@@ -101,8 +101,8 @@
 						// Optionally alert the user of success here...
 						setTimeout(function() 
 					        {
-					            //parent.$.colorbox.close();
-					            //window.parent.location.reload();
+					            parent.$.colorbox.close();
+					            window.parent.location.reload();
 					        }, 10);
 						
 					}).fail(function() {
