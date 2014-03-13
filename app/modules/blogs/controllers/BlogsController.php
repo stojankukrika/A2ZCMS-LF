@@ -2,6 +2,7 @@
 
 use App, View, Session,Auth,Validator,Input,Redirect;
 use App\Modules\Blogs\Models\Blog;
+use App\Modules\Blogs\Models\BlogCategory;
 
 class BlogsController extends \BaseController {
 

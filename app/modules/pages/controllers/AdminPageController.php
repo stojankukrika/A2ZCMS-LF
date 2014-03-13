@@ -147,7 +147,7 @@ class AdminPageController extends \AdminController {
 									'plugin_functions.title','plugins.name','page_plugin_functions.order','plugins.function_id','plugin_functions.function','plugin_functions.params','plugins.function_grid'));
 		
 			$pluginfunction_content_all = PluginFunction::leftJoin('plugins', 'plugins.id', '=', 'plugin_functions.plugin_id')
-									->where('type','=','content')->get(array('plugin_functions.title','plugins.function_id','plugin_functions.id as id','plugin_functions.function','plugin_functions.params','plugins.function_grid'));
+									->where('type','=','content')->get(array('plugin_functions.title','plugins.name','plugins.function_id','plugin_functions.id as id','plugin_functions.function','plugin_functions.params','plugins.function_grid'));
 			
 			 /*add to view other content plugins that not in page*/
 			$tem = array();
@@ -162,6 +162,9 @@ class AdminPageController extends \AdminController {
 			foreach ($pluginfunction_content as $key => $value) {
 				$function_id = $value['function_id'];
 				$function_grid = $value['function_grid'];
+				if($value['name']==NULL){
+					$value['name'] = 'pages';
+				}
 				if($value['plugin_function_id']!=""){
 					$value['ids'] = PagePluginFunction::where('param','=','id')->where('page_id','=',$page->id)->where('plugin_function_id','=',$value['plugin_function_id'])->pluck('value');
 					$value['grids'] = PagePluginFunction::where('param','=','grid')->where('page_id','=',$page->id)->where('plugin_function_id','=',$value['plugin_function_id'])->pluck('value');
