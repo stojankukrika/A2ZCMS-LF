@@ -8,7 +8,7 @@
 {{-- Content --}}
 @section('content')
 <div class="page-header">
-	<h3> {{{ $title }}} </h3>
+	<h1> {{{ $title }}} </h1>
 </div>
 <label class="control-label" for="title">{{ $title }}{{$galleries->title}}</label>
 <div id="pictures" name="pictures" class="row"></div>

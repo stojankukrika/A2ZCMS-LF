@@ -72,8 +72,8 @@ class AdminGalleryController extends \AdminController {
 			$this -> gallery -> folderid = sha1($this -> gallery -> title . $this -> gallery -> start_publish);
 			// Was the gallery created?
 			if ($this -> gallery -> save()) {
-				File::makeDirectory(base_path() . '\public\gallery\/' . $this -> gallery -> folderid);
-				File::makeDirectory(base_path() . '\public\gallery\/' . $this -> gallery -> folderid . '\/thumbs');
+				File::makeDirectory(public_path() . '\gallery\/' . $this -> gallery -> folderid);
+				File::makeDirectory(public_path() . '\gallery\/' . $this -> gallery -> folderid . '\/thumbs');
 
 				// Redirect to the new gallery post page
 				return Redirect::to('admin/galleries/' . $this -> gallery -> id . '/edit') -> with('success', 'Success');

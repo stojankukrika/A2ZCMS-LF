@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Users\Seeds;
+<?php namespace App\Modules\Offline\Seeds;
 
 use Eloquent, Str;
 

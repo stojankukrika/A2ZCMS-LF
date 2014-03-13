@@ -8,7 +8,7 @@
 {{-- Content --}}
 @section('content')
 <div class="page-header">
-	<h3> {{{ $title }}} </h3>
+	<h1> {{{ $title }}} </h1>
 </div>
 <table id="comments" class="table table-striped table-hover">
 	<thead>

@@ -1,4 +1,4 @@
 {
 	"enabled": true,
-	"seeder": "App\\Modules\\Galleries\\Seeds\\DatabaseSeeder"
+	"seeder": "App\\Modules\\Install\\Seeds\\DatabaseSeeder"
 }

@@ -1,3 +1,4 @@
 {
 	"enabled": true,
+	"seeder": "App\\Modules\\Offline\\Seeds\\DatabaseSeeder"
 }

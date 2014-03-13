@@ -8,7 +8,7 @@
 {{-- Content --}}
 @section('content')
 	<div class="page-header">
-		<h3> {{{ $title }}} </h3>
+		<h1> {{{ $title }}} </h1>
 	</div>
 	<label class="control-label" for="title">Gallery</label>
 	{{Form::select('galleryid', $options, $galleries ,array('class'=>'form-control','data-style'=>'btn-primary') );}}

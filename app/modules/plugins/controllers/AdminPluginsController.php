@@ -19,7 +19,7 @@ class AdminPluginsController extends \AdminController{
 		$title = "Plugins menage";
         $plugin = Plugin::Join('admin_navigations','plugins.id','=','admin_navigations.plugin_id')
 						->orderBy('admin_navigations.order')
-						->get(array('plugins.id','plugins.name','plugins.title','plugins.can_uninstall','plugins.created_at'));
+						->get(array('plugins.id','plugins.name','plugins.title','plugins.pluginversion','plugins.can_uninstall','plugins.created_at'));
 				
 		$temp = array();
 		foreach ($plugin as $item) {
@@ -30,7 +30,7 @@ class AdminPluginsController extends \AdminController{
 			$dir = str_replace(base_path().'/app/modules/', '', $dir);
 			if(!in_array($dir,$temp) && $dir!='install' && $dir!='testmodule' && $dir!='offline' && $dir!='menu' && $dir!='adminmenu')
 			$plugin[] =(object) array('name' => $dir, 'id'=>0,
-			'title' => ucfirst($dir), 'created_at' => '', 'can_uninstall' =>0, 'not_installed'=>TRUE);
+			'title' => ucfirst($dir), 'pluginversion'=>"",'created_at' => '', 'can_uninstall' =>0, 'not_installed'=>TRUE);
 		}
 		return View::make('plugins::admin/index', compact('plugin','title'));
 	}

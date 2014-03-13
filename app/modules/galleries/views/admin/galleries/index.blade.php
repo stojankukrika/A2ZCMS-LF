@@ -8,11 +8,11 @@
 {{-- Content --}}
 @section('content')
 <div class="page-header">
-	<h3> {{{ $title }}}
+	<h1> {{{ $title }}}
 	<div class="pull-right">
 		<a href="{{{ URL::to('admin/galleries/create') }}}" class="btn btn-small btn-info iframe">
 			<span class="icon-plus-sign icon-white"></span> {{{ Lang::get('admin/general.create') }}}</a>
-	</div></h3>
+	</div></h1>
 </div>
 
 <table id="galleries" class="table table-striped table-hover">

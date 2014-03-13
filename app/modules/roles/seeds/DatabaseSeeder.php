@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Settings\Seeds;
+<?php namespace App\Modules\Roles\Seeds;
 
 use Eloquent, Str;
 
@@ -11,8 +11,6 @@ class DatabaseSeeder extends \Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
-
-		$this -> call('SettingsPermissionsTableSeeder');
 	}
 
 }

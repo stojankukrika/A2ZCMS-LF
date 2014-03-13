@@ -29,7 +29,7 @@ class AdminGalleryImageController extends \AdminController {
 	 */
 	public function getIndex() {
 		// Title
-		$title = 'Gallery management';
+		$title = 'Gallery image management';
 
 		// Gallery category
 		$galleries = Gallery::all();

@@ -8,7 +8,6 @@ return array(
 	 */
 	'path' => array(
 		'app/modules',
-		'public/addons',
 	),
 
 	/**

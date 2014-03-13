@@ -10,7 +10,7 @@ return array(
   | Set this to the directory of the theme you want active. No slashes.
   |
   */
-  'theme' => 'a2z-default',
+  'theme' => 'a2zcms',
 
   /*
   |--------------------------------------------------------------------------
