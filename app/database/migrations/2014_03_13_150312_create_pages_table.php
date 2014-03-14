@@ -31,9 +31,7 @@ class CreatePagesTable extends Migration {
 			$table -> integer('voteup');
 			$table -> integer('votedown');
 			$table -> string('password');
-			$table -> string('tags')-> nullable();			
-			$table -> integer('voteup');
-			$table -> integer('votedown');
+			$table -> string('tags')-> nullable();
 			$table -> integer('hits');			
 			$table -> timestamps();
 			$table -> softDeletes();

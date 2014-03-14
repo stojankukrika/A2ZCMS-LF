@@ -9,7 +9,7 @@ class PagePluginFunctionsTableSeeder extends Seeder {
 		
 		$page_id = Page::first()->id;
 
-		$page_plugin_functions = array( 
+		DB::table('page_plugin_functions')->insert(array( 
 					array('page_id' => $page_id, 
 						'plugin_function_id' => PluginFunction::find(1)->id,
 						'order' => '1',
@@ -19,19 +19,14 @@ class PagePluginFunctionsTableSeeder extends Seeder {
 						'created_at' => new DateTime, 
 						'updated_at' => new DateTime, ),
 					array('page_id' => $page_id, 
-						'plugin_function_id' => PluginFunction::find(5)->id,
+						'plugin_function_id' => PluginFunction::find(3)->id,
 						'order' => '1',
 						'param' => '',
 						'type' => '',
 						'value' => '',
 						'created_at' => new DateTime, 
-						'updated_at' => new DateTime, )	
-						
+						'updated_at' => new DateTime, ))
 				);
-		
-
-		// Uncomment the below to run the seeder
-		DB::table('page_plugin_functions')->insert($page_plugin_functions);
 	}
 
 }

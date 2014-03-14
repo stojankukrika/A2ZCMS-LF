@@ -14,11 +14,11 @@ class CreateNavigationTable extends Migration {
 
 		Schema::create('navigation_groups', function(Blueprint $table) {
 			$table -> increments('id');
-			$table -> string('title') -> unique();
+			$table -> string('title');
 			$table -> string('slug') -> unique();
-			$table -> boolean('showmenu')->after('slug');
-			$table -> boolean('showfooter')->after('showmenu');
-			$table -> boolean('showsidebar')->after('showfooter');
+			$table -> boolean('showmenu') -> default(0);
+			$table -> boolean('showfooter') -> default(0);
+			$table -> boolean('showsidebar') -> default(0);
 			$table -> timestamps();
 			$table -> softDeletes();
 		});
@@ -34,7 +34,7 @@ class CreateNavigationTable extends Migration {
 			$table -> integer('navigation_group_id') -> unsigned();
 			$table -> foreign('navigation_group_id') -> references('id') -> on('navigation_groups')-> onDelete('cascade');
 			$table -> integer('position');
-			$table -> enum('target', array('selected', '_blank')) -> default('selected');
+			$table -> enum('target', array('_self', '_blank')) -> default('_self');
 			$table -> string('restricted_to');
 			$table -> string('class', 50);
 			$table -> timestamps();

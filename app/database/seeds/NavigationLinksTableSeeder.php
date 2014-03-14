@@ -8,8 +8,7 @@ class NavigationLinksTableSeeder extends Seeder {
 		// DB::table('navigation_links')->truncate();
 		$page_id = Page::first()->id;
 		$navigation_group_id = NavigationGroup::first()->id;
-		
-		$navigation_links = array( 
+		DB::table('navigation_links')->insert(array( 
 					array('title' => 'Home', 
 						'parent' => NULL,
 						'link_type' => 'page',
@@ -23,10 +22,7 @@ class NavigationLinksTableSeeder extends Seeder {
 						'class' => '',
 						'created_at' => new DateTime, 
 						'updated_at' => new DateTime, )							
-				);
-
-		// Uncomment the below to run the seeder
-		 DB::table('navigation_links')->insert($navigation_links);
+				));
 	}
 
 }

@@ -46,7 +46,7 @@
 		<div class="control-group">
 			<label class="control-label" for="password">{{ Lang::get('install/installer.database_password') }}:</label>
 			<div class="controls">
-				<input id="password" type="text" name="password" placeholder="password" value="{{ (isset($old) ? $old->password : '') }}">
+				<input id="password" type="password" name="password" placeholder="password" value="{{ (isset($old) ? $old->password : '') }}">
 			</div>
 		</div>
 			<div class="control-group">

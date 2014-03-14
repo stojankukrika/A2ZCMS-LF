@@ -14,11 +14,12 @@ class CreatePluginsTable extends Migration {
 		Schema::create('plugins', function(Blueprint $table) {
 			$table -> increments('id');
 			$table -> string('name');
-			$table -> string('content');
+			$table -> string('title');
 			$table -> string('function_id') -> nullable();
 			$table -> string('function_grid') -> nullable();
-			$table -> string('pluginversion');
-			$table -> boolean('active');
+			$table -> boolean('can_uninstall') -> default('0');
+			$table -> string('pluginversion',5);
+			$table -> boolean('active') -> default('0');
 			$table -> timestamps();
 			$table -> softDeletes();
 		});

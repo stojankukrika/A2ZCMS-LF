@@ -6,9 +6,9 @@ class DatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 
 		// Add calls to Seeders here
-		$this -> call('CustomFormsTableSeeder');
+		/*$this -> call('CustomFormsTableSeeder');
 		$this -> call('CustomFormFieldsTableSeeder');
-		$this -> call('CustomFormPermissionsTableSeeder');
+		$this -> call('CustomFormPermissionsTableSeeder');*/
 	}
 
 }
