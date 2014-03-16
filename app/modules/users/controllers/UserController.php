@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, Page,Input, Redirect, View, Confide,Auth, Session;
-
 use App\Modules\Users\Models\User;
+
+use App, Page,Input, Redirect, View, Confide,Auth, Session;
 
 class UserController extends \BaseController {
 
@@ -20,12 +20,13 @@ class UserController extends \BaseController {
 	private $useravatheight;
 	private $page;
 	private $pagecontent;
+	
 	public function __construct(User $user) {
 		parent::__construct();
 		$this -> user = $user;
 		
-		$this->page = array();
-		$this->pagecontent = array();
+		$this->page = \App\Modules\Pages\Models\Page::first();
+		$this->pagecontent = \BaseController::createSiderContent($this->page->id);
 	}
 	
 	/**
@@ -37,9 +38,10 @@ class UserController extends \BaseController {
 		if (!empty($user -> id)) {
 			return Redirect::to('/admin/users/profile');
 		}
-		$data['sidebar_right'] = array();
-		$data['sidebar_left'] = array();
-		$data['page'] = array();
+		$data['sidebar_right'] = $this->pagecontent['sidebar_right'];
+		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
+		$data['page'] = $this->page;
+
 		return View::make('users::login', $data);
 	}
 
@@ -72,11 +74,11 @@ class UserController extends \BaseController {
 		} else {
 			// Check if there was too many login attempts
 			if (Confide::isThrottled($input)) {
-				$err_msg = Lang::get('confide::confide.alerts.too_many_attempts');
+				$err_msg = 'Too many attempts';
 			} elseif ($this -> user -> checkUserExists($input) && !$this -> user -> isConfirmed($input)) {
-				$err_msg = Lang::get('confide::confide.alerts.not_confirmed');
+				$err_msg = 'Not confirmed';
 			} else {
-				$err_msg = Lang::get('confide::confide.alerts.wrong_credentials');
+				$err_msg = 'Wrong credentials';
 			}
 
 			return Redirect::to('users/login') -> withInput(Input::except('password')) -> with('error', $err_msg);

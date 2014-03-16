@@ -4,6 +4,7 @@ use App, View, Session,Auth,Validator,Input,Redirect,String;
 use App\Modules\Pages\Models\Page;
 use App\Modules\Pages\Models\Navigation;
 use App\Modules\Settings\Models\Setting;
+use App\Modules\Users\Models\User;
 
 class PagesController extends \BaseController {
 
@@ -22,11 +23,14 @@ class PagesController extends \BaseController {
 	 * @param Blog $blog
 	 * @param User $user
 	 */
-	 public function __construct(Page $page, Setting $settings) {
+	 protected $user;
+	 
+	 public function __construct(Page $page, Setting $settings, User $user) {
 		parent::__construct();
 		$this -> page = $page;
 		$settings = Setting::all();
 		$this -> settings = $settings;
+		$this->user = $user;
 
 	}
  /*function for plugins*/
@@ -45,7 +49,6 @@ class PagesController extends \BaseController {
 			return App::abort(404);
 		}
 		$pagecontent = \BaseController::createSiderContent($page->id);
-		
 		// Show the page
 		$data['sidebar_right'] = $pagecontent['sidebar_right'];
 		$data['sidebar_left'] = $pagecontent['sidebar_left'];

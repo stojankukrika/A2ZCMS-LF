@@ -7,7 +7,7 @@ use Zizaco\Entrust\HasRole;
 use Robbo\Presenter\PresentableInterface;
 use Carbon\Carbon;
 
-class User extends \Eloquent {
+class User extends ConfideUser {
 	
 	protected $table = 'users';
 	
