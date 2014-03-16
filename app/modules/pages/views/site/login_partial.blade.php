@@ -1,0 +1,81 @@
+<ul class="list-unstyled">
+   	@if (Auth::check())
+   	<h4>{{{ Lang::get('site/partial_views/sidebar/login.welcome') }}} {{Auth::user()->name}} {{Auth::user()->surname}}</h4>
+		@if(Auth::user()->avatar)
+		<img alt="Avatar" src="{{asset('avatar/'.Auth::user()->avatar)}}">
+		@else
+		<img alt="Avatar" src="{{asset('avatar/avatar.png')}}">
+		@endif
+		
+		@if (Auth::user()->currentRoleIds()['allow_admin']=='1')
+		<li>
+			<a href="{{{ URL::to('admin') }}}">{{{ Lang::get('site/partial_views/sidebar/login.admin_panel') }}}</a>
+		</li>
+		@endif
+		<li>
+			<a href="{{{ URL::to('users/messages') }}}">{{{ Lang::get('site/partial_views/sidebar/login.messages') }}} ({{$unreadmessages}})</a>
+		</li>
+		<li>
+			<a href="{{{ URL::to('users') }}}">{{{ Lang::get('site/partial_views/sidebar/login.edit_profile') }}}</a>
+		</li>
+		<li>
+			<a href="{{{ URL::to('users/logout') }}}">
+				<button tabindex="3" type="submit" class="btn btn-danger">
+						{{{ Lang::get('site/partial_views/sidebar/login.logout') }}}
+					</button></a>
+		</li>
+		@else
+		<h4>{{{ Lang::get('site/partial_views/sidebar/login.desc') }}}</h4>
+		<form method="POST" action="{{ URL::to('users/login') }}" accept-charset="UTF-8">
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+			<fieldset>
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="email">{{{ Lang::get('site/partial_views/sidebar/login.username_e_mail') }}}</label>
+					<div class="col-md-8">
+						<input class="form-control" tabindex="1" placeholder="{{{ Lang::get('site/partial_views/sidebar/login.username_e_mail') }}}" type="text" name="email" id="email" value="{{ Input::old('email') }}">
+					</div>
+				</div>
+				<div class="form-group">&nbsp;</div>
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="password"> {{{ Lang::get('site/partial_views/sidebar/login.password') }}}</label>
+					<div class="col-md-8">
+						<input class="form-control" tabindex="2" placeholder="{{{ Lang::get('site/partial_views/sidebar/login.password') }}}" type="password" name="password" id="password">
+					</div>
+				</div>			
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-10">
+						<div class="checkbox">
+							<label for="remember">{{{ Lang::get('site/partial_views/sidebar/login.remember') }}}
+								<input type="hidden" name="remember" value="0">
+								<input tabindex="4" type="checkbox" name="remember" id="remember" value="1">
+							</label>
+						</div>
+					</div>
+				</div>							
+				@if ( Session::get('error') )
+				<div class="alert alert-danger">
+					{{ Session::get('error') }}
+				</div>
+				@endif		
+				@if ( Session::get('notice') )
+				<div class="alert">
+					{{ Session::get('notice') }}
+				</div>
+				@endif				
+				<p>
+					<button tabindex="3" type="submit" class="btn btn-primary">
+						{{{ Lang::get('site/partial_views/sidebar/login.submit') }}}
+					</button>
+					<a class="btn btn-success" href="{{ Url::to('users/forgot') }}">{{{ Lang::get('site/partial_views/sidebar/login.forgot_password') }}}</a>
+				</p>
+			</fieldset>
+		</form>	
+	    <h4>{{{ Lang::get('site/partial_views/sidebar/login.need_an_account') }}}</h4>
+			<p>
+				{{{ Lang::get('site/partial_views/sidebar/login.create_an_account_here') }}}
+			</p>
+			<p>
+				<a href="{{ Url::to('users/create') }}" class="btn btn-info">{{{ Lang::get('site/partial_views/sidebar/login.create_account') }}}</a>
+			</p>
+		@endif
+	</ul>

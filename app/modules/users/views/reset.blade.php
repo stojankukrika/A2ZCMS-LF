@@ -1,4 +1,4 @@
-@extends('site.layouts.default')
+@extends('layouts.site.default')
 
 {{-- Page title --}}
 @section('page_header')

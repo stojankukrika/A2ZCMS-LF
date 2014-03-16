@@ -2,7 +2,6 @@
 Route::pattern('id', '[0-9]+');
 Route::pattern('token', '[0-9a-z-]+');
 
-Route::get('', 'App\Modules\Users\Controllers\UserController@getLogin');
 /*Site routes*/
 Route::group(array('prefix' => 'users'), function()
 {

@@ -1,12 +1,77 @@
 <?php namespace App\Modules\Pages\Controllers;
 
-use App, View, Session,Auth,Validator,Input,Redirect;
+use App, View, Session,Auth,Validator,Input,Redirect,String;
 use App\Modules\Pages\Models\Page;
+use App\Modules\Pages\Models\Navigation;
+use App\Modules\Settings\Models\Setting;
 
 class PagesController extends \BaseController {
 
+	/**
+	 * Page Model
+	 * @var Page
+	 */
+	protected $page;
+	/**
+	 * Settings Model
+	 * @var Setting
+	 */
+	protected $settings;
+	/**
+	 * Inject the models.
+	 * @param Blog $blog
+	 * @param User $user
+	 */
+	 public function __construct(Page $page, Setting $settings) {
+		parent::__construct();
+		$this -> page = $page;
+		$settings = Setting::all();
+		$this -> settings = $settings;
+
+	}
  /*function for plugins*/
-	public function content(){
-		return "";
+	public function getView($slug=0) {
+		if($slug==0) $slug = 1;
+		// Get this webpage data
+		$navigation_link = Navigation::where('id', '=', $slug) -> first();
+		$page = $this -> page -> find($navigation_link->page_id);
+		$page -> hits = $page -> hits + 1;
+		$page -> update();
+		
+		// Check if the blog page exists
+		if (is_null($page)) {
+			// If we ended up in here, it means that a page didn't exist.
+			// So, this means that it is time for 404 error page.
+			return App::abort(404);
+		}
+		$pagecontent = \BaseController::createSiderContent($page->id);
+		
+		// Show the page
+		$data['sidebar_right'] = $pagecontent['sidebar_right'];
+		$data['sidebar_left'] = $pagecontent['sidebar_left'];
+		$data['content'] = $pagecontent['content'];
+		$data['page'] = $page;
+		return View::make('pages::site/viewPage', $data);
+	}
+	
+	public function content($page_id)
+	{
+		$user = $this -> user -> currentUser();
+		$canPageVote = false;
+		$page = Page::find($page_id);
+		return View::make('pages::site/content', compact('page'));
+	}
+	
+	public function login_partial($params)
+	{
+		return View::make('pages::site/login_partial');
+	}
+	public function sideMenu($params)
+	{
+		return View::make('pages::site/sideMenu');
+	}
+	public function search($params)
+	{
+		return View::make('pages::site/search');
 	}
 }

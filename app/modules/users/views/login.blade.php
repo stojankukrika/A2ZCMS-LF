@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.site.default')
 
 @section('content')
 <div class="col-xs-12 col-sm-6 col-lg-8">

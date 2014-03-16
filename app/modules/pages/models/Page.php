@@ -1,5 +1,7 @@
 <?php namespace App\Modules\Pages\Models;
 
+use String;
+
 class Page extends \Eloquent {
 
 	public $table = 'pages';
@@ -21,7 +23,7 @@ class Page extends \Eloquent {
 	public function pageplugins()
 	{
 	    return $this->hasMany('PagePluginFunction', 'page_id');
-	}
+	}	
 	
 	/**
 	 * Returns a formatted post content entry,
@@ -61,10 +63,6 @@ class Page extends \Eloquent {
 	 */
 	public function page_javascript() {
 		return nl2br($this -> page_javascript);
-	}
-	
-	public function getPresenter() {
-		return new PostPresenter($this);
 	}
 	
 }

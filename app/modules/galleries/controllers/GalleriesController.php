@@ -10,4 +10,32 @@ class GalleriesController extends \BaseController {
 		return Gallery::get(array('id','title'));
 	}
 	
+	public function newGallerys($params)
+	{
+		$param = $this->splitParams($params);
+		$newGallerys = Gallery::where('start_publish','<=','CURDATE()')->whereRaw('(end_publish IS NULL OR end_publish >= CURDATE())')->orderBy($param['order'],$param['sort'])->take($param['limit'])->select(array('id','title'))->get();
+		return View::make('site.partial_views.sidebar.newGallerys', compact('newGallerys'));
+	}
+	
+	public function showGallery($ids="",$grids="",$sorts,$limits,$orders)
+	{
+		$showGallery =array();
+		$showImages =array();
+			
+		if($ids!="" && $grids==""){
+			$ids = rtrim($ids, ",");
+			$ids = explode(',', $ids);
+			$showGallery = Gallery::where('start_publish','<=','CURDATE()')->whereRaw('(end_publish IS NULL OR end_publish >= CURDATE())')->whereIn('id', $ids)->orderBy($orders,$sorts)->select(array('id','title','folderid'))->get();
+			foreach ($ids as $value) {
+				$showImages[$value] = GalleryImage::where('gallery_id', $value)->select(array('id','content'))->get();
+			}
+			
+		}
+		else if($limits!=0)
+		{
+			$showGallery = Gallery::where('start_publish','<=','CURDATE()')->whereRaw('(end_publish IS NULL OR end_publish >= CURDATE())')->orderBy($orders,$sorts)->take($limits)->select(array('id','title','folderid'))->get();
+		}
+		return View::make('site.partial_views.content.showGallery', compact('showGallery','showImages'));
+	}
+	
 }

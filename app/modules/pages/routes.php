@@ -1,5 +1,25 @@
 <?php
 Route::pattern('id', '[0-9]+');
+
+/*Site route*/
+
+Route::get('page/{id}', 'App\Modules\Pages\Controllers\PagesController@getView');
+Route::post('page/{id}', 'App\Modules\Pages\Controllers\PagesController@postView');
+Route::get('', 'App\Modules\Pages\Controllers\PagesController@getView');
+# Offline Static Page
+Route::get('offline', function()
+{
+		$settings = Settings::all();
+		$offlinemessage = '';
+		foreach ($settings as $v) {
+			if ($v -> varname == 'offlinemessage') {
+				$offlinemessage = $v -> value;
+			}
+		}
+    // Return offline page
+    return View::make('site/offline', compact('offlinemessage'));
+});
+
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
 {
@@ -29,9 +49,5 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
     Route::get('pages/{id}/delete', 'App\Modules\Pages\Controllers\AdminPageController@getDelete');
     Route::post('pages/{id}/delete', 'App\Modules\Pages\Controllers\AdminPageController@getDelete');
     Route::controller('pages', 'App\Modules\Pages\Controllers\AdminPageController');
-    
-    	
-	
-	
 	
 });

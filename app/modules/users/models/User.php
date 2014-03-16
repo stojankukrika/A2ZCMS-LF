@@ -74,8 +74,8 @@ class User extends \Eloquent {
         if(empty($user->id) && ! $ifValid) // Not logged in redirect, set session.
         {
             Session::put('loginRedirect', $redirect);
-            $redirectTo = Redirect::to('user/login')
-                ->with( 'notice', Lang::get('user/user.login_first') );
+            $redirectTo = Redirect::to('users/login')
+                ->with( 'notice', 'Login first' );
         }
         elseif(!empty($user->id) && $ifValid) // Valid user, we want to redirect.
         {

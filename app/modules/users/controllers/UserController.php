@@ -99,7 +99,7 @@ class UserController extends \BaseController {
 		$data['page'] = $this->page;
 		$data['user'] =$user;
 		
-		return View::make('site/user/index', $data);
+		return View::make('users::index', $data);
 	}
 
 	/**
@@ -215,7 +215,7 @@ class UserController extends \BaseController {
 		$data['sidebar_right'] = $this->pagecontent['sidebar_right'];
 		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
 		$data['page'] = $this->page;
-		return View::make('site/user/create', $data);
+		return View::make('users::create', $data);
 	}
 
 	
@@ -242,7 +242,7 @@ class UserController extends \BaseController {
 		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
 		$data['page'] = $this->page;
 		
-		return View::make('site/user/forgot', $data);
+		return View::make('users::forgot', $data);
 	}
 
 	/**
@@ -267,7 +267,7 @@ class UserController extends \BaseController {
 		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
 		$data['page'] = $this->page;
 		$data['token'] = $token;
-		return View::make('site/user/reset', $data);
+		return View::make('users::reset', $data);
 	}
 
 	/**
