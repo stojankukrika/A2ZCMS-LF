@@ -72,44 +72,6 @@ class BaseController extends Controller {
 		}
 	}
 
-	/* Attempt to do login
-	 *
-	 */
-	public function postLogin() {
-		$input = array('email' => Input::get('email'), // May be the username too
-		'username' => Input::get('email'), // May be the username too
-		'password' => Input::get('password'), 'remember' => Input::get('remember'), );
-
-		// If you wish to only allow login from confirmed users, call logAttempt
-		// with the second parameter as true.
-		// logAttempt will check if the 'email' perhaps is the username.
-		// Check that the user is confirmed.
-		if (Confide::logAttempt($input, true)) {				
-			$login_user = Auth::user();			
-			$userloginlog = new UserLoginHistory;
-			$userloginlog -> user_id = $login_user->id;
-			$userloginlog -> save();
-				
-			$r = Session::get('loginRedirect');
-			if (!empty($r)) {
-				Session::forget('loginRedirect');
-				return Redirect::to($r);
-			}
-			return Redirect::back();
-		} else {
-			// Check if there was too many login attempts
-			if (Confide::isThrottled($input)) {
-				$err_msg = 'Too many attempts';
-			} elseif ($this -> user -> checkUserExists($input) && !$this -> user -> isConfirmed($input)) {
-				$err_msg = 'You are not confirmed account';
-			} else {
-				$err_msg = 'Wrong credentials';
-			}
-
-			return Redirect::back() -> withInput(Input::except('password')) -> with('error', $err_msg);
-		}
-	}
-
 	public function main_menu($type) {
 		$navigation ="";
 		switch ($type) {
