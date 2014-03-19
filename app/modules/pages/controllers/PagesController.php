@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Pages\Controllers;
 
 use App, View, Session,Auth,Validator,Input,Redirect,String;
+
 use App\Modules\Pages\Models\Page;
 use App\Modules\Pages\Models\Navigation;
 use App\Modules\Settings\Models\Setting;
@@ -41,7 +42,7 @@ class PagesController extends \BaseController {
 		$page = $this -> page -> find($navigation_link->page_id);
 		$page -> hits = $page -> hits + 1;
 		$page -> update();
-		
+		$data=array();
 		// Check if the blog page exists
 		if (is_null($page)) {
 			// If we ended up in here, it means that a page didn't exist.
@@ -52,8 +53,9 @@ class PagesController extends \BaseController {
 		// Show the page
 		$data['sidebar_right'] = $pagecontent['sidebar_right'];
 		$data['sidebar_left'] = $pagecontent['sidebar_left'];
-		$data['content'] = $pagecontent['content'];
+		$data['content'] = $pagecontent['content'];		
 		$data['page'] = $page;
+		
 		return View::make('pages::site/viewPage', $data);
 	}
 	

@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Users\Controllers;
 
 use App\Modules\Users\Models\User;
+use App\Modules\Users\Models\UserLoginHistory;
 
 use App, Page,Input, Redirect, View, Confide,Auth, Session;
 
@@ -61,10 +62,10 @@ class UserController extends \BaseController {
 		if (Confide::logAttempt($input, true)) {
 			$login_user = Auth::user();
 			
-			/*$userloginlog = new UserLoginHistory;
+			$userloginlog = new UserLoginHistory;
 			$userloginlog -> user_id = $login_user->id;
 			$userloginlog -> save();
-			*/
+			
 			$r = Session::get('loginRedirect');
 			if (!empty($r)) {
 				Session::forget('loginRedirect');

@@ -1,5 +1,5 @@
 <ul class="list-unstyled">
-   	@if (Auth::check())
+	@if (Auth::check())
    	<h4>{{{ Lang::get('site/partial_views/sidebar/login.welcome') }}} {{Auth::user()->name}} {{Auth::user()->surname}}</h4>
 		@if(Auth::user()->avatar)
 		<img alt="Avatar" src="{{asset('avatar/'.Auth::user()->avatar)}}">
@@ -7,7 +7,7 @@
 		<img alt="Avatar" src="{{asset('avatar/avatar.png')}}">
 		@endif
 		
-		@if (Auth::user()->currentRoleIds()['allow_admin']=='1')
+		@if ($this->user->currentRoleIds()['allow_admin']=='1')
 		<li>
 			<a href="{{{ URL::to('admin') }}}">{{{ Lang::get('site/partial_views/sidebar/login.admin_panel') }}}</a>
 		</li>

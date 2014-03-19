@@ -73,10 +73,10 @@ Route::filter('guest', function()
 Route::filter('check_admin', function()
 {
 	//if the user who do not have admin role has access to the admin page returned to home page
-	/*$user = Auth::user()->currentRoleIds();
+	$user = $this->user->currentRoleIds();
 	if($user['allow_admin']!='1'){
 		return Redirect::to('/');
-	}*/
+	}
 
 });
 // Check for role on all admin routes

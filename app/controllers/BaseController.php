@@ -56,10 +56,11 @@ class BaseController extends Controller {
 			$unreadmessages = Message::where('user_id_to','=',$user->id)->where('read','=','0')->count();
 			View::share('unreadmessages',  $unreadmessages);
 		}
+		
 		$top_navigation = $this->main_menu('top');
 		if(!empty($top_navigation)){
 			View::share('top_menu',  $top_navigation);
-		}
+		}		
 		
 		$footer_navigation = $this->main_menu('footer');
 		if(!empty($footer_navigation)){
@@ -161,7 +162,6 @@ class BaseController extends Controller {
 		$page = Page::find($page_id);
 		
 		$page_functions = $this->readModulsForPage($page_id);
-		
 		$function_content = $page_functions['pluginfunction_content'];
 		$function_slider = $page_functions['pluginfunction_slider'];
 		
@@ -188,7 +188,6 @@ class BaseController extends Controller {
 				$sidebar_left[] = array('content' => App::make($address.$controller)->$function($params));
 			}
 		}
-		
 		foreach ($function_content as $item)
 		{
 			if(!isset($item['name']))

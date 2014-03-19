@@ -7,10 +7,15 @@ use Zizaco\Entrust\HasRole;
 use Robbo\Presenter\PresentableInterface;
 use Carbon\Carbon;
 
+use App\Modules\Roles\Models\Role;
+use App\Modules\Roles\Models\PermissionRole;
+use App\Modules\Users\Models\AssignedRoles;
+
+use Auth;
+
 class User extends ConfideUser {
 	
-	protected $table = 'users';
-	
+	protected $table = 'users';	
 	
 	public function getPresenter()
     {
@@ -44,13 +49,17 @@ class User extends ConfideUser {
     public function currentRoleIds()
     {
     	$allow_admin = 0;
-        $roles = $this->roles;
-        $roleIds = false;
-        if( !empty( $roles ) ) {
+		$user = Auth::user();
+		$assignedroles = AssignedRoles::where('user_id','=',$user->id)->get();
+		$roles = false;
+		foreach ($assignedroles as $item) {
+			$roles[] = Role::find($item->role_id);
+		}	
+		if( !empty( $roles ) ) {
             $roleIds = array();
-            foreach( $roles as &$role )
+            foreach( $roles as $role )
             {
-                $roleIds[] = $role->id;
+            	 $roleIds[] = $role->id;
 				if($role->is_admin=='1')
 				$allow_admin = 1;
             }
