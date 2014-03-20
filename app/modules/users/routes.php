@@ -11,14 +11,13 @@ Route::group(array('prefix' => 'users'), function()
 		Route::post('{id}/edit', 'App\Modules\Users\Controllers\UserController@postEdit');
 		//User messages
 		Route::get('messages', 'App\Modules\Users\Controllers\MessagesController@getIndex');
+		Route::get('profile', 'App\Modules\Users\Controllers\UserController@postProfileEdit');
 		Route::get('messages/{id}/read', 'App\Modules\Users\Controllers\MessagesController@getRead');
 		Route::post('messages/sendmessage', 'App\Modules\Users\Controllers\MessagesController@postSendmessage');
 		
 	});
 	// User reset routes
 	Route::get('reset/{token}', 'App\Modules\Users\Controllers\UserController@getReset');
-	// User password reset
-	Route::post('reset/{token}', 'App\Modules\Users\Controllers\UserController@postReset');
 	
 	//:: User Account Routes ::
 	Route::get('login', 'App\Modules\Users\Controllers\UserController@getLogin');
@@ -28,15 +27,18 @@ Route::group(array('prefix' => 'users'), function()
 	
 	//:: User Account Routes ::
 	Route::get('forgot', 'App\Modules\Users\Controllers\UserController@getForgot');
-	Route::post('forgot', 'App\Modules\Users\Controllers\UserController@postForgot');
 	
 	Route::get('create', 'App\Modules\Users\Controllers\UserController@getCreate');
 	Route::post('create', 'App\Modules\Users\Controllers\UserController@postCreate');
 	
 	Route::get('logout', 'App\Modules\Users\Controllers\UserController@getLogout');
 	
+	
 });
-
+Route::post('user/forgot', 'App\Modules\Users\Controllers\UserController@postForgot');
+// User password reset
+Route::post('user/reset/{token}', 'App\Modules\Users\Controllers\UserController@postReset');
+	
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
 {

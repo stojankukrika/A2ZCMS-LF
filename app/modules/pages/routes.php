@@ -6,6 +6,7 @@ Route::pattern('id', '[0-9]+');
 Route::get('page/{id}', 'App\Modules\Pages\Controllers\PagesController@getView');
 Route::post('page/{id}', 'App\Modules\Pages\Controllers\PagesController@postView');
 Route::get('', 'App\Modules\Pages\Controllers\PagesController@getView');
+Route::controller('page', 'App\Modules\Pages\Controllers\PagesController');
 # Offline Static Page
 Route::get('offline', function()
 {

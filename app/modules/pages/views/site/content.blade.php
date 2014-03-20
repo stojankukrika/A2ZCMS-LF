@@ -18,7 +18,7 @@
 	@endif
 	@if($page->showvote=='1') 
 	<p id="vote">{{ Lang::get("site.num_of_votes") }} <span id="countvote">{{$page->voteup-$page->votedown}}</span> 
-		@if ( ! Auth::check())
+		@if ( ! $user)
 		<br />
 		{{ Lang::get('site.add_votes_login') }}
 		<br />

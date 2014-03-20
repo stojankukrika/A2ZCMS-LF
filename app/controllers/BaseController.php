@@ -180,7 +180,6 @@ class BaseController extends Controller {
 			$params = $item->params;
 			$address = 'App\Modules\\'.ucfirst($item['name']).'\Controllers\\';
 			$controller = ucfirst($item['name']).'Controller';	
-			
 			if($page->sidebar==1){
 				$sidebar_right[] = array('content' => App::make($address.$controller)->$function($params));
 			}

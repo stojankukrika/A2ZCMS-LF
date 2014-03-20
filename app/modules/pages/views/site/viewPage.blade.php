@@ -1,5 +1,5 @@
 @extends('layouts.site.default')
-
+<br>
 @section('page_header')
 @if($page->showtitle==1)
 <h1 class="page-header"> {{{ $page->title }}} </h1>
@@ -38,7 +38,7 @@
 <div class="col-xs-12 col-sm-6 col-lg-8">
 	<br>
 	@foreach ($content as $item)
-	{{ $item['content'] }}
+		{{ $item['content'] }}
 	@endforeach
 </div>
 <br>

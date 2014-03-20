@@ -2,6 +2,10 @@
 
 use Robbo\Presenter\Presenter;
 
+use App\Modules\Roles\Models\Role;
+use App\Modules\Roles\Models\PermissionRole;
+use App\Modules\Users\Models\AssignedRoles;
+
 class UserPresenter extends Presenter
 {
 
@@ -17,6 +21,28 @@ class UserPresenter extends Presenter
         }
 
     }
+	
+	public function currentRoleIds()
+    {
+    	$allow_admin = 0;
+		$user = Auth::user();
+		$assignedroles = AssignedRoles::where('user_id','=',$user->id)->get();
+		$roles = false;
+		foreach ($assignedroles as $item) {
+			$roles[] = Role::find($item->role_id);
+		}	
+		if( !empty( $roles ) ) {
+            $roleIds = array();
+            foreach( $roles as $role )
+            {
+            	 $roleIds[] = $role->id;
+				if($role->is_admin=='1')
+				$allow_admin = 1;
+            }
+        }
+        return array('roleIds' => $roleIds, 'allow_admin' => $allow_admin);
+    }
+	
 
     public function currentUser()
     {

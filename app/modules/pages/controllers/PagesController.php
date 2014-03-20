@@ -64,16 +64,18 @@ class PagesController extends \BaseController {
 		$user = $this -> user -> currentUser();
 		$canPageVote = false;
 		$page = Page::find($page_id);
-		return View::make('pages::site/content', compact('page'));
+		return View::make('pages::site/content', compact('page','user','canPageVote'));
 	}
 	
 	public function login_partial($params)
 	{
-		return View::make('pages::site/login_partial');
+		$user = $this->user;
+		return View::make('pages::site/login_partial',compact('user'));
 	}
 	public function sideMenu($params)
 	{
-		return View::make('pages::site/sideMenu');
+		$side_menu = \BaseController::main_menu('side');
+		return View::make('pages::site/sideMenu',compact('side_menu'));
 	}
 	public function search($params)
 	{

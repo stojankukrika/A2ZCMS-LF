@@ -8,17 +8,6 @@
 	</h1>
 	@endif
 @stop
-
-{{-- Page title --}}
-@section('page_breadcrumb')
-	@if(isset($breadcrumb))
-	<ol class="breadcrumb">			          
-		{{ $breadcrumb }}
-	 <!--<li><a href="#">Home</a></li>
-		<li class="active">Blog Home</li>-->
-	</ol>
-	@endif
-@stop
 {{-- Add page scripts --}}
 @section('page_scripts')
 	<style>
@@ -75,7 +64,6 @@
 	$( document ).ready(function() {
 		
 		$("#email").addClass('form-control');
-		$('#email').after('<div class="form-group">&nbsp;</div>');
 		$('.input-append > .btn').addClass('btn-primary');
 	});
 </script>

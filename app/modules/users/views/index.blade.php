@@ -49,7 +49,7 @@
 	<h3> {{ Lang::get('site/user.edit_settings') }}</h3>
 </div>
 <div class="row">
-<form class="" method="post" action="{{ URL::to('user/' . $user->id . '/edit') }}"  
+<form class="" method="post" action="{{ URL::to('users/' . $user->id . '/edit') }}"  
 	enctype="multipart/form-data" autocomplete="off">
 	<!-- CSRF Token -->
 	<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />

@@ -7,7 +7,7 @@
 		<img alt="Avatar" src="{{asset('avatar/avatar.png')}}">
 		@endif
 		
-		@if ($this->user->currentRoleIds()['allow_admin']=='1')
+		@if ($user->currentRoleIds()['allow_admin']=='1')
 		<li>
 			<a href="{{{ URL::to('admin') }}}">{{{ Lang::get('site/partial_views/sidebar/login.admin_panel') }}}</a>
 		</li>
@@ -16,7 +16,7 @@
 			<a href="{{{ URL::to('users/messages') }}}">{{{ Lang::get('site/partial_views/sidebar/login.messages') }}} ({{$unreadmessages}})</a>
 		</li>
 		<li>
-			<a href="{{{ URL::to('users') }}}">{{{ Lang::get('site/partial_views/sidebar/login.edit_profile') }}}</a>
+			<a href="{{{ URL::to('users/profile') }}}">{{{ Lang::get('site/partial_views/sidebar/login.edit_profile') }}}</a>
 		</li>
 		<li>
 			<a href="{{{ URL::to('users/logout') }}}">

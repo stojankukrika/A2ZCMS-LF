@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Users\Controllers;
 
-use App, User, Page,Input, Redirect, View, Confide,Auth, Session;
+use App, User, Page,Input, Redirect, View, Confide,Auth, Session,Validator,DB;
 
-use App\Modules\Users\Models\User;
+use App\Modules\Users\Models\Message;
 
 class MessagesController extends \BaseController {
 	
@@ -12,12 +12,13 @@ class MessagesController extends \BaseController {
 	 */
 	protected $user;
 	protected $messages;
-
+	protected $page;
 	/**
 	 * Inject the models.
 	 * @param User $user
 	 */
-	public function __construct(User $user,Messages $messages) {
+	public function __construct(User $user,Message $messages) {
+		parent::__construct();
 		$this -> user = $user;
 		$this -> messages = $messages;
 	}
@@ -28,23 +29,24 @@ class MessagesController extends \BaseController {
 	 */
 	public function getIndex() {
 		
-		$user = $this -> user -> currentUser();
+		$user = Auth::user();
 		$allUsers = User::where('id','<>',$user->id)->get();
-		list($user, $redirect) = $this -> user -> checkAuthAndRedirect('user');
-		if ($redirect) {
-			return $redirect;
-		}
-		$received = $this -> messages -> where('user_id_to','=',$user->id)->orderBy('id', 'DESC')-> get();
-		$send = $this -> messages -> where('user_id_from','=',$user->id)->orderBy('id', 'DESC')-> get();
 		
-		$page = Page::first();
+		$received = $this -> messages -> where('user_id_to','=',$user->id)->where(DB::raw('deleted_at_receiver IS NULL'))->orderBy('id', 'DESC')-> get();
+		$send = $this -> messages -> where('user_id_from','=',$user->id)->where(DB::raw('deleted_at_sender IS NULL'))->orderBy('id', 'DESC')-> get();
 		
+		$page = App\Modules\Pages\Models\Page::first();
+		$pagecontent = \BaseController::createSiderContent($page->id);
+		
+		$data['sidebar_right'] = $pagecontent['sidebar_right'];
+		$data['sidebar_left'] = $pagecontent['sidebar_left'];
+		$data['page'] = $page;
 		$data['user'] =$user;
 		$data['received'] = $received;
 		$data['send'] =$send;
 		$data['allUsers'] =$allUsers;
 		
-		return View::make('site/messages/index', $data);
+		return View::make('users::messages', $data);
 	}
 	
 	public function postSendmessage() {
@@ -57,7 +59,7 @@ class MessagesController extends \BaseController {
 		// Check if the form validates with success
 		if ($validator -> passes()) {
 			
-			$user = $this -> user -> currentUser();
+			$user = Auth::user();
 			
 			$this -> messages -> subject = Input::get('subject');
 			$this -> messages -> content = Input::get('content');
@@ -69,12 +71,12 @@ class MessagesController extends \BaseController {
 		}	
 
 		// Show the page
-		return Redirect::to('user/messages');
+		return Redirect::to('users/messages');
 	}
 	
 	public function getRead($message_id)
 	{
-		$message = Messages::where('id', '=', $message_id)->first();
+		$message = Message::where('id', '=', $message_id)->first();
 		$message->read = 1;
 		$message->save();
 	}

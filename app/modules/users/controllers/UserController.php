@@ -3,7 +3,7 @@
 use App\Modules\Users\Models\User;
 use App\Modules\Users\Models\UserLoginHistory;
 
-use App, Page,Input, Redirect, View, Confide,Auth, Session;
+use App, Page,Input, Redirect, View, Confide,Auth, Session,Validator,Lang;
 
 class UserController extends \BaseController {
 
@@ -35,9 +35,13 @@ class UserController extends \BaseController {
 	 *
 	 */
 	public function getLogin() {
-		$user = Auth::user();
-		if (!empty($user -> id)) {
-			return Redirect::to('/admin/users/profile');
+		if(Auth::user()){
+		$r = Session::get('loginRedirect');
+			if (!empty($r)) {
+				Session::forget('loginRedirect');
+				return Redirect::to($r);
+			}
+			return Redirect::to('/');
 		}
 		$data['sidebar_right'] = $this->pagecontent['sidebar_right'];
 		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
@@ -91,25 +95,27 @@ class UserController extends \BaseController {
 	 *
 	 * @return View
 	 */
-	public function getIndex() {
-		list($user, $redirect) = $this -> user -> checkAuthAndRedirect('user');
-		if ($redirect) {
-			return $redirect;
+	public function getCreate() {
+		if(Auth::user()){
+		$r = Session::get('loginRedirect');
+			if (!empty($r)) {
+				Session::forget('loginRedirect');
+				return Redirect::to($r);
+			}
+			return Redirect::to('/');
 		}
 		// Show the page
 		$data['sidebar_right'] = $this->pagecontent['sidebar_right'];
 		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
-		$data['page'] = $this->page;
-		$data['user'] =$user;
-		
-		return View::make('users::index', $data);
+		$data['page'] = $this->page;		
+		return View::make('users::create', $data);
 	}
 
 	/**
 	 * Stores new user
 	 *
 	 */
-	public function postIndex() {
+	public function postCreate() {
 		$this -> user -> name = Input::get('name');
 		$this -> user -> surname = Input::get('surname');
 		$this -> user -> username = Input::get('username');
@@ -126,7 +132,7 @@ class UserController extends \BaseController {
 				$this -> user -> password_confirmation = $passwordConfirmation;
 			} else {
 				// Redirect to the new user page
-				return Redirect::to('user/create') -> withInput(Input::except('password', 'password_confirmation')) -> with('error', Lang::get('admin/users/messages.password_does_not_match'));
+				return Redirect::to('users/create') -> withInput(Input::except('password', 'password_confirmation')) -> with('error', Lang::get('admin/users/messages.password_does_not_match'));
 			}
 		} else {
 			unset($this -> user -> password);
@@ -138,15 +144,30 @@ class UserController extends \BaseController {
 
 		if ($this -> user -> id) {
 			// Redirect with success message, You may replace "Lang::get(..." for your custom message.
-			return Redirect::to('user/login') -> with('notice', Lang::get('user/user.user_account_created'));
+			return Redirect::to('users/login') -> with('notice', Lang::get('user/user.user_account_created'));
 		} else {
 			// Get validation errors (see Ardent package)
 			$error = $this -> user -> errors() -> all();
 
-			return Redirect::to('user/create') -> withInput(Input::except('password')) -> with('error', $error);
+			return Redirect::to('users/create') -> withInput(Input::except('password')) -> with('error', $error);
 		}
 	}
-
+	
+	/**
+	 * Users settings page
+	 *
+	 * @return View
+	 */
+	public function getEdit() {
+		
+		// Show the page
+		$data['sidebar_right'] = $this->pagecontent['sidebar_right'];
+		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
+		$data['page'] = $this->page;
+		$data['user'] =Auth::user();
+		
+		return View::make('users::index', $data);
+	}
 	/**
 	 * Edits a user
 	 *
@@ -189,7 +210,7 @@ class UserController extends \BaseController {
 					$user -> password_confirmation = $passwordConfirmation;
 				} else {
 					// Redirect to the new user page
-					return Redirect::to('user') -> with('error', Lang::get('admin/users/messages.password_does_not_match'));
+					return Redirect::to('users/'.$user->id.'/edit') -> with('error', Lang::get('admin/users/messages.password_does_not_match'));
 				}
 			} else {
 				unset($user -> password);
@@ -203,22 +224,10 @@ class UserController extends \BaseController {
 		$error = $user -> errors() -> all();
 
 		if (empty($error)) {
-			return Redirect::to('user') -> with('success', Lang::get('user/user.user_account_updated'));
+			return Redirect::to('users/profile') -> with('success', Lang::get('user/user.user_account_updated'));
 		} else {
-			return Redirect::to('user') -> withInput(Input::except('password', 'password_confirmation')) -> with('error', $error);
+			return Redirect::to('users/profile') -> withInput(Input::except('password', 'password_confirmation')) -> with('error', $error);
 		}
-	}
-
-	/**
-	 * Displays the form for user creation
-	 *
-	 */
-	public function getCreate() {
-		
-		$data['sidebar_right'] = $this->pagecontent['sidebar_right'];
-		$data['sidebar_left'] = $this->pagecontent['sidebar_left'];
-		$data['page'] = $this->page;
-		return View::make('users::create', $data);
 	}
 
 	
@@ -230,9 +239,9 @@ class UserController extends \BaseController {
 	 */
 	public function getConfirm($code) {
 		if (Confide::confirm($code)) {
-			return Redirect::to('user/login') -> with('notice', Lang::get('confide::confide.alerts.confirmation'));
+			return Redirect::to('users/login') -> with('notice', Lang::get('confide::confide.alerts.confirmation'));
 		} else {
-			return Redirect::to('user/login') -> with('error', Lang::get('confide::confide.alerts.wrong_confirmation'));
+			return Redirect::to('users/login') -> with('error', Lang::get('confide::confide.alerts.wrong_confirmation'));
 		}
 	}
 
@@ -254,9 +263,9 @@ class UserController extends \BaseController {
 	 */
 	public function postForgot() {
 		if (Confide::forgotPassword(Input::get('email'))) {
-			return Redirect::to('user/login') -> with('notice', Lang::get('confide::confide.alerts.password_forgot'));
+			return Redirect::to('users/login') -> with('notice', Lang::get('confide::confide.alerts.password_forgot'));
 		} else {
-			return Redirect::to('user/forgot') -> withInput() -> with('error', Lang::get('confide::confide.alerts.wrong_password_forgot'));
+			return Redirect::to('users/forgot') -> withInput() -> with('error', Lang::get('confide::confide.alerts.wrong_password_forgot'));
 		}
 	}
 
@@ -282,9 +291,9 @@ class UserController extends \BaseController {
 
 		// By passing an array with the token, password and confirmation
 		if (Confide::resetPassword($input)) {
-			return Redirect::to('user/login') -> with('notice', Lang::get('confide::confide.alerts.password_reset'));
+			return Redirect::to('users/login') -> with('notice', Lang::get('confide::confide.alerts.password_reset'));
 		} else {
-			return Redirect::to('user/reset/' . $input['token']) -> withInput() -> with('error', Lang::get('confide::confide.alerts.wrong_password_reset'));
+			return Redirect::to('users/reset/' . $input['token']) -> withInput() -> with('error', Lang::get('confide::confide.alerts.wrong_password_reset'));
 		}
 	}
 
