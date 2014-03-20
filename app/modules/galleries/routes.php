@@ -20,7 +20,13 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
 		
 	# Gallery	
 	Route::get('galleries', 'App\Modules\Galleries\Controllers\AdminGalleryController@getIndex');
-	Route::get('galleries/{id}/imagesforgallery', 'App\Modules\Galleries\Controllers\AdminGalleryController@getImagesForGallery');
+	
+	Route::get('galleries/install', 'App\Modules\Galleries\Controllers\AdminGalleryController@getInstall');
+   	Route::post('galleries/install', 'App\Modules\Galleries\Controllers\AdminGalleryController@postInstall');
+   	Route::get('galleries/uninstall', 'App\Modules\Galleries\Controllers\AdminGalleryController@getUninstall');
+   	Route::post('galleries/uninstall', 'App\Modules\Galleries\Controllers\AdminGalleryController@postUninstall');
+   	
+   	Route::get('galleries/{id}/imagesforgallery', 'App\Modules\Galleries\Controllers\AdminGalleryController@getImagesForGallery');
     Route::get('galleries/{id}/edit', 'App\Modules\Galleries\Controllers\AdminGalleryController@getEdit');
     Route::post('galleries/{id}/edit', 'App\Modules\Galleries\Controllers\AdminGalleryController@postEdit');
     Route::get('galleries/{id}/delete', 'App\Modules\Galleries\Controllers\AdminGalleryController@getDelete');

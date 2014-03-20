@@ -21,7 +21,8 @@
 	          <th>Title</th>
 	          <th>Name</th>
 	          <th>Installed at</th>
-	          <th>Verison</th>	          
+	          <th>Verison</th>	
+	          <th>Actions</th>          
 	        </tr>
       	</thead>
       	<tbody>
@@ -29,9 +30,16 @@
            <tr>
 		            <td>{{$item->title}}</td>		            
 					<td>{{$item->name}}</td>
-					<td>{{$item->pluginversion}}</td>
 					<td>{{$item->created_at}}</td>
-					<input id="row" type="hidden" value="{{$item->id}}" name="row">					
+					<td>{{$item->pluginversion}}</td>
+					<td class="">
+					@if(isset($item->not_installed))      
+						<a class="iframe btn btn-sm btn-default cboxElement" href="{{ URL::to('admin/'.$item->name.'/install') }}"><i class="icon-plus-sign "></i></a>
+					@elseif(isset($item->can_uninstall) && $item->can_uninstall=='1')
+						<a class="iframe btn btn-sm btn-danger cboxElement" href="{{ URL::to('admin/'.$item->name.'/uninstall') }}"><i class="icon-remove "></i></a>
+					@endif
+					<input id="row" type="hidden" value="{{$item->id}}" name="row">	
+		            </td>				
                </tr>
   		@endforeach
     	</tbody>

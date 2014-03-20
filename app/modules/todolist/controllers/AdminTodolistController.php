@@ -171,5 +171,27 @@ class AdminTodolistController extends \AdminController{
                 <a href="{{{ URL::to(\'admin/todolist/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
             ') -> remove_column('id') -> make();
 	}
+	
+	public function getInstall()
+	{
+		
+	}
+	
+	public function postInstall()
+	{
+		
+	}
+	
+	
+	
+	public function getUninstall()
+	{
+		
+	}
+	
+	public function posUninstall()
+	{
+		
+	}
 
 }

@@ -4,6 +4,12 @@ Route::pattern('id', '[0-9]+');
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
 {
 	Route::get('todolist', 'App\Modules\Todolist\Controllers\AdminTodolistController@getIndex');
+		
+	Route::get('todolist/install', 'App\Modules\Todolist\Controllers\AdminTodolistController@getInstall');
+   	Route::post('todolist/install', 'App\Modules\Todolist\Controllers\AdminTodolistController@postInstall');
+   	Route::get('todolist/uninstall', 'App\Modules\Todolist\Controllers\AdminTodolistController@getUninstall');
+   	Route::post('todolist/uninstall', 'App\Modules\Todolist\Controllers\AdminTodolistController@postUninstall');
+	
 	Route::get('todolist/{id}/change', 'App\Modules\Todolist\Controllers\AdminTodolistController@getChange');
     Route::get('todolist/{id}/edit', 'App\Modules\Todolist\Controllers\AdminTodolistController@getEdit');
     Route::post('todolist/{id}/edit', 'App\Modules\Todolist\Controllers\AdminTodolistController@postEdit');

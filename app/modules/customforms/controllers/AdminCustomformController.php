@@ -200,5 +200,27 @@ class AdminCustomformController extends \AdminController {
 			return 0;
 		}
 		return 1;		
+	}
+	
+	public function getInstall()
+	{
+		
+	}
+	
+	public function postInstall()
+	{
+		
+	}
+	
+	
+	
+	public function getUninstall()
+	{
+		
+	}
+	
+	public function posUninstall()
+	{
+		
 	}	
 }
