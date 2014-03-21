@@ -7,19 +7,6 @@ Route::get('page/{id}', 'App\Modules\Pages\Controllers\PagesController@getView')
 Route::post('page/{id}', 'App\Modules\Pages\Controllers\PagesController@postView');
 Route::get('', 'App\Modules\Pages\Controllers\PagesController@getView');
 Route::controller('page', 'App\Modules\Pages\Controllers\PagesController');
-# Offline Static Page
-Route::get('offline', function()
-{
-		$settings = Settings::all();
-		$offlinemessage = '';
-		foreach ($settings as $v) {
-			if ($v -> varname == 'offlinemessage') {
-				$offlinemessage = $v -> value;
-			}
-		}
-    // Return offline page
-    return View::make('site/offline', compact('offlinemessage'));
-});
 
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
