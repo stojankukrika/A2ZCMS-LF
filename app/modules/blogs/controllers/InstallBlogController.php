@@ -115,8 +115,7 @@ class InstallBlogController extends \AdminController {
 			$adminmenu -> background_color = 'orange';
 			$adminmenu -> order = '0';
 			$adminmenu -> save();
-			$adminmenu_id = $adminmenu->id;
-			
+			$adminmenu_id = $adminmenu->id;			
 			
 			/*add admin subnavigation*/
 			$adminsubmenu = new Adminsubmenu;
@@ -206,6 +205,10 @@ class InstallBlogController extends \AdminController {
 			$permission = Permission::where('name','=','post_blog_comment')->first();
 			PermissionRole::where('id','=',$permission->id)->delete();
 			$permission->delete();
+			
+			$permission = Permission::where('name','=','post_blog_vote')->first();
+			PermissionRole::where('id','=',$permission->id)->delete();
+			$permission->delete();			
 			
 			/*delete plugin functions from pages*/
 			$plugin_id = Plugin::where('name','=','blogs')->first();

@@ -49,7 +49,8 @@ class InstallPollController extends \AdminController{
 					
 			DB::statement("ALTER TABLE `".DB::getTablePrefix()."poll_options`
 					  ADD CONSTRAINT `options_polls_id_foreign` FOREIGN KEY (`poll_id`) 
-					  REFERENCES `".DB::getTablePrefix()."polls` (`id`);";
+					  REFERENCES `".DB::getTablePrefix()."polls` (`id`);");
+					  
 			DB::statement("CREATE TABLE IF NOT EXISTS `".DB::getTablePrefix()."poll_votes` (
 					  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					  `option_id` int(10) unsigned NOT NULL,
