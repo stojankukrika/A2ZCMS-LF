@@ -6,10 +6,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
 {
 	Route::get('polls', 'App\Modules\Polls\Controllers\AdminPollController@getIndex');
 		
-	Route::get('polls/install', 'App\Modules\Polls\Controllers\AdminPollController@getInstall');
-   	Route::post('polls/install', 'App\Modules\Polls\Controllers\AdminPollController@postInstall');
-   	Route::get('polls/uninstall', 'App\Modules\Polls\Controllers\AdminPollControllergetUninstall');
-   	Route::post('polls/uninstall', 'App\Modules\Polls\Controllers\AdminPollController@postUninstall');
+	Route::get('polls/install', 'App\Modules\Polls\Controllers\InstallPollController@getInstall');
+   	Route::post('polls/install', 'App\Modules\Polls\Controllers\InstallPollController@postInstall');
+   	Route::get('polls/uninstall', 'App\Modules\Polls\Controllers\InstallPollController@getUninstall');
+   	Route::post('polls/uninstall', 'App\Modules\Polls\Controllers\InstallPollController@postUninstall');
 	
 	Route::get('polls/{id}/edit', 'App\Modules\Polls\Controllers\AdminPollController@getEdit');
     Route::post('polls/{id}/edit', 'App\Modules\Polls\Controllers\AdminPollController@postEdit');

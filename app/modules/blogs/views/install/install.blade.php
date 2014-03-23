@@ -1,3 +1,6 @@
+@extends('layouts.admin.modal')
+{{-- Content --}}
+@section('content')
 <!-- Tabs -->
 <ul class="nav nav-tabs">
 	<li class="active">
@@ -6,15 +9,16 @@
 </ul>
 <!-- ./ tabs -->
 <form class="form-horizontal" method="post" action="" autocomplete="off">
+	<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 	<!-- Tabs Content -->
 	<div class="tab-content">
 		<!-- General tab -->
 		<div class="tab-pane active" id="tab-general">
 			<!-- Name -->
-			<input class="form-control" type="hidden" name="plugin" id="plugin" value="galleries" />
+			<input class="form-control" type="hidden" name="plugin" id="plugin" value="blogs" />
 			<div class="form-group">
 				<div class="col-md-10">
-					<label>Do you want do uninstall this plugin?</label>				
+					<label>Do you want do install this plugin?</label>				
 				</div>
 			</div>
 			<!-- ./ name -->			
@@ -30,9 +34,10 @@
 				<span class="icon-remove"></span> Cancel
 			</button>
 			<button type="submit" class="btn btn-success">
-				<span class="icon-ok"></span>Uninstall
+				<span class="icon-ok"></span>Install
 			</button>
 		</div>
 	</div>
 	<!-- ./ form actions -->
 </form>
+	@stop

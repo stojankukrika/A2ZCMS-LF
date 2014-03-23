@@ -234,26 +234,4 @@ class AdminGalleryController extends \AdminController {
 		// Show the page
 		return View::make('galleries::admin/galleries/imagesforgallery', compact('galleries', 'title'));
 	}
-	
-	public function getInstall()
-	{
-		
-	}
-	
-	public function postInstall()
-	{
-		
-	}
-	
-	
-	
-	public function getUninstall()
-	{
-		
-	}
-	
-	public function posUninstall()
-	{
-		
-	}
 }

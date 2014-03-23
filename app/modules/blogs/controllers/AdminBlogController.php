@@ -230,27 +230,4 @@ class AdminBlogController extends \AdminController {
             ') 
             -> remove_column('id') -> make();
 	}
-	
-	public function getInstall()
-	{
-		
-	}
-	
-	public function postInstall()
-	{
-		
-	}
-	
-	
-	
-	public function getUninstall()
-	{
-		
-	}
-	
-	public function posUninstall()
-	{
-		
-	}
-
 }

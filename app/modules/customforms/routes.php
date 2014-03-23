@@ -5,10 +5,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
 {
 	Route::get('customforms', 'App\Modules\Customforms\Controllers\AdminCustomformController@getIndex');	
 		
-	Route::get('galleries/install', 'App\Modules\Customforms\Controllers\AdminCustomformController@getInstall');
-   	Route::post('galleries/install', 'App\Modules\Customforms\Controllers\AdminCustomformController@postInstall');
-   	Route::get('galleries/uninstall', 'App\Modules\Customforms\Controllers\AdminCustomformController@getUninstall');
-   	Route::post('galleries/uninstall', 'App\Modules\Customforms\Controllers\AdminCustomformController@postUninstall');
+	Route::get('customforms/install', 'App\Modules\Customforms\Controllers\InstallCustomformController@getInstall');
+   	Route::post('customforms/install', 'App\Modules\Customforms\Controllers\InstallCustomformController@postInstall');
+   	Route::get('customforms/uninstall', 'App\Modules\Customforms\Controllers\InstallCustomformController@getUninstall');
+   	Route::post('customforms/uninstall', 'App\Modules\Customforms\Controllers\InstallCustomformController@postUninstall');
 	
 	Route::get('customforms/{id}/edit', 'App\Modules\Customforms\Controllers\AdminCustomformController@getEdit');
     Route::post('customforms/{id}/edit', 'App\Modules\Customforms\Controllers\AdminCustomformController@postEdit');

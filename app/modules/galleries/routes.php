@@ -19,12 +19,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
 	Route::controller('galleries/galleryimages', 'App\Modules\Galleries\Controllers\AdminGalleryImageController');
 		
 	# Gallery	
-	Route::get('galleries', 'App\Modules\Galleries\Controllers\AdminGalleryController@getIndex');
-	
-	Route::get('galleries/install', 'App\Modules\Galleries\Controllers\AdminGalleryController@getInstall');
-   	Route::post('galleries/install', 'App\Modules\Galleries\Controllers\AdminGalleryController@postInstall');
-   	Route::get('galleries/uninstall', 'App\Modules\Galleries\Controllers\AdminGalleryController@getUninstall');
-   	Route::post('galleries/uninstall', 'App\Modules\Galleries\Controllers\AdminGalleryController@postUninstall');
+	Route::get('galleries/install', 'App\Modules\Galleries\Controllers\InstallGalleryController@getInstall');
+   	Route::post('galleries/install', 'App\Modules\Galleries\Controllers\InstallGalleryController@postInstall');
+   	Route::get('galleries/uninstall', 'App\Modules\Galleries\Controllers\InstallGalleryController@getUninstall');
+   	Route::post('galleries/uninstall', 'App\Modules\Galleries\Controllers\InstallGalleryController@postUninstall');
    	
    	Route::get('galleries/{id}/imagesforgallery', 'App\Modules\Galleries\Controllers\AdminGalleryController@getImagesForGallery');
     Route::get('galleries/{id}/edit', 'App\Modules\Galleries\Controllers\AdminGalleryController@getEdit');
@@ -33,7 +31,8 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
     Route::post('galleries/{id}/delete', 'App\Modules\Galleries\Controllers\AdminGalleryController@getDelete');
 	Route::get('galleries/{id}/upload', 'App\Modules\Galleries\Controllers\AdminGalleryController@getUpload');
     Route::post('galleries/{id}/upload', 'App\Modules\Galleries\Controllers\AdminGalleryController@postUpload');		
+   	Route::get('galleries', 'App\Modules\Galleries\Controllers\AdminGalleryController@getIndex');
+    
     Route::controller('galleries', 'App\Modules\Galleries\Controllers\AdminGalleryController');
 	
-		
 });

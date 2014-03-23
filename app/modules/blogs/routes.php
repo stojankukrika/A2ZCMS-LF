@@ -21,17 +21,18 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
     Route::controller('blogs/blogcategorys', 'App\Modules\Blogs\Controllers\AdminBlogCategoryController');
 
     # Blog Management
-    Route::get('blogs', 'App\Modules\Blogs\Controllers\AdminBlogsController@getIndex');
-			
-	Route::get('blogs/install', 'App\Modules\Blogs\Controllers\AdminBlogsController@getInstall');
-   	Route::post('blogs/install', 'App\Modules\Blogs\Controllers\AdminBlogsController@postInstall');
-   	Route::get('blogs/uninstall', 'App\Modules\Blogs\Controllers\AdminBlogsController@getUninstall');
-   	Route::post('blogs/uninstall', 'App\Modules\Blogs\Controllers\AdminBlogsController@postUninstall');
+    Route::get('blogs/install', 'App\Modules\Blogs\Controllers\InstallBlogController@getInstall');
+   	Route::post('blogs/install', 'App\Modules\Blogs\Controllers\InstallBlogController@postInstall');
+   	Route::get('blogs/uninstall', 'App\Modules\Blogs\Controllers\InstallBlogController@getUninstall');
+   	Route::post('blogs/uninstall', 'App\Modules\Blogs\Controllers\InstallBlogController@postUninstall');
 	
 	Route::get('blogs/{id}/edit', 'App\Modules\Blogs\Controllers\AdminBlogController@getEdit');
     Route::post('blogs/{id}/edit', 'App\Modules\Blogs\Controllers\AdminBlogController@postEdit');
     Route::get('blogs/{id}/delete', 'App\Modules\Blogs\Controllers\AdminBlogController@getDelete');
     Route::post('blogs/{id}/delete', 'App\Modules\Blogs\Controllers\AdminBlogController@getDelete');
     Route::get('blogs/data', 'App\Modules\Blogs\Controllers\AdminBlogController@getData');
+	Route::get('blogs', 'App\Modules\Blogs\Controllers\AdminBlogsController@getIndex');
+	
     Route::controller('blogs', 'App\Modules\Blogs\Controllers\AdminBlogController');
+	
 });
