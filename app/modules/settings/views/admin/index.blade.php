@@ -41,7 +41,7 @@
 							    	$variables = explode(";", $item -> defaultvalue);
 									foreach ($variables as $variable) {?>
 							    	<label class="radio">
-										{{ Form::radio(@$item->varname, 1, (Input::old(@$item->varname) == $variable  || @$item->value == $variable) ? true : false, array('id'=>@$item->varname, 'class'=>'radio')) }}
+										{{ Form::radio(@$item->varname, @$variable, (Input::old(@$item->varname) == $variable  || @$item->value == $variable) ? true : false, array('id'=>@$item->varname, 'class'=>'radio')) }}
 										{{$variable}}
 									</label>
 									<?php } ?>
@@ -91,7 +91,7 @@
 							<span class="icon-refresh"></span> {{{ Lang::get('admin/general.reset') }}}
 						</button>
 						<button type="submit" class="btn btn-success">
-							<span class="icon-ok"></span> @if (isset($settings)){{{ Lang::get('admin/general.update') }}} @else {{{ Lang::get('admin/general.create') }}} @endif
+							<span class="icon-ok"></span> {{{ Lang::get('admin/general.update') }}}
 						</button>
 					</div>
 				</div>

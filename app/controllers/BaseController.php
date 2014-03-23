@@ -6,7 +6,6 @@ use App\Modules\Pages\Models\NavigationGroup;
 use App\Modules\Pages\Models\Page;
 use App\Modules\Pages\Models\PagePluginFunction;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Config;
 class BaseController extends Controller {
 
 	/**
@@ -46,9 +45,9 @@ class BaseController extends Controller {
 				View::share($v -> varname,  $v -> value);
 		}
 		
-		if($offline==1)
+		if($offline=='Yes')
 		{
-			header('Location: '. Config::get("app.url").'/offline');
+			header('Location: '. URL::to('offline'));
 			exit ;
 		}
 		$user = Auth::user();

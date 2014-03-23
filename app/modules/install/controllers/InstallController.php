@@ -666,7 +666,7 @@ class InstallController extends \BaseController {
 			DB::table('admin_subnavigations') -> insert(array( 
 											array('admin_navigation_id' => 1, 
 												'title' => 'Navigation group', 
-												'url' => 'navigationgroups', 
+												'url' => 'pages/navigationgroups', 
 												'icon' =>'icon-th-list',
 												'order' => 1,
 												'created_at' => new DateTime, 

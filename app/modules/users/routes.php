@@ -11,7 +11,8 @@ Route::group(array('prefix' => 'users'), function()
 		Route::post('{id}/edit', 'App\Modules\Users\Controllers\UserController@postEdit');
 		//User messages
 		Route::get('messages', 'App\Modules\Users\Controllers\MessagesController@getIndex');
-		Route::get('profile', 'App\Modules\Users\Controllers\UserController@postProfileEdit');
+		Route::get('profile', 'App\Modules\Users\Controllers\UserController@getEdit');
+		Route::post('profile', 'App\Modules\Users\Controllers\UserController@postEdit');
 		Route::get('messages/{id}/read', 'App\Modules\Users\Controllers\MessagesController@getRead');
 		Route::post('messages/sendmessage', 'App\Modules\Users\Controllers\MessagesController@postSendmessage');
 		

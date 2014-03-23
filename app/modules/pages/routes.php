@@ -2,11 +2,8 @@
 Route::pattern('id', '[0-9]+');
 
 /*Site route*/
-
-Route::get('page/{id}', 'App\Modules\Pages\Controllers\PagesController@getView');
-Route::post('page/{id}', 'App\Modules\Pages\Controllers\PagesController@postView');
-Route::get('', 'App\Modules\Pages\Controllers\PagesController@getView');
-Route::controller('page', 'App\Modules\Pages\Controllers\PagesController');
+Route::get('pages/{id}', 'App\Modules\Pages\Controllers\PagesController@getView');
+Route::post('pages/{id}', 'App\Modules\Pages\Controllers\PagesController@postView');
 
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
@@ -24,8 +21,6 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
     Route::get('pages/navigationgroups/{id}/delete', 'App\Modules\Pages\Controllers\AdminNavigationGroupController@getDelete');
     Route::post('pages/navigationgroups/{id}/delete', 'App\Modules\Pages\Controllers\AdminNavigationGroupController@getDelete');
     Route::controller('pages/navigationgroups', 'App\Modules\Pages\Controllers\AdminNavigationGroupController');
-
-   
 	
 	# Pages Management
 	Route::get('pages/{id}/visible', 'App\Modules\Pages\Controllers\AdminPageController@getVisible');
@@ -39,3 +34,4 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
     Route::controller('pages', 'App\Modules\Pages\Controllers\AdminPageController');
 	
 });
+
