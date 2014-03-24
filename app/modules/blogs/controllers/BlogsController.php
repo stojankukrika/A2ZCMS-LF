@@ -19,7 +19,7 @@ class BlogsController extends \BaseController {
 	{
 		$param = $this->splitParams($params);
 		$newBlogs = Blog::orderBy($param['order'],$param['sort'])->take($param['limit'])->select(array('id','title','slug'))->get();
-		return View::make('site.partial_views.sidebar.newBlogs', compact('newBlogs'));
+		return View::make('blogs::site.newBlogs', compact('newBlogs'));
 	}
 	
 	public function showBlogs($ids,$grids,$sorts,$limits,$orders)
@@ -36,7 +36,7 @@ class BlogsController extends \BaseController {
 		else if($limits!=0) {
 			$showBlogs = Blog::orderBy($orders,$sorts)->take($limits)->select(array('id','slug','title','content'))->get();
 		}
-		return View::make('site.partial_views.content.showBlogs', compact('showBlogs'));
+		return View::make('blogs::site.showBlogs', compact('showBlogs'));
 	}
 	
 }

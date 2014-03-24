@@ -2,6 +2,7 @@
 
 use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
 use App\Modules\Galleries\Models\Gallery;
+use App\Modules\Galleries\Models\GalleryImage;
 
 class GalleriesController extends \BaseController {
 
@@ -10,14 +11,14 @@ class GalleriesController extends \BaseController {
 		return Gallery::get(array('id','title'));
 	}
 	
-	public function newGallerys($params)
+	public function newGallery($params)
 	{
 		$param = $this->splitParams($params);
 		$newGallerys = Gallery::where('start_publish','<=','CURDATE()')->whereRaw('(end_publish IS NULL OR end_publish >= CURDATE())')->orderBy($param['order'],$param['sort'])->take($param['limit'])->select(array('id','title'))->get();
-		return View::make('site.partial_views.sidebar.newGallerys', compact('newGallerys'));
+		return View::make('galleries::site.newGallerys', compact('newGallerys'));
 	}
 	
-	public function showGallery($ids="",$grids="",$sorts,$limits,$orders)
+	public function showGalleries($ids="",$grids="",$sorts,$limits,$orders)
 	{
 		$showGallery =array();
 		$showImages =array();
@@ -35,7 +36,7 @@ class GalleriesController extends \BaseController {
 		{
 			$showGallery = Gallery::where('start_publish','<=','CURDATE()')->whereRaw('(end_publish IS NULL OR end_publish >= CURDATE())')->orderBy($orders,$sorts)->take($limits)->select(array('id','title','folderid'))->get();
 		}
-		return View::make('site.partial_views.content.showGallery', compact('showGallery','showImages'));
+		return View::make('galleries::site.showGallery', compact('showGallery','showImages'));
 	}
 	
 }

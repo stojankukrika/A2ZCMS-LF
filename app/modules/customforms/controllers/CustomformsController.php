@@ -2,6 +2,7 @@
 
 use App, View, Session,Auth,Validator,Input,Redirect;
 use App\Modules\Customforms\Models\Customform;
+use App\Modules\Customforms\Models\Customformfield;
 
 class CustomformsController extends \BaseController {
 
@@ -20,12 +21,12 @@ class CustomformsController extends \BaseController {
 		if($ids!=""){
 			$ids = rtrim($ids, ",");
 			$ids = explode(',', $ids);
-			$showCustomFormId = CustomForm::whereIn('id', $ids)->select(array('id','recievers','title','message'))->get();
+			$showCustomFormId = Customform::whereIn('id', $ids)->select(array('id','recievers','title','message'))->get();
 			foreach ($ids as $id){
-				$showCustomFormFildId[$id] = CustomFormField::where('custom_form_id',$id)->orderBy('order','ASC')->select(array('id','name','options','type','order','mandatory'))->get();
+				$showCustomFormFildId[$id] = Customformfield::where('customform_id',$id)->orderBy('order','ASC')->select(array('id','name','options','type','order','mandatory'))->get();
 			}
 		}
-		return View::make('site.partial_views.content.showCustomFormId', compact('showCustomFormId','showCustomFormFildId'));
+		return View::make('customforms::site.showCustomFormId', compact('showCustomFormId','showCustomFormFildId'));
 	 }
 	
 }
