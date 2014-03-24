@@ -25,7 +25,6 @@
 		{{ Lang::get('site/blog.click') }} <a href="{{{ URL::to('users/login') }}}">{{ Lang::get('site/blog.here') }}</a> 
 		{{ Lang::get('site/blog.to_login') }}
 	
-		@elseif (!$canPageVote )
 		<br><b><i>{{ Lang::get('site.add_votes_permission') }}</i></b>
 		@else				
 		<span style="display: inline-block;" onclick="contentvote('1','page',{{$page->id}})" class="up"></span>

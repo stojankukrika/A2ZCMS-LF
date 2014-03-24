@@ -5,6 +5,7 @@ use App\Modules\Users\Models\User;
 use App\Modules\Pages\Models\NavigationGroup;
 use App\Modules\Pages\Models\Page;
 use App\Modules\Pages\Models\PagePluginFunction;
+use App\Modules\Users\Models\AssignedRoles;
 
 class BaseController extends Controller {
 
@@ -44,6 +45,18 @@ class BaseController extends Controller {
 				}
 				View::share($v -> varname,  $v -> value);
 		}
+		$user = Auth::user();
+		if(!empty($user)){
+			$result = AssignedRoles::join('permission_role','assigned_roles.role_id','=','permission_role.role_id')
+											->join('permissions','permissions.id','=','permission_role.permission_id')
+											->where('assigned_roles.user_id',$user->id)
+											->select('name')
+											->get();
+			foreach ($result as $row)
+			{
+				View::share($row->name,  $row->name);
+			}					
+		}			
 		
 		if($offline=='Yes')
 		{

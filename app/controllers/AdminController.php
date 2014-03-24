@@ -1,4 +1,7 @@
 <?php
+use App\Modules\Users\Models\AssignedRoles;
+use App\Modules\Users\Models\User;
+
 class AdminController extends Controller {
 
 	/**
@@ -17,6 +20,19 @@ class AdminController extends Controller {
 		if(!defined('ASSETS_PATH_FULL')){
 			  define('ASSETS_PATH_FULL', '\public\assets\site');
     	} 
+		
+		$user = Auth::user();
+		if(!empty($user)){
+			$result = AssignedRoles::join('permission_role','assigned_roles.role_id','=','permission_role.role_id')
+											->join('permissions','permissions.id','=','permission_role.permission_id')
+											->where('assigned_roles.user_id',$user->id)
+											->select('name')
+											->get();
+			foreach ($result as $row)
+			{
+				View::share($row->name,  $row->name);
+			}					
+		}		
 	}
 
 }

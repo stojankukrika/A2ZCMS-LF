@@ -41,7 +41,7 @@
       <img src="{{ URL::to('')}}/gallery/{{{$gallery->folderid}}}/{{{ $gallery_image->content }}}" class="img-responsive">        
      <hr>
      <p id="vote">{{ Lang::get("site.num_of_votes") }} <span id="countvote">{{$gallery->voteup-$gallery->votedown}}</span> 
-		@if (!$canImageVote )
+		@elseif (!$post_image_vote )
 		<br><b><i>{{ Lang::get('site.add_votes_permission') }}</i></b>
 		@else				
 		<span style="display: inline-block;" onclick="contentvote('1','image',{{$gallery_image->id}})" class="up"></span>
@@ -71,7 +71,7 @@
 <br />
 <br />
 {{ Lang::get('site/blog.click') }} <a href="{{{ URL::to('user/login') }}}">{{ Lang::get('site/blog.here') }}</a> {{ Lang::get('site/blog.to_login') }}
-@elseif ( ! $canGalleryComment )
+@elseif (!$post_gallery_comment )
 <br><b></i>{{ Lang::get('site/blog.add_comment_permission') }}</i></b>
 @else
 @if($errors->has())
