@@ -1,4 +1,5 @@
 <?php namespace App\Modules\Blogs\Models;
+use String;
 
 class Blog extends \Eloquent {
 

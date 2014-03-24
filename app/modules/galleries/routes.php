@@ -1,5 +1,10 @@
 <?php
 Route::pattern('id', '[0-9]+');
+Route::pattern('id1', '[0-9]+');
+
+Route::get('gallery/{id}', 'App\Modules\Galleries\Controllers\GalleriesController@getView');
+Route::get('gallery/galleryimage/{id}/{id1}', 'App\Modules\Galleries\Controllers\GalleriesController@getGalleryImage');
+Route::post('gallery/galleryimage/{id}/{id1}', 'App\Modules\Galleries\Controllers\GalleriesController@postGalleryImage');
 
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()

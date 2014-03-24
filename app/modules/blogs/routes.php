@@ -1,5 +1,9 @@
 <?php
 Route::pattern('id', '[0-9]+');
+Route::pattern('token', '[0-9a-z-]+');
+Route::get('blog/{token}', 'App\Modules\Blogs\Controllers\BlogsController@getView');
+Route::post('blog/{token}', 'App\Modules\Blogs\Controllers\BlogsController@postView');
+
 /*Admin routes*/
 Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function()
 {
