@@ -2,6 +2,7 @@
 Route::pattern('id', '[0-9]+');
 Route::pattern('id1', '[0-9]+');
 
+Route::get('gallery/contentvote', 'App\Modules\Galleries\Controllers\GalleriesController@contentvote');
 Route::get('gallery/{id}', 'App\Modules\Galleries\Controllers\GalleriesController@getView');
 Route::get('gallery/galleryimage/{id}/{id1}', 'App\Modules\Galleries\Controllers\GalleriesController@getGalleryImage');
 Route::post('gallery/galleryimage/{id}/{id1}', 'App\Modules\Galleries\Controllers\GalleriesController@postGalleryImage');

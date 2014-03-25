@@ -26,6 +26,7 @@
 		@yield('page_scripts')		
 	</head>
 	<body>
+	<input type="hidden" id="url" value='{{URL::to("/")}}' />		
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">

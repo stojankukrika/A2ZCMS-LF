@@ -52,11 +52,11 @@
    		</p>          
      <hr>
      <p id="vote">{{ Lang::get("site.num_of_votes") }} <span id="countvote">{{$blog->voteup-$blog->votedown}}</span> 
-		@elseif (!$post_blog_vote )
+		@if (!isset($post_blog_vote))
 		<br><b><i>{{ Lang::get('site.add_votes_permission') }}</i></b>
 		@else				
-		<span style="display: inline-block;" onclick="contentvote('1','blog',{{$blog->id}})" class="up"></span>
-		<span style="display: inline-block;" onclick="contentvote('0','blog',{{$blog->id}})" class="down"></span>
+		<span style="display: inline-block;" onclick="contentvote('blog','1','blog',{{$blog->id}}, 'countvote')" class="up"></span>
+		<span style="display: inline-block;" onclick="contentvote('blog','0','blog',{{$blog->id}}, 'countvote')" class="down"></span>
 		@endif
 	</p>
 	<!-- the comment box -->
@@ -82,7 +82,7 @@
 	{{ Lang::get('site/blog.click') }} <a href="{{{ URL::to('user/login') }}}">{{ Lang::get('site/blog.here') }}</a> 
 	{{ Lang::get('site/blog.to_login') }}
 	<br>
-	@elseif (!$post_blog_comment )
+	@elseif (!isset($post_blog_comment))
 	<br><b><i>{{ Lang::get('site/blog.add_comment_permission') }}</i></b>
 	@else
 	

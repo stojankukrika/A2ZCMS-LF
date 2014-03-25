@@ -4,6 +4,7 @@ use App, View, Session,Auth,Validator,Input,Redirect;
 use App\Modules\Blogs\Models\Blog;
 use App\Modules\Blogs\Models\BlogCategory;
 use App\Modules\Blogs\Models\BlogComment;
+use App\Modules\Blogs\Models\ContentVote;
 use App\Modules\Settings\Models\Setting;
 use App\Modules\Users\Models\User;
 
@@ -132,5 +133,49 @@ class BlogsController extends \BaseController {
 		// Redirect to this blog blog page
 		return Redirect::to('blog/'.$slug) -> withInput() -> withErrors($validator);
 	}
-	
+
+	public function contentvote()
+	{
+		$id = Input::get('id');
+		$updown = Input::get('updown');
+		$content = Input::get('content');
+		$user = $this -> user -> currentUser();		
+		$newvalue = 0;
+		$exists = ContentVote::where('content','=',$content)
+								->where('idcontent','=',$id)
+								->where('user_id','=',$user->id)
+								->get();
+		if($content=='blog')
+		{
+			$item = Blog::find($id);
+		}
+		else {
+			$item = BlogComment::find($id);
+		}
+		$newvalue = $item->voteup - $item -> votedown;
+		
+		if($exists->count() == 0 ){
+			$contentvote = new ContentVote;
+			$contentvote -> user_id = $user->id;
+			$contentvote -> updown = $updown;
+			$contentvote -> content = $content;
+			$contentvote -> idcontent = $id;
+			$contentvote -> save();
+			
+			if($updown=='1')
+				{
+					$item -> voteup = $item -> voteup + 1;
+					$item -> votedown = $item -> votedown;
+				}
+				else {
+					$item -> votedown = $item -> votedown + 1;
+					$item -> voteup = $item -> voteup;
+				}
+			
+			$item->update();					
+			$newvalue = $item->voteup - $item -> votedown;						
+		}
+		echo $newvalue;
+	}
+	 
 }
