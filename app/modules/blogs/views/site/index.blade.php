@@ -67,7 +67,15 @@
 	@foreach ($blog_comments as $comment)
 
 		<h4><b>{{{ $comment->author->username }}}</b>
-				<small>	{{{ $comment->date() }}}</small>
+				<small>	{{{ $comment->date() }}}  || Numer of votes <span id="commentcountvote{{$comment->id}}">
+		 	{{ $comment->voteup-$comment->votedown}}</span>
+		 	@if (!isset($post_image_vote))
+			<br><b><i>{{ Lang::get('site.add_votes_permission') }}</i></b>
+			@else				
+			<span style="display: inline-block;" onclick="contentvote('blog','1','blogcomment','{{$comment->id}}','commentcountvote{{$comment->id}}')" class="up"></span>
+			<span style="display: inline-block;" onclick="contentvote('blog','0','blogcomment','{{$comment->id}}','commentcountvote{{$comment->id}}')" class="down"></span>
+			@endif
+		</small>
 		</h4>
           <p>{{{ $comment->content() }}}</p>
 	@endforeach
@@ -84,8 +92,7 @@
 	<br>
 	@elseif (!isset($post_blog_comment))
 	<br><b><i>{{ Lang::get('site/blog.add_comment_permission') }}</i></b>
-	@else
-	
+	@else	
 	@if($errors->has())
 	<div class="alert alert-danger alert-block">
 		<ul>

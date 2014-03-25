@@ -23,6 +23,8 @@ class InstallGalleryController extends \AdminController {
 						  `user_id` int(10) unsigned NOT NULL,
 						  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
 						  `hits` int(10) unsigned NOT NULL DEFAULT '0',
+						   `voteup` int(10) NOT NULL DEFAULT '0',
+						   `votedown` int(10) NOT NULL DEFAULT '0',
 						  `folderid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
 						  `start_publish` date NOT NULL,
 						  `end_publish` date DEFAULT NULL,

@@ -1,5 +1,6 @@
 <?php namespace App\Modules\Galleries\Models;
 
+use String;
 class Gallery extends \Eloquent {
 
 	protected $softDelete = true;

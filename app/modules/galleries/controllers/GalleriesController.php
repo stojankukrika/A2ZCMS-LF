@@ -187,13 +187,17 @@ class GalleriesController extends \BaseController {
 							->where('idcontent','=',$id)
 							->where('user_id','=',$user->id)
 							->get();
-		if($content=='gallery')
-		{
-			$item = Gallery::find($id);
-		}
-		else {
-			$item = GalleryImage::find($id);
-		}
+		switch ($content) {
+			case 'gallery':
+				$item = Gallery::find($id);
+				break;
+			case 'galleryimage':
+				$item = GalleryImage::find($id);
+				break;
+			case 'gallerycomment':
+				$item = GalleryImageComment::find($id);
+				break;			
+		}		
 		$newvalue = $item->voteup - $item -> votedown;
 		
 		if($exists->count() == 0 ){

@@ -145,12 +145,13 @@ class BlogsController extends \BaseController {
 								->where('idcontent','=',$id)
 								->where('user_id','=',$user->id)
 								->get();
-		if($content=='blog')
-		{
-			$item = Blog::find($id);
-		}
-		else {
-			$item = BlogComment::find($id);
+		switch ($content) {
+			case 'blog':
+				$item = Blog::find($id);
+				break;
+			case 'blogcomment':
+				$item = BlogComment::find($id);
+				break;		
 		}
 		$newvalue = $item->voteup - $item -> votedown;
 		

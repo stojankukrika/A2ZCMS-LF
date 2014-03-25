@@ -44,8 +44,8 @@
 		@if (!isset($post_image_vote))
 		<br><b><i>{{ Lang::get('site.add_votes_permission') }}</i></b>
 		@else	
-		<span style="display: inline-block;" onclick="contentvote('gallery','1','image',{{$gallery_image->id}},'countvote')" class="up"></span>
-		<span style="display: inline-block;" onclick="contentvote('gallery','0','image',{{$gallery_image->id}},'countvote')" class="down"></span>
+		<span style="display: inline-block;" onclick="contentvote('gallery','1','galleryimage',{{$gallery_image->id}},'countvote')" class="up"></span>
+		<span style="display: inline-block;" onclick="contentvote('gallery','0','galleryimage',{{$gallery_image->id}},'countvote')" class="down"></span>
 		@endif
 	</p>
 <!-- the comment box -->
@@ -54,10 +54,17 @@
 
 	@if ($gallery_comments->count())
 	@foreach ($gallery_comments as $comment)
-
 		<h4>
 			<b>{{{ $comment->author->username }}}</b>
-			<small>	{{{ $comment->date() }}}</small>
+			<small>	{{{ $comment->date() }}} || Numer of votes <span id="commentcountvote{{$comment->id}}">
+		 	{{ $comment->voteup-$comment->votedown}}</span>
+		 	@if (!isset($post_image_vote))
+			<br><b><i>{{ Lang::get('site.add_votes_permission') }}</i></b>
+			@else				
+			<span style="display: inline-block;" onclick="contentvote('gallery','1','gallerycomment','{{$comment->id}}','commentcountvote{{$comment->id}}')" class="up"></span>
+			<span style="display: inline-block;" onclick="contentvote('gallery','0','gallerycomment','{{$comment->id}}','commentcountvote{{$comment->id}}')" class="down"></span>
+			@endif
+		</small>
 		</h4>
           <p>{{{ $comment->content() }}}</p>
 

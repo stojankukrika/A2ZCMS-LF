@@ -1,5 +1,6 @@
 <?php namespace App\Modules\Blogs\Models;
 
+use String;
 class BlogComment extends \Eloquent {
 
 	protected $softDelete = true;

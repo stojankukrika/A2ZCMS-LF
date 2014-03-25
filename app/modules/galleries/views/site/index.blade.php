@@ -49,6 +49,14 @@
       </div>
      @endforeach	
 	</div>
+	<p id="vote">{{ Lang::get("site.num_of_votes") }} <span id="countvote">{{$gallery->voteup-$gallery->votedown}}</span> 
+		@if (!isset($post_image_vote))
+		<br><b><i>{{ Lang::get('site.add_votes_permission') }}</i></b>
+		@else	
+		<span style="display: inline-block;" onclick="contentvote('gallery','1','gallery',{{$gallery->id}},'countvote')" class="up"></span>
+		<span style="display: inline-block;" onclick="contentvote('gallery','0','gallery',{{$gallery->id}},'countvote')" class="down"></span>
+		@endif
+	</p>
 	<ul class="pager">
 		{{ $gallery_images->links() }}
 	</ul>
