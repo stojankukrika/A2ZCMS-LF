@@ -310,7 +310,7 @@
 	<!-- Form Actions -->	
 	<div class="form-group">
 		<div class="col-md-12">
-			<button type="reset" class="btn btn-link close_popup">
+			<button type="reset" class="btn btn-warning close_popup">
 				<span class="icon-remove"></span>  {{{ Lang::get('admin/general.cancel') }}}
 			</button>
 			<button type="reset" class="btn btn-default">
