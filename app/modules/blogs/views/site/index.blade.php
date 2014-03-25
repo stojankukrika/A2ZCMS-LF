@@ -77,7 +77,7 @@
 			@endif
 		</small>
 		</h4>
-          <p>{{{ $comment->content() }}}</p>
+          <p>{{ $comment->content() }}</p>
 	@endforeach
 	@else
 	<hr />

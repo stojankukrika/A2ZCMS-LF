@@ -66,7 +66,7 @@
 			@endif
 		</small>
 		</h4>
-          <p>{{{ $comment->content() }}}</p>
+          <p>{{ $comment->content() }}</p>
 
 	@endforeach
 	@else
@@ -94,7 +94,7 @@
 @endif
 <div class="new_comment">
 	<h4>{{ Lang::get('site/blog.add_comment') }}</h4>
-	<form method="post" action="{{{ URL::to('galleryimage/'.$gallery->id.'/'.$gallery_image->id) }}}">
+	<form method="post" action="{{{ URL::to('gallery/galleryimage/'.$gallery->id.'/'.$gallery_image->id) }}}">
 		<input type="hidden" name="_token" value="{{{ Session::getToken() }}}" />
 			<div class="form-group">
 				<textarea class="form-control" name="gallcomment" id="gallcomment" placeholder="gallcomment" rows="7">{{{ Request::old('gallcomment') }}}</textarea>

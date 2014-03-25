@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Galleries\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,Lang;
 use App\Modules\Galleries\Models\Gallery;
 use App\Modules\Galleries\Models\GalleryImage;
 use App\Modules\Galleries\Models\GalleryImageComment;
@@ -77,7 +77,6 @@ class GalleriesController extends \BaseController {
 		$data['sidebar_right'] = $pagecontent['sidebar_right'];
 		$data['sidebar_left'] = $pagecontent['sidebar_left'];
 		$data['page'] = $page;
-		$data['canGalleryComment'] = $canGalleryComment;
 		$data['gallery_images'] = $gallery_images;
 		$data['gallery'] = $gallery;
 		return View::make('galleries::site/index', $data);
@@ -121,8 +120,6 @@ class GalleriesController extends \BaseController {
 		$data['sidebar_right'] = $pagecontent['sidebar_right'];
 		$data['sidebar_left'] = $pagecontent['sidebar_left'];
 		$data['page'] = $page;
-		$data['canImageVote'] = $canImageVote;
-		$data['canGalleryComment'] = $canGalleryComment;
 		$data['gallery_image'] = $gallery_image;
 		$data['gallery'] = $gallery;
 		$data['gallery_comments'] = $gallery_comments;
@@ -131,21 +128,20 @@ class GalleriesController extends \BaseController {
 	public function postGalleryImage($galid,$imgid)
 	{
 		$user = $this -> user -> currentUser();
-		$canGalleryComment = $user -> can('post_gallery_comment');
-		if (!$canGalleryComment) {
-			return Redirect::to('galleryimage/'.$galid . '/'.$imgid.'#new_comment') -> with(Lang::get('site/gallery.error'), Lang::get('site/gallery.need_to_login'));
+		if (!$user) {
+			return Redirect::to('gallery/galleryimage/'.$galid . '/'.$imgid) -> with(Lang::get('site/gallery.error'), Lang::get('site/gallery.need_to_login'));
 		}
 
 		// Declare the rules for the form validation
 		$rules = array('gallcomment' => 'required|min:3');
 		
-		$gallery = $this -> gallery -> where('id', '=', $galid) -> first();
+		$gallery = Gallery::find($galid);
 		$gallery_image = GalleryImage::find($imgid);
 
-		// Check if the blog blog exists
+		// Check if the gallery exists
 		if (is_null($gallery) || is_null($gallery_image)) {
 			// If we ended up in here, it means that
-			// a page or a blog blog didn't exist.
+			// a page or a gallery didn't exist.
 			// So, this means that it is time for
 			// 404 error page.
 			return App::abort(404);
@@ -165,15 +161,15 @@ class GalleriesController extends \BaseController {
 			// Was the comment saved with success?
 			if ($gallery_image_comment -> save()) {
 				// Redirect to this blog blog page
-				return Redirect::to('galleryimage/'.$galid . '/'.$imgid. '#new_comment') -> with(Lang::get('site/gallery.success'), Lang::get('site/gallery.comment_added'));
+				return Redirect::to('gallery/galleryimage/'.$galid . '/'.$imgid) -> with(Lang::get('site/gallery.success'), Lang::get('site/gallery.comment_added'));
 			}
 
 			// Redirect to this blog blog page
-			return Redirect::to('galleryimage/'.$galid . '/'.$imgid. '#new_comment') -> with(Lang::get('site/gallery.error'), Lang::get('site/gallery.add_comment_error'));
+			return Redirect::to('gallery/galleryimage/'.$galid . '/'.$imgid) -> with(Lang::get('site/gallery.error'), Lang::get('site/gallery.add_comment_error'));
 		}
 
 		// Redirect to this blog blog page
-		return Redirect::to('galleryimage/'.$galid . '/'.$imgid) -> withInput() -> withErrors($validator);
+		return Redirect::to('gallery/galleryimage/'.$galid . '/'.$imgid) -> withInput() -> withErrors($validator);
 	}
 
 	public function contentvote()
