@@ -23,6 +23,7 @@
 			<th class="span2">{{{ Lang::get('admin/pages/table.votes') }}}</th>
 			<th class="span2">{{{ Lang::get('admin/pages/table.hits') }}}</th>			
 			<th class="span3">{{{ Lang::get('admin/pages/table.sidebar') }}}</th>
+			<th class="span1">{{{ Lang::get('admin/pages/table.created_at') }}}</th>
 			<th class="span2">{{{ Lang::get('table.actions') }}}</th>
 		</tr>
 	</thead>

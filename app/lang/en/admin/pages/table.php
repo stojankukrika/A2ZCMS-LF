@@ -43,5 +43,6 @@ return array(
 	'select_items' => 'Select items for page',
 	'select_groups' => 'Select groups for page',
 	'image' => 'Image',
+	'created_at' => 'Created at'
 	
 );

@@ -162,7 +162,7 @@ class AdminNavigationGroupController extends \AdminController {
 	 * @return Datatables JSON
 	 */
 	public function getData() {
-		$navs = NavigationGroup::select(array('navigation_groups.id', 'navigation_groups.title', 'navigation_groups.slug'));
+		$navs = NavigationGroup::select(array('navigation_groups.id', 'navigation_groups.title','navigation_groups.slug','navigation_groups.created_at'));
 
 		return Datatables::of($navs) -> add_column('actions', '<a href="{{{ URL::to(\'admin/pages/navigationgroups/\' . $id . \'/edit\' ) }}}" class="iframe btn btn-default btn-sm"><i class="icon-edit "></i></a>
                                <a href="{{{ URL::to(\'admin/pages/navigationgroups/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>

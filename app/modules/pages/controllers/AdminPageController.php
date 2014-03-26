@@ -431,7 +431,7 @@ class AdminPageController extends \AdminController {
 	 * @return Datatables JSON
 	 */
 	public function getData() {
-		$pages = Page::select(array('pages.id', 'pages.title', 'pages.status','pages.voteup','pages.votedown','pages.hits','pages.sidebar'));
+		$pages = Page::select(array('pages.id', 'pages.title', 'pages.status','pages.voteup','pages.votedown','pages.hits','pages.sidebar','pages.created_at'));
 
 		return Datatables::of($pages) 
 			-> edit_column('voteup', '{{ $voteup-$votedown }}') 

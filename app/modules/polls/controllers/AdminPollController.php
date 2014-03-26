@@ -151,11 +151,14 @@ class AdminPollController extends \AdminController {
 	 * @return Datatables JSON
 	 */
 	public function getData() {
-		$polls = Poll::select(array('title', 'id as fields', 'id as id', 'created_at'));
+		$polls = Poll::select(array('title', 'id as fields', 'id as id','active', 'created_at'));
 
 		return Datatables::of($polls) 
 			-> edit_column('fields', '{{ App\Modules\Polls\Models\Polloption::where(\'poll_id\', \'=\', $id)->count() }}') 
-			-> add_column('actions', '<a href="{{{ URL::to(\'admin/polls/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
+			-> edit_column('active', '@if ($active==0){{ "No active" }} @else {{ "Active" }} @endif') 
+			-> add_column('actions', '<a href="{{{ URL::to(\'admin/polls/\' . $id . \'/change\' ) }}}" class="btn btn-link btn-sm" ><i class="icon-retweet"></i></a>
+				<a href="{{{ URL::to(\'admin/polls/\' . $id . \'/results\' ) }}}" class="btn btn-warning btn-sm" ><i class="icon-signal "></i></a>
+				<a href="{{{ URL::to(\'admin/polls/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-sm iframe" ><i class="icon-edit "></i></a>
                 <a href="{{{ URL::to(\'admin/polls/\' . $id . \'/delete\' ) }}}" class="btn btn-sm btn-danger"><i class="icon-trash "></i></a>
             ') 
             -> remove_column('id') -> make();

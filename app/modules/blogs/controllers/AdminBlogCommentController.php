@@ -30,7 +30,7 @@ class AdminBlogCommentController extends \AdminController {
 	 */
 	public function getIndex() {
 		// Title
-		$title = 'Comment management';
+		$title = 'List of blog comments';
 
 		// Grab all the comment posts
 		$blog_comment = $this -> blog_comment;
@@ -47,7 +47,7 @@ class AdminBlogCommentController extends \AdminController {
 	public function getCommentsForBlog($id) {
 		$blog = Blog::find($id);
 		// Title
-		$title = 'Comment management for blog';
+		$title = 'Comment management for blog:';
 
 		// Show the page
 		return View::make('blogs::admin/blogcomments/commentsforblog', compact('title', 'blog'));

@@ -18,8 +18,9 @@
 <table id="contactforms" class="table table-striped table-hover">
 	<thead>
 		<tr>
-			<th class="col-md-6">{{{ Lang::get('admin/polls/table.title') }}}</th>
+			<th class="col-md-4">{{{ Lang::get('admin/polls/table.title') }}}</th>
 			<th class="col-md-2">{{{ Lang::get('admin/polls/table.items') }}}</th>
+			<th class="col-md-2">{{{ Lang::get('admin/polls/table.active') }}}</th>
 			<th class="col-md-2">{{{ Lang::get('admin/polls/table.created_at') }}}</th>
 			<th class="col-md-2">{{{ Lang::get('table.actions') }}}</th>
 		</tr>

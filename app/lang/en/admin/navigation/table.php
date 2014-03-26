@@ -20,4 +20,6 @@ return array(
 	'select_group' => 'Select group',
 	'blank_page' => 'Blank Page',
 	'class_info' => 'The class will be appended on navigation class attribute',
+	'created_at' => 'Created at'
+	
 );
