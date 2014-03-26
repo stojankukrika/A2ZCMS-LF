@@ -15,8 +15,12 @@ class AdminCustomformController extends \AdminController {
 
 	//public $restful = true;
 
-	public function __construct(CustomForm $customform) {
+	public function __construct(CustomForm $customform,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_customform',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> customform = $customform;
 	}
 

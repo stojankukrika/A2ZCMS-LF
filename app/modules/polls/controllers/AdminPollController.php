@@ -12,8 +12,12 @@ class AdminPollController extends \AdminController {
 	 * @var poll
 	 */
 	protected $poll;
-	public function __construct(Poll $poll) {
+	public function __construct(Poll $poll,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_polls',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> poll = $poll;
 	}
 	

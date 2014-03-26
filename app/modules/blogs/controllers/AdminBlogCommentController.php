@@ -18,11 +18,12 @@ class AdminBlogCommentController extends \AdminController {
 	 * Inject the models.
 	 * @param Comment $comment
 	 */
-	public function __construct(BlogComment $blog_comment) {
-		if (!Session::get('manage_blogs')){
-			URL::to($_SERVER['HTTP_REFERER']);
-		}
+	public function __construct(BlogComment $blog_comment,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_blogs',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> blog_comment = $blog_comment;
 	}
 

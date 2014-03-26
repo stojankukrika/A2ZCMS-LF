@@ -50,17 +50,17 @@ class User extends ConfideUser {
     {
     	$allow_admin = 0;
 		$user = Auth::user();
-		$assignedroles = AssignedRoles::where('user_id','=',$user->id)->get();
-		$roles = false;
-		foreach ($assignedroles as $item) {
-			$roles[] = Role::find($item->role_id);
-		}
-		 $roleIds = array();            	
-		if( !empty( $roles ) ) {
-           foreach( $roles as $role )
+		$assigned = PermissionRole::join('permissions','permissions.id','=','permission_role.permission_id')
+											->join('assigned_roles','assigned_roles.role_id','=','permission_role.role_id')
+											->where('assigned_roles.user_id','=',$user->id)
+											->select('permissions.name','permissions.is_admin')
+											->get();
+		$roleIds = array();            	
+		if( !empty( $assigned ) ) {
+           foreach( $assigned as $item )
             {
-            	 $roleIds[] = $role->id;
-				if($role->is_admin=='1')
+            	$roleIds[$item->name] = $item->name;
+				if($item->is_admin=='1')
 				$allow_admin = 1;
             }
         }

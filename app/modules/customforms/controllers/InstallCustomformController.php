@@ -11,6 +11,14 @@ use App\Modules\Pages\Models\PagePluginFunction;
 
 class InstallCustomformController extends \AdminController {
 
+	function __construct(\AdminController $admin)
+	{
+		parent::__construct();
+		if (!array_key_exists('manage_plugins',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
+	}
 	public function getInstall()
 	{
 		return View::make('customforms::install/install');

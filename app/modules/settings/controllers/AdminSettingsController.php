@@ -11,8 +11,12 @@ class AdminSettingsController extends \AdminController {
 	 */
 	protected $settings;
 	
-	public function __construct(Setting $settings) {
+	public function __construct(Setting $settings,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_settings',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this->settings = $settings;
 	}
 

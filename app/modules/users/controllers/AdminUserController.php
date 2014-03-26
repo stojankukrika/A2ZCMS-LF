@@ -14,8 +14,12 @@ class AdminUserController extends \AdminController {
 	 * User Model
 	 * @var User
 	 */
-	public function __construct(User $user) {
+	public function __construct(User $user,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_users',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> user = $user;
 	}
 

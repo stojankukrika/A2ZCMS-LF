@@ -18,12 +18,13 @@ class AdminBlogController extends \AdminController {
 	 * Inject the models.
 	 * @param Post $post
 	 */
-	public function __construct(Blog $blog) {
-		if (Session::has('manage_blogs')==""){
-			Redirect::to(URL::previous());
+	public function __construct(Blog $blog,\AdminController $admin) {
+		parent::__construct();		
+		if (!array_key_exists('manage_blogs',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
 		}
-		parent::__construct();
-		$this -> blog = $blog;
+		$this->blog = $blog;
 	}
 
 	/**

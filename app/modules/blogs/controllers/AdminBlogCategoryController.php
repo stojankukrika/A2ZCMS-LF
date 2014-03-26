@@ -18,11 +18,12 @@ class AdminBlogCategoryController extends \AdminController {
 	 * Inject the models.
 	 * @param BlogCategory $blog_category
 	 */
-	public function __construct(BlogCategory $blog_category) {
-		if (!Session::get('manage_blog_categris')){
-			URL::to($_SERVER['HTTP_REFERER']);
-		}
+	public function __construct(BlogCategory $blog_category,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_blog_categris',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> blog_category = $blog_category;
 	}
 

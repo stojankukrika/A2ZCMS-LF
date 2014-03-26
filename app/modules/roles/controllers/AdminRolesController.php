@@ -34,8 +34,12 @@ class AdminRolesController extends \AdminController{
 	 * @param Role $role
 	 * @param Permission $permission
 	 */
-	public function __construct(User $user, Role $role, Permission $permission) {
+	public function __construct(User $user, Role $role, Permission $permission,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_roles',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> user = $user;
 		$this -> role = $role;
 		$this -> permission = $permission;

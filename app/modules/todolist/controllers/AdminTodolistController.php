@@ -14,8 +14,12 @@ class AdminTodolistController extends \AdminController{
 	 * Inject the models.
 	 * @param Post $post
 	 */
-	public function __construct(Todolist $todolist) {
+	public function __construct(Todolist $todolist,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_todolists',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> todolist = $todolist;
 	}
 

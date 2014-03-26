@@ -16,8 +16,12 @@ class AdminNavigationGroupController extends \AdminController {
 	 */
 	protected $navigationGroup;
 
-	public function __construct(NavigationGroup $navigationGroup) {
+	public function __construct(NavigationGroup $navigationGroup,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_navigation_groups',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> navigationGroup = $navigationGroup;
 	}
 

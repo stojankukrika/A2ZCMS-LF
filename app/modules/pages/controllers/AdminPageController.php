@@ -18,8 +18,12 @@ class AdminPageController extends \AdminController {
 
 	//public $restful = true;
 
-	public function __construct(Page $page) {
+	public function __construct(Page $page,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_pages',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> page = $page;
 	}
 

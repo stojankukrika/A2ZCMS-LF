@@ -17,8 +17,12 @@ class AdminGalleryImageCommentController extends \AdminController {
 	 * Inject the models.
 	 * @param Comment $comment
 	 */
-	public function __construct(GalleryImageComment $gallery_comment) {
+	public function __construct(GalleryImageComment $gallery_comment,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_gallery_imagecomments',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> gallery_comment = $gallery_comment;
 	}
 

@@ -8,9 +8,13 @@ class AdminPluginsController extends \AdminController{
 
 	protected $plugin;
 	
-	function __construct(Plugin $plugin)
+	function __construct(Plugin $plugin,\AdminController $admin)
 	{
 		parent::__construct();
+		if (!array_key_exists('manage_plugins',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> plugin = $plugin;
 	}
 	

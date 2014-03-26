@@ -18,8 +18,12 @@ class AdminGalleryController extends \AdminController {
 	 * Inject the models.
 	 * @param Gallery $post
 	 */
-	public function __construct(Gallery $gallery, GalleryImage $gallery_image) {
+	public function __construct(Gallery $gallery, GalleryImage $gallery_image,\AdminController $admin) {
 		parent::__construct();
+		if (!array_key_exists('manage_galleries',$admin->roles)){
+			header('Location: '. $_SERVER['HTTP_REFERER']);
+			exit ;
+		}
 		$this -> gallery = $gallery;
 		$this -> gallery_image = $gallery_image;
 	}
