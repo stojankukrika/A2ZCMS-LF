@@ -5,9 +5,3 @@
 /workbench
 composer.phar
 .DS_Store
-/app/controllers--old
-/app/database--old
-/app/models--old
-/app/views--old
-filters--old.php
-routes--old.php

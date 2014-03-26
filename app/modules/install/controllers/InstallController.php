@@ -272,6 +272,8 @@ class InstallController extends \BaseController {
 							'is_admin' => 1),
 						array('name' => 'manage_navigation', 'display_name' => 'Manage navigation',
 							'is_admin' => 1),
+						array('name' => 'manage_pages', 'display_name' => 'Manage pages',
+							'is_admin' => 1),
 						array('name' => 'manage_navigation_groups', 'display_name' => 'Manage navigation groups',
 							'is_admin' => 1),
 						array('name' => 'manage_settings', 'display_name' => 'Manage settings',
@@ -284,7 +286,8 @@ class InstallController extends \BaseController {
 								array('role_id' => 1, 'permission_id' => 3), 
 								array('role_id' => 1, 'permission_id' => 4), 
 								array('role_id' => 1, 'permission_id' => 5), 
-								array('role_id' => 1, 'permission_id' => 6)));
+								array('role_id' => 1, 'permission_id' => 6),
+								array('role_id' => 1, 'permission_id' => 7)));
 		
 		DB::table('settings') -> insert(array( 
 											array('varname' => 'updatetime', 
