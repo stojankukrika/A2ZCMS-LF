@@ -19,6 +19,9 @@ class AdminBlogController extends \AdminController {
 	 * @param Post $post
 	 */
 	public function __construct(Blog $blog) {
+		if (Session::has('manage_blogs')==""){
+			Redirect::to(URL::previous());
+		}
 		parent::__construct();
 		$this -> blog = $blog;
 	}

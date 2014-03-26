@@ -19,6 +19,9 @@ class AdminBlogCommentController extends \AdminController {
 	 * @param Comment $comment
 	 */
 	public function __construct(BlogComment $blog_comment) {
+		if (!Session::get('manage_blogs')){
+			URL::to($_SERVER['HTTP_REFERER']);
+		}
 		parent::__construct();
 		$this -> blog_comment = $blog_comment;
 	}

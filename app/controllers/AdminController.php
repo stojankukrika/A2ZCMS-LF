@@ -39,7 +39,7 @@ class AdminController extends Controller {
 											->get();
 			foreach ($result as $row)
 			{
-				View::share($row->name,  $row->name);
+				Session::put($row->name, $row->name);
 			}					
 		}		
 	}

@@ -19,6 +19,9 @@ class AdminBlogCategoryController extends \AdminController {
 	 * @param BlogCategory $blog_category
 	 */
 	public function __construct(BlogCategory $blog_category) {
+		if (!Session::get('manage_blog_categris')){
+			URL::to($_SERVER['HTTP_REFERER']);
+		}
 		parent::__construct();
 		$this -> blog_category = $blog_category;
 	}
