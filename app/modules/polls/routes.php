@@ -20,6 +20,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|detectLang'), function
     Route::post('polls/{id}/delete', 'App\Modules\Polls\Controllers\AdminPollController@getDelete');
 	Route::get('polls/{id}/deleteitem', 'App\Modules\Polls\Controllers\AdminPollController@postDeleteItem');
     Route::post('polls/{id}/deleteitem', 'App\Modules\Polls\Controllers\AdminPollController@postDeleteItem');
+	
+	Route::get('polls/{id}/change', 'App\Modules\Polls\Controllers\AdminPollController@getChange');
+    Route::get('polls/{id}/results', 'App\Modules\Polls\Controllers\AdminPollController@getResults');
+	
     Route::controller('polls', 'App\Modules\Polls\Controllers\AdminPollController');
 	
 });

@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Polls\Controllers;
 
-use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator;
+use App, View, Session,Auth,URL,Input,Datatables,Redirect,Validator,DB;
 use App\Modules\Polls\Models\Poll;
 use App\Modules\Polls\Models\Polloption;
 
@@ -190,6 +190,38 @@ class AdminPollController extends \AdminController {
 			return 0;
 		}
 		return 1;		
+	}
+	
+	public function getResults($id) {
+
+		$title = 'Results of voting in poll';
+		
+		// Grab all the custom form
+		$poll = Poll::find($id);
+		$pollOptions = Polloption::where('poll_id',$id)->get();
+		$pollTotalVotes = Polloption::select(DB::raw('sum(votes) as votes'))->where('poll_id',$id)->first()->votes;
+		if($pollTotalVotes==0)$pollTotalVotes=1;
+		
+		foreach ($pollOptions as $item) {
+			$item->percentage = number_format(( intval($item->votes)/$pollTotalVotes) * 100, 2 ) . '%' ;
+		}
+
+		return View::make('polls::admin/results', compact('title', 'poll','pollOptions','pollTotalVotes'));
+	}
+	
+	/** Change to-do to work ore done
+	 * @param $todolist
+	 * @return Redirect
+	 * */
+	public function getChange($id) {
+
+		$this -> poll = Poll::find($id);
+		$this -> poll -> active = ($this -> poll -> active + 1) % 2;
+		$this -> poll -> save();
+
+		// Form validation failed
+		return Redirect::to('admin/polls');
+
 	}
 }
 	

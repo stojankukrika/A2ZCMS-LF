@@ -6,8 +6,7 @@
 		@else
 		<img alt="Avatar" src="{{asset('avatar/avatar.png')}}">
 		@endif
-		
-		@if ($user->currentRoleIds()['allow_admin']=='1')
+		@if (isset($roles['allow_admin']) && $roles['allow_admin']=='1')
 		<li>
 			<a href="{{{ URL::to('admin') }}}">{{{ Lang::get('site/partial_views/sidebar/login.admin_panel') }}}</a>
 		</li>

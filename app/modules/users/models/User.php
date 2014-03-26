@@ -54,10 +54,10 @@ class User extends ConfideUser {
 		$roles = false;
 		foreach ($assignedroles as $item) {
 			$roles[] = Role::find($item->role_id);
-		}	
+		}
+		 $roleIds = array();            	
 		if( !empty( $roles ) ) {
-            $roleIds = array();
-            foreach( $roles as $role )
+           foreach( $roles as $role )
             {
             	 $roleIds[] = $role->id;
 				if($role->is_admin=='1')

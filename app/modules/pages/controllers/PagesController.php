@@ -69,8 +69,12 @@ class PagesController extends \BaseController {
 	
 	public function login_partial($params)
 	{
-		$user = $this->user;
-		return View::make('pages::site/login_partial',compact('user'));
+		$roles = "";
+		$user = Auth::user();
+		if(isset($user)){
+			$roles = $this -> user ->currentRoleIds();
+		}
+		return View::make('pages::site/login_partial',compact('user','roles'));
 	}
 	public function sideMenu($params)
 	{
