@@ -65,7 +65,7 @@ return array(
 	|
 	*/
 
-	'key' => 'fF2Nntnag8zDwHQt8GsOrwD2PQvPlcaN',
+	'key' => 'rul8vrt6jUSFhike9zKVHot94mSmPdfk',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -123,6 +123,7 @@ return array(
 		'Creolab\LaravelModules\ServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 		'Bllim\Datatables\DatatablesServiceProvider',
+		'Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider'
 	),
 
 	/*
@@ -200,6 +201,7 @@ return array(
 		'UUID'		  	  => 'A2ZCMS\Helpers\UUID', // UUID
 		'Carbon'          => 'Carbon\Carbon', // Carbon
 		'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
+		'Gravatar' 		  => 'Thomaswelton\LaravelGravatar\Facades\Gravatar'
 	),
 
 );

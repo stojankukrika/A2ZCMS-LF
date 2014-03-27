@@ -60,10 +60,14 @@
 						<li class="dropdown">
 							<a class="btn account dropdown-toggle" data-toggle="dropdown" href="#">
 							<div class="avatar">
-								@if(Auth::user()->avatar)
+								@if($usegravatar=='Yes')
+								<img src="{{Gravatar::src(Auth::user()->email)}}">
+								@else 
+									@if(Auth::user()->avatar)
 									<img alt="Avatar" src="{{asset('avatar/'.Auth::user()->avatar)}}">
-								@else
+									@else
 									<img alt="Avatar" src="{{asset('/avatar/avatar.png')}}">
+									@endif
 								@endif
 							</div>
 							<div class="user">

@@ -77,6 +77,7 @@
 		</div>
 		<!-- ./ surname -->
 		<br><br>
+		@if($usegravatar=='No')
 		<!-- Avatar -->
 		<div class="form-group">
 			<label class="col-md-2 control-label" for="avatar">{{{ Lang::get('confide.avatar') }}}</label>
@@ -84,6 +85,7 @@
 				<input name="avatar" type="file" class="uploader" id="avatar" value="Upload" />
 			</div> 
 		</div>
+		@endif
 		<!-- ./ avatar -->
 		<br><br>
 		<!-- Password -->

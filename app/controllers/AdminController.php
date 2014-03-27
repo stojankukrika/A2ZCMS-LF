@@ -1,4 +1,5 @@
 <?php
+use App\Modules\Settings\Models\Setting;
 use App\Modules\Users\Models\AssignedRoles;
 use App\Modules\Users\Models\User;
 
@@ -21,7 +22,12 @@ class AdminController extends Controller {
 		
 		if(!defined('ASSETS_PATH_FULL')){
 			  define('ASSETS_PATH_FULL', '\public\assets\site');
-    	} 
+    	}
+		$settings = Setting::whereIn('varname', 
+						array('usegravatar'))->get();
+		foreach ($settings as $v) {
+				View::share($v -> varname,  $v -> value);
+		} 
 		$user = Auth::user();			
 		if(!empty($user)){
 			$user2 = new User;	

@@ -1,10 +1,14 @@
 <ul class="list-unstyled">
 	@if (Auth::check())
    	<h4>{{{ Lang::get('site/partial_views/sidebar/login.welcome') }}} {{Auth::user()->name}} {{Auth::user()->surname}}</h4>
-		@if(Auth::user()->avatar)
-		<img alt="Avatar" src="{{asset('avatar/'.Auth::user()->avatar)}}">
-		@else
-		<img alt="Avatar" src="{{asset('avatar/avatar.png')}}">
+		@if($usegravatar=='Yes')
+		<img src="{{Gravatar::src(Auth::user()->email)}}">
+		@else 
+			@if(Auth::user()->avatar)
+			<img alt="Avatar" src="{{asset('avatar/'.Auth::user()->avatar)}}">
+			@else
+			<img alt="Avatar" src="{{asset('/avatar/avatar.png')}}">
+			@endif
 		@endif
 		@if (isset($roles['allow_admin']) && $roles['allow_admin']=='1')
 		<li>

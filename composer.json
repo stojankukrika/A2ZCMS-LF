@@ -19,7 +19,8 @@
 		"robclancy/presenter": "1.1.*",
 		"bllim/datatables": "*",
 		"zizaco/confide": "3.2.x",
-		"zizaco/entrust": "dev-master"
+		"zizaco/entrust": "dev-master",
+		"thomaswelton/laravel-gravatar": "0.0.x"
 	},
 	"require-dev": {
 		"itsgoingd/clockwork": "dev-master"
