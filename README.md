@@ -7,6 +7,7 @@
 [![Flattr donate button](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=mrakodol&url=https%3A%2F%2Fgithub.com%2Fmrakodol%2FA2ZCMS)
 [![BitCoin donate button](http://img.shields.io/bitcoin/donate.png?color=yellow)](https://coinbase.com/checkouts/4d0769619eaebde35c378920a895596e "Donate once-off to this project using BitCoin")
 <!-- /DONATE -->
+##[Demo](http://a2zcms.mrakodol.info)
 ======
 ## A2Z CMS based on Laravel 4.1
 * [A2Z CMS Features](#feature1)
@@ -38,6 +39,9 @@
 	* Manage custom forms.
 	* Manage pages aranged into cateogry and possition.
 	* Manage to-do list.
+	* Manage polls.
+	* Manage plugins(install/uninstall).
+	* Set would be use gravatar or avatar users.
     * DataTables dynamic table sorting and filtering.
     * Colorbox Lightbox jQuery modal popup.
     * Add Summernote WYSIWYG in textareas.
@@ -47,6 +51,7 @@
 	* Blog,Gallery,Messages and more functionality
 	* Voting content(Blog,Gallery,Page)
 	* Custom themes
+	* Voting on active polls
 	* User can use avatar
 	* Add Summernote WYSIWYG in textareas
 	* soon will be more...
@@ -58,6 +63,7 @@
 	* [Presenter](#presenter)
 	* [JeffreyWay Laravel 4 Generators](#generators)
 	* [Summernote](#summernote)
+	* [Application specific modules in Laravel 4] (#modules)
 
 -----
 <a name="feature2"></a>
@@ -222,10 +228,8 @@ The structure of this starter site is the same as default Laravel 4 with one exc
 This starter site adds a `library` folder. Which, houses application specific library files.
 The files within library could also be handled within a composer package, but is included here as an example.
 
-Controllers for Admin part located in admin folder in Controller folder in app folder. 
-CMS have a custom make a page using custom function for main content and sidebar.
-Implementation custom function for pages is located in BaseController and shows in all pages. 
-When user go to some non-custom page(edit profile, messages,...) user get sidebar from first page.
+A2Z CMS-LF use modular structure to implementation. Base controller folder have a two controller: BaseController to extends in site part modules controllers and AdminController to extends in admin part modules controllers.
+Controllers which show content to public site have name as module and placed in modules controller, and controllers which show admin content you can named as you like, my recommendation is name start with "Admin". Affter add controller/module you must refresh autoload.
 
 -----
 <a name="feature5"></a>
@@ -265,13 +269,13 @@ In your composer.json change the lines to reflect the full path to artisan and r
 For example, assuming a Windows PC with XAMPP installed on D disk :
 
 		"pre-update-cmd": [
-			"php d:\\xampp\\htdocs\\website\\artisan clear-compiled"
+			"php artisan clear-compiled"
 		],
 		"post-install-cmd": [
-			"php d:\\xampp\\htdocs\\website\\artisan optimize"
+			"php artisan optimize"
 		],
 		"post-update-cmd": [
-			"php d:\\xampp\\htdocs\\website\\artisan optimize"
+			"php artisan optimize"
 		]
 
 Note : This will change your composer.json to only work on your current PC (or any with a similar path). 
@@ -373,6 +377,11 @@ Laravel 4 Generators package provides a variety of generators to speed up your d
 - `generate:pivot <-- NEW!!`
 
 For full usage see [Laravel 4 Generators Readme](https://github.com/JeffreyWay/Laravel-4-Generators/blob/master/readme.md)
+
+<a name="modules"></a>
+##Application specific modules in Laravel 4
+Modules in Laravel 4 by Boris Strahinja
+For full ussage see [MOdules in Laravel] (https://github.com/creolab/laravel-modules)
 
 <a name"summernote"></a>
 ## Summernote
