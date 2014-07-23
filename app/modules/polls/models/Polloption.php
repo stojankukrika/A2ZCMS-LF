@@ -1,9 +1,9 @@
 <?php namespace App\Modules\Polls\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Polloption extends \Eloquent {
-
+	protected $dates = ['deleted_at'];
 	protected $table = "poll_options";
-	protected $softDelete = true;
 	/**
 	 * Get the date the post was created.
 	 *

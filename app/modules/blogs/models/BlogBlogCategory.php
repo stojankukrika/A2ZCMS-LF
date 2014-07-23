@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Blogs\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class BlogBlogCategory extends \Eloquent {
 
 	protected $table = "blog_blog_categories";
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	/**
 	 * Get the date the post was created.
 	 *

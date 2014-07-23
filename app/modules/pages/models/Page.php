@@ -1,11 +1,12 @@
 <?php namespace App\Modules\Pages\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 use String;
 
 class Page extends \Eloquent {
 
 	public $table = 'pages';
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $guarded = array();	
 	/**
 	 * Get the date the blog was created.

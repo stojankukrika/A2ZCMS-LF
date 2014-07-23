@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Galleries\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class ContentVote extends \Eloquent  {
 
 	public $table = 'content_votes';
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $guarded = array();	
 	/**
 	 * Get the date the blog was created.

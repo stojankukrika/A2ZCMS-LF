@@ -1,9 +1,9 @@
 <?php namespace App\Modules\Polls\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Poll extends \Eloquent {
-
+	protected $dates = ['deleted_at'];
 	protected $table = "polls";
-	protected $softDelete = true;
 	/**
 	 * Returns a formatted post content entry,
 	 * this ensures that line breaks are returned.

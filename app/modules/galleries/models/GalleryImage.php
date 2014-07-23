@@ -1,8 +1,9 @@
 <?php namespace App\Modules\Galleries\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class GalleryImage extends \Eloquent {
 
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $table = "gallery_images";
 	/**
 	 * Deletes a blog post and all

@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Blogs\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 use String;
 class BlogComment extends \Eloquent {
 
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $table = "blog_comments";
 
 	/*

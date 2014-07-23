@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Galleries\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 use String;
 class Gallery extends \Eloquent {
 
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $table = "galleries";
 
 	/**

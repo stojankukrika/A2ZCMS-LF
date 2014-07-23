@@ -1,7 +1,8 @@
 <?php namespace App\Modules\Users\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class UserLoginHistory extends \Eloquent {
-	
+	protected $dates = ['deleted_at'];
 	protected $table = "user_login_historys";
 	protected $softDelete = true;
 

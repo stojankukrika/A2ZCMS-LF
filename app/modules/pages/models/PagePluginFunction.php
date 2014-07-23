@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Pages\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class PagePluginFunction extends \Eloquent {
 
 	public $table = 'page_plugin_functions';
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $guarded = array();	
 	/**
 	 * Get the date the blog was created.

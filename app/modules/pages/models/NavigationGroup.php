@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Pages\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class NavigationGroup extends \Eloquent {
 
 	public $table = "navigation_groups";
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $guarded = array();
 	
 	public function navigations() {

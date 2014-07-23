@@ -1,8 +1,10 @@
 <?php namespace App\Modules\Galleries\Models;
 use String;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
 class GalleryImageComment extends \Eloquent {
 
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $table = "gallery_images_comments";
 	/*
 	 *//**

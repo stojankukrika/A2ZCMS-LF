@@ -1,9 +1,10 @@
 <?php namespace App\Modules\Customforms\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Customformfield extends \Eloquent {
 
 	protected $table = "custom_form_fields";
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	/**
 	 * Returns a formatted post content entry,
 	 * this ensures that line breaks are returned.

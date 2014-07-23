@@ -1,7 +1,8 @@
 <?php namespace App\Modules\Todolist\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Todolist  extends \Eloquent {
-
+	protected $dates = ['deleted_at'];
 	protected $table = "todolists";
 	protected $softDelete = true;
 

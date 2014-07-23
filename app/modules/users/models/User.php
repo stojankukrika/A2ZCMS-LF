@@ -2,6 +2,7 @@
 
 use Zizaco\Confide\ConfideUser;
 use Zizaco\Confide\Confide;
+use Zizaco\Confide\ConfideUserInterface;
 use Zizaco\Confide\ConfideEloquentRepository;
 use Zizaco\Entrust\HasRole;
 use Robbo\Presenter\PresentableInterface;
@@ -13,10 +14,10 @@ use App\Modules\Users\Models\AssignedRoles;
 
 use Auth;
 
-class User extends ConfideUser {
+class User extends \Eloquent implements ConfideUserInterface {
 	
 	protected $table = 'users';	
-	
+	private $user;
 	public function getPresenter()
     {
         return new UserPresenter($this);
@@ -50,6 +51,7 @@ class User extends ConfideUser {
     {
     	$allow_admin = 0;
 		$user = Auth::user();
+		$this->user = $user;
 		$assigned = PermissionRole::join('permissions','permissions.id','=','permission_role.permission_id')
 											->join('assigned_roles','assigned_roles.role_id','=','permission_role.role_id')
 											->where('assigned_roles.user_id','=',$user->id)
@@ -96,7 +98,45 @@ class User extends ConfideUser {
 
     public function currentUser()
     {
-        return (new Confide(new ConfideEloquentRepository()))->user();
+        return $this->getAuthIdentifier();
     }
+	 public function confirm(){
+		return View::make('sessions.confirm');
+	 }
+	 public function forgotPassword(){
+		return View::make('sessions.forgot');
+	 }
+	 
+	 public function isValid(){
+	 return Validator::make(
+            $this->toArray(),
+            array(
+                'name'  => 'required',
+            )
+        )->passes();
+	 }
+	 public function getAuthIdentifier(){
+		return $this->getKey();
+	 }
+	 public function getAuthPassword(){
+		return $this->password;
+	 }
+	 public function getRememberToken()
+	{
+		return $this->remember_token;
+	}
 
+	public function setRememberToken($value)
+	{
+		$this->remember_token = $value;
+	}
+
+	public function getRememberTokenName()
+	{
+		return 'remember_token';
+	}
+	public function getReminderEmail() 
+	{ 
+		return $this->user->email; 
+	}
 }

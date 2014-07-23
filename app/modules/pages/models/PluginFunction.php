@@ -1,9 +1,7 @@
 <?php namespace App\Modules\Pages\Models;
-
 class PluginFunction extends \Eloquent {
 
 	protected $table = "plugin_functions";
-	protected $softDelete = true;
 	/**
 	 * Returns a web function who is called
 	 *

@@ -1,7 +1,8 @@
 <?php namespace App\Modules\Plugins\Models;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Plugin extends \Eloquent {
-
+	protected $dates = ['deleted_at'];
 	protected $table = "plugins";
 	protected $softDelete = true;
 
