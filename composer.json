@@ -10,18 +10,15 @@
     ],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "~4",
-		"creolab/laravel-modules": "dev-master",
-		"fzaninotto/faker": "1.3.*",		
-		"way/generators": "dev-master",
-		"doctrine/dbal": "dev-master",
-		"laravelbook/ardent" : "dev-master",
+		"laravel/framework": "4.2.*",
+        "zizaco/confide": "~3.2",
+        "zizaco/entrust": "~1.2",
 		"robclancy/presenter": "1.3.*",
-		"bllim/datatables": "*",
-		"zizaco/confide": "~4.0",
+        "bllim/datatables": "~1.3",
+		"way/generators": "~2.6",
+		"creolab/laravel-modules": "dev-master",
 		"laravelbook/ardent": "2.*",
-		"zizaco/entrust": "dev-master",
-		"thomaswelton/laravel-gravatar": "0.0.x"
+		"thomaswelton/laravel-gravatar": "0.1.x"
 	},
 	"require-dev": {
 		"itsgoingd/clockwork": "dev-master"
@@ -39,20 +36,20 @@
 		]
 	},
 	"scripts": {
-		"pre-update-cmd": [
-			"php d:\\xampp\\htdocs\\a2zcms-lf\\artisan clear-compiled",
-			"php d:\\xampp\\htdocs\\a2zcms-lf\\artisan optimize"
-		],
 		"post-install-cmd": [
-			"php d:\\xampp\\htdocs\\a2zcms-lf\\artisan optimize",
-			"php d:\\xampp\\htdocs\\a2zcms-lf\\artisan key:generate"
+			"php artisan clear-compiled",
+			"php artisan optimize"
+		],
+		"post-update-cmd": [
+			"php artisan clear-compiled",
+			"php artisan optimize"
 		],
 		"post-create-project-cmd": [
-			"php d:\\xampp\\htdocs\\a2zcms-lf\\artisan key:generate"
-		]	
+			"php artisan key:generate"
+		]
 	},
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }

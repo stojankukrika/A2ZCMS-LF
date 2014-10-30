@@ -62,9 +62,9 @@
 				<div class="row">
 					 <div class="col-lg-12">
 						<span style="text-align:left;float:left">
-							&copy; 2013 <a class="a2zcms" href="#">A2Z CMS</a></span>
+							&copy; 2013 - <?=date('Y')?> <a class="a2zcms" href="#">A2Z CMS</a></span>
 						<span style="text-align:right;float:right">
-							Powered by: <a class="a2zcms" href="http://laravel.com/" alt="Laravel 4.1">Laravel 4.1</a></span>
+							Powered by: <a class="a2zcms" href="http://laravel.com/" alt="Laravel 4.1">Laravel 4.2</a></span>
 				</div>
 			</div>
 		</footer>

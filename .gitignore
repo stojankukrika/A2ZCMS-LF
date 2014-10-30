@@ -1,7 +1,8 @@
-/app/config/local
-/app/storage/clockwork
 /bootstrap/compiled.php
 /vendor
-/workbench
 composer.phar
+composer.lock
+.env.*.php
+.env.php
 .DS_Store
+Thumbs.db

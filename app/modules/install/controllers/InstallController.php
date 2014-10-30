@@ -21,6 +21,7 @@ class InstallController extends \BaseController {
 		if (Config::get("a2zcms.installed") === true) {
 			return Redirect::to('');
 		}
+		define('STDIN',fopen("php://stdin","r"));
 	}
 	 public $errors = array();
 	 
@@ -187,8 +188,7 @@ class InstallController extends \BaseController {
 			//File::delete($stub);
 			$url = URL::to('/');
 			$this -> setA2ZApp($url.'/');
-
-			Artisan::call('migrate', array('--env' => App::environment()));
+			Artisan::call('migrate',  array('--force' => true));
 			
 			//triger for update user last_login affter user is login to system
 			DB::unprepared("CREATE TRIGGER ".Input::get('prefix')."user_login_historys_after_inserts 
@@ -263,8 +263,75 @@ class InstallController extends \BaseController {
 		$assigned_role -> role_id = $adminRole -> id;
 		$assigned_role -> save();
 		
-		/*OTHER SEED*/
+		$this->seed();
+		//Artisan::call('db:seed');
+		
+		$settings = Setting::all();
+		foreach ($settings as $v) {
+			switch ($v->varname) {
+				case 'email' :
+					$v -> value = Input::get('email');
+					break;
+			}
+			Setting::where('varname', '=', $v -> varname) -> update(array('value' => $v -> value));
+		}
 
+		return Redirect::to('install/step5');
+	}
+
+	/**
+	 * Get the config form.
+	 */
+	public function getStep5() {
+		return View::make('install::step5');
+	}
+
+	/**
+	 * Save the config files and FINISH install
+	 */
+	public function postStep5() {
+		$this -> setA2ZConfig(Input::get('title', 'Site Name'), Input::get('theme', 'a2z-default'),
+								Input::get('per_page', 5));
+		return View::make('install::complete');
+	}
+
+	/**
+	 * Update the configs based on passed data
+	 *
+	 * @param string $title
+	 * @param string $theme
+	 * @param int    $per_page
+	 *
+	 * @return
+	 */
+	protected function setA2ZConfig($title, $theme, $per_page) {
+		$content = str_replace(array('##theme##', "'##installed##'"), array($theme, 'true'), 
+		File::get(app_path() . '\config\a2zcms_temp.php'));
+
+		$settings = Setting::all();
+		foreach ($settings as $v) {
+
+			switch ($v->varname) {
+				case 'title' :
+					$v -> value = $title;
+					break;
+				case 'pageitem' :
+					$v -> value = $per_page;
+					break;
+				case 'sitetheme' :
+					$v -> value = $theme;
+					break;
+			}
+			Setting::where('varname', '=', $v -> varname) -> update(array('value' => $v -> value));
+		}
+
+		return File::put(app_path() . '\config\a2zcms.php', $content);
+	}
+	
+	protected function seed()
+	{		
+		/*OTHER SEED*/
+		
 		DB::table('permissions') -> insert(array( 
 						array('name' => 'manage_users', 'display_name' => 'Manage users',
 							'is_admin' => 1), 
@@ -691,68 +758,5 @@ class InstallController extends \BaseController {
 										)
 									);
 		/*OTHER SEED*/
-		//Artisan::call('db:seed');
-		
-		$settings = Setting::all();
-		foreach ($settings as $v) {
-			switch ($v->varname) {
-				case 'email' :
-					$v -> value = Input::get('email');
-					break;
-			}
-			Setting::where('varname', '=', $v -> varname) -> update(array('value' => $v -> value));
-		}
-
-		return Redirect::to('install/step5');
 	}
-
-	/**
-	 * Get the config form.
-	 */
-	public function getStep5() {
-		return View::make('install::step5');
-	}
-
-	/**
-	 * Save the config files and FINISH install
-	 */
-	public function postStep5() {
-		$this -> setA2ZConfig(Input::get('title', 'Site Name'), Input::get('theme', 'a2z-default'),
-								Input::get('per_page', 5));
-		return View::make('install::complete');
-	}
-
-	/**
-	 * Update the configs based on passed data
-	 *
-	 * @param string $title
-	 * @param string $theme
-	 * @param int    $per_page
-	 *
-	 * @return
-	 */
-	protected function setA2ZConfig($title, $theme, $per_page) {
-		$content = str_replace(array('##theme##', "'##installed##'"), array($theme, 'true'), 
-		File::get(app_path() . '\config\a2zcms_temp.php'));
-
-		$settings = Setting::all();
-		foreach ($settings as $v) {
-
-			switch ($v->varname) {
-				case 'title' :
-					$v -> value = $title;
-					break;
-				case 'pageitem' :
-					$v -> value = $per_page;
-					break;
-				case 'sitetheme' :
-					$v -> value = $theme;
-					break;
-			}
-			Setting::where('varname', '=', $v -> varname) -> update(array('value' => $v -> value));
-		}
-
-		return File::put(app_path() . '\config\a2zcms.php', $content);
-	}
-
 }

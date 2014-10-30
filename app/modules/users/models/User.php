@@ -3,6 +3,8 @@
 use Zizaco\Confide\ConfideUser;
 use Zizaco\Confide\Confide;
 use Zizaco\Confide\ConfideUserInterface;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableInterface;
 use Zizaco\Confide\ConfideEloquentRepository;
 use Zizaco\Entrust\HasRole;
 use Robbo\Presenter\PresentableInterface;
@@ -14,7 +16,7 @@ use App\Modules\Users\Models\AssignedRoles;
 
 use Auth;
 
-class User extends \Eloquent implements ConfideUserInterface {
+class User extends ConfideUser implements UserInterface, RemindableInterface{
 	
 	protected $table = 'users';	
 	private $user;
@@ -139,4 +141,5 @@ class User extends \Eloquent implements ConfideUserInterface {
 	{ 
 		return $this->user->email; 
 	}
+	
 }

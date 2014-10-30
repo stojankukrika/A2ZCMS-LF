@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'name' => 'Boris Strahija',
+	'name' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -26,6 +26,6 @@ return array(
 	|
 	*/
 
-	'email' => 'bstrahija@gmail.com',
+	'email' => '',
 
 );

@@ -131,7 +131,7 @@ class BaseController extends Controller {
 					$html .= "<li> <a target='".$menu['items'][$itemId]['target']."' class='".$menu['items'][$itemId]['class']."' href='";
 					switch ($menu['items'][$itemId]['link_type']) {
 						case 'page':
-							$html .=URL::to('page') ."/". $menu['items'][$itemId]['id'];
+							$html .=URL::to('pages') ."/". $menu['items'][$itemId]['id'];
 							break;
 						case 'url':
 							$html .=URL::to($menu['items'][$itemId]['uri']);

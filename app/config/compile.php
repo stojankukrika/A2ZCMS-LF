@@ -1,5 +1,8 @@
 <?php
-/*
+
+return array(
+
+	/*
 	|--------------------------------------------------------------------------
 	| Additional Compiled Classes
 	|--------------------------------------------------------------------------
@@ -9,15 +12,7 @@
 	| that are included on basically every request into the application.
 	|
 	*/
-	
-return [
 
-    'files' => [
-        //
-    ],
 
-    'providers' => [
-        //
-    ],
 
-];
+);
